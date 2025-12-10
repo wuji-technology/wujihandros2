@@ -4,10 +4,3 @@ wujihand_msgs.egg-info/PKG-INFO
 wujihand_msgs.egg-info/SOURCES.txt
 wujihand_msgs.egg-info/dependency_links.txt
 wujihand_msgs.egg-info/top_level.txt
-wujihand_msgs/msg/__init__.py
-wujihand_msgs/msg/_hand_command.py
-wujihand_msgs/msg/_hand_state.py
-wujihand_msgs/srv/__init__.py
-wujihand_msgs/srv/_get_hand_info.py
-wujihand_msgs/srv/_reset_error.py
-wujihand_msgs/srv/_set_enabled.py

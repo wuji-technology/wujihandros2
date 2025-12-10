@@ -1,0 +1,412 @@
+[0.012s] Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake /home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_msgs -DCMAKE_INSTALL_PREFIX=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs
+[0.271s] -- The C compiler identification is GNU 13.3.0
+[1.019s] -- The CXX compiler identification is GNU 13.3.0
+[1.561s] -- Detecting C compiler ABI info
+[1.816s] -- Detecting C compiler ABI info - done
+[1.823s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.823s] -- Detecting C compile features
+[1.824s] -- Detecting C compile features - done
+[1.911s] -- Detecting CXX compiler ABI info
+[2.144s] -- Detecting CXX compiler ABI info - done
+[2.149s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.149s] -- Detecting CXX compile features
+[2.150s] -- Detecting CXX compile features - done
+[2.161s] -- Found ament_cmake: 2.7.3 (/opt/ros/kilted/share/ament_cmake/cmake)
+[2.278s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[2.383s] -- Found rosidl_default_generators: 1.7.1 (/opt/ros/kilted/share/rosidl_default_generators/cmake)
+[2.389s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.630s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.681s] -- Found rosidl_adapter: 4.9.5 (/opt/ros/kilted/share/rosidl_adapter/cmake)
+[2.686s] -- Found std_msgs: 5.5.1 (/opt/ros/kilted/share/std_msgs/cmake)
+[3.231s] -- Found ament_cmake_ros_core: 0.14.5 (/opt/ros/kilted/share/ament_cmake_ros_core/cmake)
+[3.600s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[4.073s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[4.480s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter Development NumPy Development.Module Development.Embed 
+[4.522s] -- Configuring done (4.5s)
+[4.585s] -- Generating done (0.1s)
+[4.596s] -- Build files have been written to: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_msgs
+[4.605s] Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake /home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_msgs -DCMAKE_INSTALL_PREFIX=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs
+[4.606s] Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake --build /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_msgs -- -j24 -l24
+[4.656s] [  1%] [34m[1mGenerating type hashes for ROS interfaces[0m
+[4.664s] [  1%] Built target ament_cmake_python_copy_wujihand_msgs
+[4.813s] running egg_info
+[4.813s] creating wujihand_msgs.egg-info
+[4.825s] writing wujihand_msgs.egg-info/PKG-INFO
+[4.825s] writing dependency_links to wujihand_msgs.egg-info/dependency_links.txt
+[4.825s] writing top-level names to wujihand_msgs.egg-info/top_level.txt
+[4.825s] writing manifest file 'wujihand_msgs.egg-info/SOURCES.txt'
+[4.860s] reading manifest file 'wujihand_msgs.egg-info/SOURCES.txt'
+[4.860s] writing manifest file 'wujihand_msgs.egg-info/SOURCES.txt'
+[4.881s] [  1%] Built target ament_cmake_python_build_wujihand_msgs_egg
+[4.981s] [  1%] Built target wujihand_msgs__rosidl_generator_type_description
+[4.989s] [  2%] [34m[1mGenerating C code for ROS interfaces[0m
+[4.996s] [  3%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[5.515s] [  3%] Built target wujihand_msgs__cpp
+[5.582s] [  7%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/msg/detail/hand_command__description.c.o[0m
+[5.583s] [  7%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/msg/detail/hand_state__type_support.c.o[0m
+[5.583s] [  7%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/msg/detail/hand_state__description.c.o[0m
+[5.583s] [ 10%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/msg/detail/hand_state__functions.c.o[0m
+[5.583s] [  9%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/msg/detail/hand_command__functions.c.o[0m
+[5.583s] [ 10%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/msg/detail/hand_command__type_support.c.o[0m
+[5.585s] [ 13%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/set_enabled__description.c.o[0m
+[5.585s] [ 13%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/get_hand_info__description.c.o[0m
+[5.586s] [ 14%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/get_hand_info__type_support.c.o[0m
+[5.587s] [ 15%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/set_enabled__type_support.c.o[0m
+[5.587s] [ 16%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/get_hand_info__functions.c.o[0m
+[5.587s] [ 17%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/get_diagnostics__description.c.o[0m
+[5.587s] [ 19%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/get_diagnostics__functions.c.o[0m
+[5.587s] [ 20%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/set_enabled__functions.c.o[0m
+[5.588s] [ 21%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/get_diagnostics__type_support.c.o[0m
+[5.590s] [ 22%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/reset_error__functions.c.o[0m
+[5.590s] [ 23%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/reset_error__type_support.c.o[0m
+[5.591s] [ 25%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_c.dir/rosidl_generator_c/wujihand_msgs/srv/detail/reset_error__description.c.o[0m
+[5.682s] [ 26%] [32m[1mLinking C shared library libwujihand_msgs__rosidl_generator_c.so[0m
+[5.825s] [ 26%] Built target wujihand_msgs__rosidl_generator_c
+[5.834s] [ 30%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[5.834s] [ 30%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[5.834s] [ 30%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[5.835s] [ 30%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[5.835s] [ 32%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[5.835s] [ 33%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[6.252s] [ 35%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/wujihand_msgs/srv/set_enabled__type_support.cpp.o[0m
+[6.252s] [ 35%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/wujihand_msgs/msg/hand_state__type_support.cpp.o[0m
+[6.252s] [ 36%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/wujihand_msgs/msg/hand_command__type_support.cpp.o[0m
+[6.253s] [ 38%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/wujihand_msgs/srv/reset_error__type_support.cpp.o[0m
+[6.253s] [ 39%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/wujihand_msgs/srv/get_hand_info__type_support.cpp.o[0m
+[6.255s] [ 40%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/wujihand_msgs/srv/get_diagnostics__type_support.cpp.o[0m
+[6.269s] [ 44%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/wujihand_msgs/msg/hand_state__type_support.cpp.o[0m
+[6.269s] [ 44%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/wujihand_msgs/srv/get_diagnostics__type_support.cpp.o[0m
+[6.269s] [ 44%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/wujihand_msgs/srv/reset_error__type_support.cpp.o[0m
+[6.270s] [ 45%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/wujihand_msgs/msg/hand_command__type_support.cpp.o[0m
+[6.270s] [ 46%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/wujihand_msgs/srv/get_hand_info__type_support.cpp.o[0m
+[6.270s] [ 47%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/wujihand_msgs/srv/set_enabled__type_support.cpp.o[0m
+[6.336s] [ 48%] [32m[1mLinking CXX shared library libwujihand_msgs__rosidl_typesupport_c.so[0m
+[6.389s] [ 51%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/wujihand_msgs/srv/detail/get_hand_info__type_support.cpp.o[0m
+[6.389s] [ 51%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/wujihand_msgs/msg/detail/hand_state__type_support.cpp.o[0m
+[6.389s] [ 52%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/wujihand_msgs/msg/detail/hand_command__type_support.cpp.o[0m
+[6.389s] [ 53%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/wujihand_msgs/srv/detail/set_enabled__type_support.cpp.o[0m
+[6.391s] [ 54%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/wujihand_msgs/srv/detail/get_diagnostics__type_support.cpp.o[0m
+[6.394s] [ 55%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/wujihand_msgs/srv/detail/reset_error__type_support.cpp.o[0m
+[6.457s] [ 58%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/wujihand_msgs/srv/detail/get_hand_info__type_support.c.o[0m
+[6.457s] [ 58%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/wujihand_msgs/msg/detail/hand_state__type_support.c.o[0m
+[6.457s] [ 59%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/wujihand_msgs/msg/detail/hand_command__type_support.c.o[0m
+[6.458s] [ 60%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/wujihand_msgs/srv/detail/reset_error__type_support.c.o[0m
+[6.458s] [ 61%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/wujihand_msgs/srv/detail/get_diagnostics__type_support.c.o[0m
+[6.464s] [ 63%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/wujihand_msgs/srv/detail/set_enabled__type_support.c.o[0m
+[6.586s] [ 64%] [32m[1mLinking C shared library libwujihand_msgs__rosidl_typesupport_introspection_c.so[0m
+[6.681s] [ 66%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/wujihand_msgs/msg/detail/dds_fastrtps/hand_command__type_support.cpp.o[0m
+[6.681s] [ 66%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/wujihand_msgs/srv/detail/dds_fastrtps/get_hand_info__type_support.cpp.o[0m
+[6.683s] [ 67%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/wujihand_msgs/srv/detail/dds_fastrtps/reset_error__type_support.cpp.o[0m
+[6.683s] [ 69%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/wujihand_msgs/srv/detail/dds_fastrtps/set_enabled__type_support.cpp.o[0m
+[6.683s] [ 70%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/wujihand_msgs/msg/detail/dds_fastrtps/hand_state__type_support.cpp.o[0m
+[6.687s] [ 71%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/wujihand_msgs/srv/detail/dds_fastrtps/get_diagnostics__type_support.cpp.o[0m
+[6.835s] [ 71%] Built target wujihand_msgs__rosidl_typesupport_c
+[6.905s] [ 75%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/wujihand_msgs/srv/detail/get_hand_info__type_support_c.cpp.o[0m
+[6.905s] [ 75%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/wujihand_msgs/msg/detail/hand_command__type_support_c.cpp.o[0m
+[6.905s] [ 75%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/wujihand_msgs/msg/detail/hand_state__type_support_c.cpp.o[0m
+[6.908s] [ 76%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/wujihand_msgs/srv/detail/set_enabled__type_support_c.cpp.o[0m
+[6.908s] [ 77%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/wujihand_msgs/srv/detail/get_diagnostics__type_support_c.cpp.o[0m
+[7.082s] [ 78%] [32mBuilding CXX object CMakeFiles/wujihand_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/wujihand_msgs/srv/detail/reset_error__type_support_c.cpp.o[0m
+[7.346s] [ 79%] [32m[1mLinking CXX shared library libwujihand_msgs__rosidl_typesupport_cpp.so[0m
+[7.364s] [ 79%] Built target wujihand_msgs__rosidl_typesupport_introspection_c
+[7.467s] [ 80%] [32m[1mLinking CXX shared library libwujihand_msgs__rosidl_typesupport_introspection_cpp.so[0m
+[7.914s] [ 80%] Built target wujihand_msgs__rosidl_typesupport_cpp
+[8.006s] [ 80%] Built target wujihand_msgs__rosidl_typesupport_introspection_cpp
+[8.071s] [ 82%] [32m[1mLinking CXX shared library libwujihand_msgs__rosidl_typesupport_fastrtps_c.so[0m
+[8.140s] [ 83%] [32m[1mLinking CXX shared library libwujihand_msgs__rosidl_typesupport_fastrtps_cpp.so[0m
+[8.341s] [ 83%] Built target wujihand_msgs__rosidl_typesupport_fastrtps_c
+[8.410s] [ 83%] Built target wujihand_msgs__rosidl_typesupport_fastrtps_cpp
+[8.433s] [ 83%] Built target wujihand_msgs
+[8.455s] [ 84%] [34m[1mGenerating Python code for ROS interfaces[0m
+[9.379s] [ 84%] Built target wujihand_msgs__py
+[9.397s] [ 90%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_py.dir/rosidl_generator_py/wujihand_msgs/srv/_get_hand_info_s.c.o[0m
+[9.398s] [ 90%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_py.dir/rosidl_generator_py/wujihand_msgs/msg/_hand_command_s.c.o[0m
+[9.398s] [ 90%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_py.dir/rosidl_generator_py/wujihand_msgs/srv/_reset_error_s.c.o[0m
+[9.398s] [ 90%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_py.dir/rosidl_generator_py/wujihand_msgs/msg/_hand_state_s.c.o[0m
+[9.398s] [ 91%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_py.dir/rosidl_generator_py/wujihand_msgs/srv/_get_diagnostics_s.c.o[0m
+[9.398s] [ 91%] [32mBuilding C object CMakeFiles/wujihand_msgs__rosidl_generator_py.dir/rosidl_generator_py/wujihand_msgs/srv/_set_enabled_s.c.o[0m
+[9.570s] [ 92%] [32m[1mLinking C shared library libwujihand_msgs__rosidl_generator_py.so[0m
+[9.710s] [ 92%] Built target wujihand_msgs__rosidl_generator_py
+[9.725s] [ 95%] [32mBuilding C object CMakeFiles/wujihand_msgs_s__rosidl_typesupport_c.dir/rosidl_generator_py/wujihand_msgs/_wujihand_msgs_s.ep.rosidl_typesupport_c.c.o[0m
+[9.725s] [ 96%] [32mBuilding C object CMakeFiles/wujihand_msgs_s__rosidl_typesupport_fastrtps_c.dir/rosidl_generator_py/wujihand_msgs/_wujihand_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[9.725s] [ 96%] [32mBuilding C object CMakeFiles/wujihand_msgs_s__rosidl_typesupport_introspection_c.dir/rosidl_generator_py/wujihand_msgs/_wujihand_msgs_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[9.819s] [ 97%] [32m[1mLinking C shared module rosidl_generator_py/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_c.so[0m
+[9.820s] [ 98%] [32m[1mLinking C shared module rosidl_generator_py/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_introspection_c.so[0m
+[9.821s] [100%] [32m[1mLinking C shared module rosidl_generator_py/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_fastrtps_c.so[0m
+[9.916s] [100%] Built target wujihand_msgs_s__rosidl_typesupport_introspection_c
+[9.916s] [100%] Built target wujihand_msgs_s__rosidl_typesupport_fastrtps_c
+[9.916s] [100%] Built target wujihand_msgs_s__rosidl_typesupport_c
+[9.930s] Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake --build /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_msgs -- -j24 -l24
+[9.934s] Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake --install /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_msgs
+[9.941s] -- Install configuration: ""
+[9.942s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/ament_index/resource_index/rosidl_interfaces/wujihand_msgs
+[9.943s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/msg/HandState.json
+[9.943s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/msg/HandCommand.json
+[9.943s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/SetEnabled.json
+[9.943s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/GetHandInfo.json
+[9.944s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/GetDiagnostics.json
+[9.944s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/ResetError.json
+[9.945s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs
+[9.945s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg
+[9.945s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/rosidl_generator_c__visibility_control.h
+[9.946s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/hand_state.h
+[9.946s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail
+[9.946s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__struct.h
+[9.946s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__type_support.h
+[9.946s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__description.c
+[9.946s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__type_support.c
+[9.946s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__struct.h
+[9.946s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__functions.h
+[9.946s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__description.c
+[9.947s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__functions.h
+[9.947s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__type_support.h
+[9.947s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__functions.c
+[9.947s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__type_support.c
+[9.947s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__functions.c
+[9.947s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/hand_command.h
+[9.947s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv
+[9.948s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/get_diagnostics.h
+[9.948s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/reset_error.h
+[9.948s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail
+[9.948s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__functions.c
+[9.948s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__type_support.h
+[9.948s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__functions.h
+[9.948s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__functions.h
+[9.948s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__type_support.c
+[9.949s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__type_support.c
+[9.949s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__type_support.h
+[9.949s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__struct.h
+[9.949s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__description.c
+[9.949s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__type_support.h
+[9.949s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__description.c
+[9.949s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__struct.h
+[9.949s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__functions.c
+[9.950s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__description.c
+[9.950s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__struct.h
+[9.950s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__functions.h
+[9.950s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__type_support.h
+[9.950s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__functions.c
+[9.950s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__type_support.c
+[9.950s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__type_support.c
+[9.950s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__functions.h
+[9.951s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__functions.c
+[9.951s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__description.c
+[9.951s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__struct.h
+[9.951s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/get_hand_info.h
+[9.951s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/set_enabled.h
+[9.951s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/environment/library_path.sh
+[9.951s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/environment/library_path.dsv
+[9.952s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_generator_c.so
+[9.952s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_generator_c.so" to ""
+[9.952s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs
+[9.952s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg
+[9.953s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail
+[9.953s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__rosidl_typesupport_fastrtps_c.h
+[9.953s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__rosidl_typesupport_fastrtps_c.h
+[9.953s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[9.953s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv
+[9.953s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail
+[9.953s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__rosidl_typesupport_fastrtps_c.h
+[9.953s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__rosidl_typesupport_fastrtps_c.h
+[9.953s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__rosidl_typesupport_fastrtps_c.h
+[9.954s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__rosidl_typesupport_fastrtps_c.h
+[9.954s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_fastrtps_c.so
+[9.954s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[9.954s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs
+[9.954s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg
+[9.954s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[9.954s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail
+[9.955s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__type_support.c
+[9.955s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__rosidl_typesupport_introspection_c.h
+[9.955s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__rosidl_typesupport_introspection_c.h
+[9.955s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__type_support.c
+[9.955s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv
+[9.955s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail
+[9.955s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__type_support.c
+[9.955s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__type_support.c
+[9.955s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__type_support.c
+[9.956s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__rosidl_typesupport_introspection_c.h
+[9.956s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__type_support.c
+[9.956s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__rosidl_typesupport_introspection_c.h
+[9.956s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__rosidl_typesupport_introspection_c.h
+[9.956s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__rosidl_typesupport_introspection_c.h
+[9.956s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_introspection_c.so
+[9.957s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_introspection_c.so" to ""
+[9.957s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_c.so
+[9.957s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_c.so" to ""
+[9.957s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs
+[9.957s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg
+[9.957s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/hand_state.hpp
+[9.957s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[9.957s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail
+[9.958s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__builder.hpp
+[9.958s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__traits.hpp
+[9.958s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__builder.hpp
+[9.958s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__struct.hpp
+[9.958s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__type_support.hpp
+[9.958s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__struct.hpp
+[9.958s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__type_support.hpp
+[9.959s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__traits.hpp
+[9.959s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/hand_command.hpp
+[9.959s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv
+[9.959s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/reset_error.hpp
+[9.959s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/get_diagnostics.hpp
+[9.959s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/set_enabled.hpp
+[9.959s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail
+[9.960s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__traits.hpp
+[9.960s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__traits.hpp
+[9.960s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__traits.hpp
+[9.960s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__builder.hpp
+[9.960s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__type_support.hpp
+[9.960s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__struct.hpp
+[9.961s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__type_support.hpp
+[9.961s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__builder.hpp
+[9.961s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__struct.hpp
+[9.961s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__builder.hpp
+[9.961s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__type_support.hpp
+[9.961s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__builder.hpp
+[9.961s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__type_support.hpp
+[9.962s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__traits.hpp
+[9.962s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__struct.hpp
+[9.962s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__struct.hpp
+[9.962s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/get_hand_info.hpp
+[9.962s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs
+[9.962s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg
+[9.962s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail
+[9.962s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__rosidl_typesupport_fastrtps_cpp.hpp
+[9.963s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__rosidl_typesupport_fastrtps_cpp.hpp
+[9.963s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/dds_fastrtps
+[9.963s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[9.963s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv
+[9.963s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail
+[9.963s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__rosidl_typesupport_fastrtps_cpp.hpp
+[9.963s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__rosidl_typesupport_fastrtps_cpp.hpp
+[9.964s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__rosidl_typesupport_fastrtps_cpp.hpp
+[9.964s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/dds_fastrtps
+[9.964s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__rosidl_typesupport_fastrtps_cpp.hpp
+[9.964s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_fastrtps_cpp.so
+[9.965s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[9.965s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs
+[9.965s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg
+[9.965s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail
+[9.965s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__rosidl_typesupport_introspection_cpp.hpp
+[9.965s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__rosidl_typesupport_introspection_cpp.hpp
+[9.966s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_state__type_support.cpp
+[9.966s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/msg/detail/hand_command__type_support.cpp
+[9.966s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv
+[9.966s] -- Up-to-date: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail
+[9.966s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__rosidl_typesupport_introspection_cpp.hpp
+[9.966s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__type_support.cpp
+[9.966s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__type_support.cpp
+[9.966s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__rosidl_typesupport_introspection_cpp.hpp
+[9.967s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/reset_error__type_support.cpp
+[9.967s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_diagnostics__rosidl_typesupport_introspection_cpp.hpp
+[9.967s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/set_enabled__rosidl_typesupport_introspection_cpp.hpp
+[9.967s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/include/wujihand_msgs/wujihand_msgs/srv/detail/get_hand_info__type_support.cpp
+[9.967s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_introspection_cpp.so
+[9.968s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+[9.968s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_cpp.so
+[9.968s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_cpp.so" to ""
+[9.969s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/environment/pythonpath.sh
+[9.969s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/environment/pythonpath.dsv
+[9.969s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs-0.1.0-py3.12.egg-info
+[9.970s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs-0.1.0-py3.12.egg-info/top_level.txt
+[9.970s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs-0.1.0-py3.12.egg-info/dependency_links.txt
+[9.970s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs-0.1.0-py3.12.egg-info/SOURCES.txt
+[9.970s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs-0.1.0-py3.12.egg-info/PKG-INFO
+[9.970s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs
+[9.971s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_introspection_c.so
+[9.971s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_c.so
+[9.971s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/_wujihand_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[9.971s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/__init__.py
+[9.972s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/_wujihand_msgs_s.ep.rosidl_typesupport_c.c
+[9.972s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_fastrtps_c.so
+[9.972s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/_wujihand_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[9.972s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/msg
+[9.972s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/msg/_hand_command_s.c
+[9.972s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/msg/_hand_state.py
+[9.973s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/msg/__init__.py
+[9.973s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/msg/_hand_command.py
+[9.973s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/msg/_hand_state_s.c
+[9.973s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv
+[9.973s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_reset_error.py
+[9.973s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_get_hand_info_s.c
+[9.973s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_get_diagnostics.py
+[9.973s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/__init__.py
+[9.974s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_set_enabled.py
+[9.974s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_get_diagnostics_s.c
+[9.974s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_get_hand_info.py
+[9.974s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_set_enabled_s.c
+[9.974s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_reset_error_s.c
+[10.015s] Listing '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs'...
+[10.015s] Compiling '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/__init__.py'...
+[10.015s] Listing '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/msg'...
+[10.015s] Compiling '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/msg/__init__.py'...
+[10.015s] Compiling '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/msg/_hand_command.py'...
+[10.015s] Compiling '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/msg/_hand_state.py'...
+[10.015s] Listing '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv'...
+[10.015s] Compiling '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/__init__.py'...
+[10.015s] Compiling '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_get_diagnostics.py'...
+[10.016s] Compiling '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_get_hand_info.py'...
+[10.016s] Compiling '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_reset_error.py'...
+[10.016s] Compiling '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/srv/_set_enabled.py'...
+[10.020s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_fastrtps_c.so
+[10.020s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_fastrtps_c.so" to ""
+[10.020s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_introspection_c.so
+[10.020s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_introspection_c.so" to ""
+[10.021s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_c.so
+[10.021s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages/wujihand_msgs/wujihand_msgs_s__rosidl_typesupport_c.so" to ""
+[10.021s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_generator_py.so
+[10.022s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_generator_py.so" to ""
+[10.022s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/msg/HandState.idl
+[10.022s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/msg/HandCommand.idl
+[10.022s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/SetEnabled.idl
+[10.022s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/GetHandInfo.idl
+[10.022s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/GetDiagnostics.idl
+[10.022s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/ResetError.idl
+[10.022s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/msg/HandState.msg
+[10.022s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/msg/HandCommand.msg
+[10.023s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/SetEnabled.srv
+[10.023s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/GetHandInfo.srv
+[10.023s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/GetDiagnostics.srv
+[10.023s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/srv/ResetError.srv
+[10.024s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/ament_index/resource_index/package_run_dependencies/wujihand_msgs
+[10.024s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/ament_index/resource_index/parent_prefix_path/wujihand_msgs
+[10.024s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/environment/ament_prefix_path.sh
+[10.025s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/environment/ament_prefix_path.dsv
+[10.025s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/environment/path.sh
+[10.025s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/environment/path.dsv
+[10.025s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/local_setup.bash
+[10.025s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/local_setup.sh
+[10.026s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/local_setup.zsh
+[10.026s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/local_setup.dsv
+[10.026s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/package.dsv
+[10.027s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/ament_index/resource_index/packages/wujihand_msgs
+[10.028s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/export_wujihand_msgs__rosidl_generator_cExport.cmake
+[10.028s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/export_wujihand_msgs__rosidl_generator_cExport-noconfig.cmake
+[10.028s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/export_wujihand_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[10.029s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/export_wujihand_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[10.029s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/wujihand_msgs__rosidl_typesupport_introspection_cExport.cmake
+[10.029s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/wujihand_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[10.030s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/wujihand_msgs__rosidl_typesupport_cExport.cmake
+[10.030s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/wujihand_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[10.030s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/export_wujihand_msgs__rosidl_generator_cppExport.cmake
+[10.031s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/export_wujihand_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[10.031s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/export_wujihand_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[10.031s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/wujihand_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[10.031s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/wujihand_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[10.031s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/wujihand_msgs__rosidl_typesupport_cppExport.cmake
+[10.031s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/wujihand_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[10.031s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/export_wujihand_msgs__rosidl_generator_pyExport.cmake
+[10.032s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/export_wujihand_msgs__rosidl_generator_pyExport-noconfig.cmake
+[10.032s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/rosidl_cmake-extras.cmake
+[10.032s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[10.032s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[10.033s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[10.033s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[10.034s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[10.034s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[10.034s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/wujihand_msgsConfig.cmake
+[10.034s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake/wujihand_msgsConfig-version.cmake
+[10.035s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/package.xml
+[10.042s] Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake --install /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_msgs

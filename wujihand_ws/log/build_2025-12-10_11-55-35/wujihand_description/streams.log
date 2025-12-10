@@ -1,0 +1,153 @@
+[0.014s] Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake /home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_description -DCMAKE_INSTALL_PREFIX=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description
+[0.264s] -- The C compiler identification is GNU 13.3.0
+[1.008s] -- The CXX compiler identification is GNU 13.3.0
+[1.546s] -- Detecting C compiler ABI info
+[1.808s] -- Detecting C compiler ABI info - done
+[1.815s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.815s] -- Detecting C compile features
+[1.816s] -- Detecting C compile features - done
+[1.904s] -- Detecting CXX compiler ABI info
+[2.136s] -- Detecting CXX compiler ABI info - done
+[2.142s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.142s] -- Detecting CXX compile features
+[2.142s] -- Detecting CXX compile features - done
+[2.154s] -- Found ament_cmake: 2.7.3 (/opt/ros/kilted/share/ament_cmake/cmake)
+[2.270s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[2.454s] -- Configuring done (2.4s)
+[2.458s] -- Generating done (0.0s)
+[2.460s] -- Build files have been written to: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_description
+[2.464s] Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake /home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_description -DCMAKE_INSTALL_PREFIX=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description
+[2.465s] Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake --build /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_description -- -j24 -l24
+[2.501s] Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake --build /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_description -- -j24 -l24
+[2.512s] Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake --install /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_description
+[2.519s] -- Install configuration: ""
+[2.519s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/urdf
+[2.520s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/urdf/right-ros.urdf
+[2.521s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/urdf/left-ros.urdf
+[2.521s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/urdf/left.urdf
+[2.522s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/urdf/right.urdf
+[2.522s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes
+[2.522s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left
+[2.522s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger2_link3_collision.STL
+[2.523s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger1_link2.STL
+[2.523s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger1_tip_link_collision.STL
+[2.524s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger5_link3.STL
+[2.524s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger3_link3.STL
+[2.525s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger2_tip_link_collision.STL
+[2.525s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger5_tip_link.STL
+[2.526s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger2_tip_link.STL
+[2.526s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger1_link4.STL
+[2.527s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger2_link3.STL
+[2.528s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/palm_link_collision.STL
+[2.528s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger3_link2_collision.STL
+[2.529s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger2_link1.STL
+[2.529s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger5_link3_collision.STL
+[2.529s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger4_link1.STL
+[2.530s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger4_link1_collision.STL
+[2.530s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger1_link1_collision.STL
+[2.530s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger3_link1_collision.STL
+[2.531s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger1_link2_collision.STL
+[2.532s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger5_link2.STL
+[2.532s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger5_link4_collision.STL
+[2.533s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger1_link4_collision.STL
+[2.533s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger2_link4_collision.STL
+[2.533s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger4_link2.STL
+[2.534s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger5_link4.STL
+[2.534s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger3_link3_collision.STL
+[2.535s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger4_link4.STL
+[2.535s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger1_link3.STL
+[2.535s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger1_tip_link.STL
+[2.536s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger1_link1.STL
+[2.537s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger3_link4.STL
+[2.538s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger5_tip_link_collision.STL
+[2.538s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger2_link4.STL
+[2.538s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger2_link1_collision.STL
+[2.539s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger1_link3_collision.STL
+[2.539s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger3_link2.STL
+[2.539s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger3_link1.STL
+[2.540s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger2_link2_collision.STL
+[2.540s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger5_link2_collision.STL
+[2.541s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger4_link3_collision.STL
+[2.541s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger5_link1_collision.STL
+[2.542s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger4_tip_link.STL
+[2.542s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger2_link2.STL
+[2.543s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger4_link2_collision.STL
+[2.543s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger4_tip_link_collision.STL
+[2.543s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger3_link4_collision.STL
+[2.544s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger4_link4_collision.STL
+[2.544s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger3_tip_link_collision.STL
+[2.545s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger3_tip_link.STL
+[2.545s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/palm_link.STL
+[2.546s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger4_link3.STL
+[2.547s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/left/finger5_link1.STL
+[2.547s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right
+[2.547s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger2_link3_collision.STL
+[2.548s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger1_link2.STL
+[2.548s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger1_tip_link_collision.STL
+[2.549s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger5_link3.STL
+[2.549s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger3_link3.STL
+[2.550s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger2_tip_link_collision.STL
+[2.550s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger5_tip_link.STL
+[2.551s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger2_tip_link.STL
+[2.551s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger1_link4.STL
+[2.552s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger2_link3.STL
+[2.552s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/palm_link_collision.STL
+[2.553s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger3_link2_collision.STL
+[2.553s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger2_link1.STL
+[2.553s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger5_link3_collision.STL
+[2.554s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger4_link1.STL
+[2.554s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger4_link1_collision.STL
+[2.555s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger1_link1_collision.STL
+[2.555s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger3_link1_collision.STL
+[2.555s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger1_link2_collision.STL
+[2.556s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger5_link2.STL
+[2.557s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger5_link4_collision.STL
+[2.557s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger1_link4_collision.STL
+[2.557s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger2_link4_collision.STL
+[2.558s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger4_link2.STL
+[2.561s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger5_link4.STL
+[2.562s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger3_link3_collision.STL
+[2.562s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger4_link4.STL
+[2.562s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger1_link3.STL
+[2.563s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger1_tip_link.STL
+[2.564s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger1_link1.STL
+[2.565s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger3_link4.STL
+[2.565s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger5_tip_link_collision.STL
+[2.566s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger2_link4.STL
+[2.566s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger2_link1_collision.STL
+[2.566s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger1_link3_collision.STL
+[2.567s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger3_link2.STL
+[2.567s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger3_link1.STL
+[2.568s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger2_link2_collision.STL
+[2.569s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger5_link2_collision.STL
+[2.569s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger4_link3_collision.STL
+[2.570s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger5_link1_collision.STL
+[2.570s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger4_tip_link.STL
+[2.571s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger2_link2.STL
+[2.571s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger4_link2_collision.STL
+[2.572s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger4_tip_link_collision.STL
+[2.572s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger3_link4_collision.STL
+[2.572s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger4_link4_collision.STL
+[2.573s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger3_tip_link_collision.STL
+[2.574s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger3_tip_link.STL
+[2.574s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/palm_link.STL
+[2.575s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger4_link3.STL
+[2.576s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/meshes/right/finger5_link1.STL
+[2.577s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/rviz
+[2.577s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/rviz/robot_display.rviz
+[2.577s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/ament_index/resource_index/package_run_dependencies/wujihand_description
+[2.578s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/ament_index/resource_index/parent_prefix_path/wujihand_description
+[2.578s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/environment/ament_prefix_path.sh
+[2.578s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/environment/ament_prefix_path.dsv
+[2.578s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/environment/path.sh
+[2.578s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/environment/path.dsv
+[2.578s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/local_setup.bash
+[2.578s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/local_setup.sh
+[2.579s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/local_setup.zsh
+[2.579s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/local_setup.dsv
+[2.579s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/package.dsv
+[2.579s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/ament_index/resource_index/packages/wujihand_description
+[2.579s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/cmake/wujihand_descriptionConfig.cmake
+[2.579s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/cmake/wujihand_descriptionConfig-version.cmake
+[2.579s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_description/share/wujihand_description/package.xml
+[2.581s] Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted /usr/bin/cmake --install /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_description

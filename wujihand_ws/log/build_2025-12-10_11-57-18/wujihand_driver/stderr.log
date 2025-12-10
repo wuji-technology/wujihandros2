@@ -1,0 +1,17 @@
+fatal: No names found, cannot describe anything.
+[0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+  ament_target_dependencies() is deprecated.  Use target_link_libraries()
+  with modern CMake targets instead.  Try replacing this call with:
+
+    target_link_libraries(wujihand_driver_node PUBLIC
+      ${sensor_msgs_TARGETS}
+      ${std_msgs_TARGETS}
+      ${wujihand_msgs_TARGETS}
+      rclcpp::rclcpp
+      sensor_msgs::sensor_msgs_library
+    )
+
+Call Stack (most recent call first):
+  CMakeLists.txt:36 (ament_target_dependencies)
+
+[0m

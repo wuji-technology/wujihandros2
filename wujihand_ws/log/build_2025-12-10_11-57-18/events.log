@@ -1,0 +1,377 @@
+[0.000000] (-) TimerEvent: {}
+[0.000712] (-) JobUnselected: {'identifier': 'wujihand_description'}
+[0.000748] (-) JobUnselected: {'identifier': 'wujihand_msgs'}
+[0.000769] (wujihand_driver) JobQueued: {'identifier': 'wujihand_driver', 'dependencies': OrderedDict({'wujihand_msgs': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs'})}
+[0.000795] (wujihand_driver) JobStarted: {'identifier': 'wujihand_driver'}
+[0.099822] (-) TimerEvent: {}
+[0.115923] (wujihand_driver) JobProgress: {'identifier': 'wujihand_driver', 'progress': 'cmake'}
+[0.116930] (wujihand_driver) Command: {'cmd': ['/usr/bin/cmake', '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver', '-DCMAKE_INSTALL_PREFIX=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver'], 'cwd': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver', 'env': OrderedDict({'USER': 'wuji', 'ZED_ENVIRONMENT': 'worktree-shell', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:/opt/ros/kilted/opt/zenoh_cpp_vendor/lib:/opt/ros/kilted/opt/gz_math_vendor/lib:/opt/ros/kilted/opt/gz_utils_vendor/lib:/opt/ros/kilted/opt/rviz_ogre_vendor/lib:/opt/ros/kilted/lib/x86_64-linux-gnu:/opt/ros/kilted/opt/gz_cmake_vendor/lib:/opt/ros/kilted/lib', 'LESS': '-R', 'HOME': '/home/wuji', 'OLDPWD': '/home/wuji/wujihand', 'RUSTUP_UPDATE_ROOT': 'https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup', 'LSCOLORS': 'Gxfxcxdxbxegedabagacad', 'ZSH': '/home/wuji/.oh-my-zsh', 'ROS_PYTHON_VERSION': '3', 'PAGER': '', 'RUSTUP_DIST_SERVER': 'https://mirrors.tuna.tsinghua.edu.cn/rustup', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'WSL_DISTRO_NAME': 'Ubuntu-24.04', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'kilted', 'LOGNAME': 'wuji', 'NAME': 'abcd', 'WSL_INTEROP': '/run/WSL/62850_interop', '_P9K_SSH_TTY': '', 'PULSE_SERVER': 'unix:/mnt/wslg/PulseServer', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'ANTHROPIC_BASE_URL': 'https://us4.pincc.ai/api', 'TERM': 'xterm-256color', 'PATH': '/opt/ros/kilted/bin:/home/wuji/.local/bin:/home/wuji/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/STMicroelectronics/stlink_server:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Python314/Scripts/:/mnt/c/Python314/:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python313/Scripts/:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python313/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/path/clangd_19.1.2/bin:/mnt/c/Program Files/usbipd-win/:/mnt/c/Program Files (x86)/GnuWin32/bin:/mnt/c/Users/wuji/esp/v5.4.1/esp-idf/tools:/mnt/c/Program Files/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/cursor/resources/app/bin:/mnt/c/Program Files/MATLAB/R2025a/runtime/win64:/mnt/c/Program Files/MATLAB/R2025a/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/OpenOCD/bin:/mnt/c/Users/wuji/Desktop/sdk_env_v1.10.0/toolchains/rv32imac_zicsr_zifencei_multilib_b_ext-win:/mnt/c/Program Files/CMake/bin:/mnt/c/Program Files/LLVM/bin:/mnt/c/Program Files (x86)/LLVM/bin:/mnt/c/Program Files/GitHub CLI/:/mnt/c/Users/wuji/.cargo/bin:/mnt/c/Program Files/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin:/mnt/c/Users/wuji/.local/bin:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python312/Scripts/:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python312/:/mnt/c/Users/wuji/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/wuji/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files/JetBrains/CLion 2025.2.2/bin:/mnt/c/Program Files/JetBrains/PyCharm 2025.2.2/bin:/mnt/c/Users/wuji/AppData/Local/Keil_v5/UV4:/mnt/c/Users/wuji/AppData/Roaming/npm:/mnt/c/Program Files/Git/bin:/mnt/c/Users/wuji/AppData/Local/Programs/Zed/bin:/mnt/c/Users/wuji/AppData/Local/Programs/Antigravity/bin', 'XDG_RUNTIME_DIR': '/run/user/1000/', 'DISPLAY': ':0', 'LANG': 'C.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'AMENT_PREFIX_PATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted', 'SHELL': '/usr/bin/zsh', 'ANTHROPIC_AUTH_TOKEN': 'cr_3ea5c4c93a2cc5af7b3a1da894c703d669d5ddec750a34d13ac474b20d05526a', 'CLAUDECODE': '1', 'P9K_SSH': '0', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'PWD': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver', 'PYTHONPATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:/opt/ros/kilted/lib/python3.12/site-packages', 'COLCON': '1', 'WSL2_GUI_APPS_ENABLED': '1', 'HOSTTYPE': 'x86_64', 'CMAKE_PREFIX_PATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted', 'WSLENV': ''}), 'shell': False}
+[0.199953] (-) TimerEvent: {}
+[0.223037] (wujihand_driver) StdoutLine: {'line': b'-- The C compiler identification is GNU 13.3.0\n'}
+[0.300065] (-) TimerEvent: {}
+[0.400396] (-) TimerEvent: {}
+[0.500707] (-) TimerEvent: {}
+[0.600953] (-) TimerEvent: {}
+[0.701238] (-) TimerEvent: {}
+[0.770261] (wujihand_driver) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 13.3.0\n'}
+[0.801360] (-) TimerEvent: {}
+[0.901792] (-) TimerEvent: {}
+[1.002063] (-) TimerEvent: {}
+[1.102427] (-) TimerEvent: {}
+[1.202882] (-) TimerEvent: {}
+[1.267732] (wujihand_driver) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[1.302958] (-) TimerEvent: {}
+[1.403239] (-) TimerEvent: {}
+[1.461255] (wujihand_driver) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[1.466131] (wujihand_driver) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[1.466375] (wujihand_driver) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[1.466449] (wujihand_driver) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[1.503313] (-) TimerEvent: {}
+[1.544564] (wujihand_driver) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[1.603418] (-) TimerEvent: {}
+[1.703655] (-) TimerEvent: {}
+[1.744939] (wujihand_driver) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[1.750167] (wujihand_driver) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[1.750417] (wujihand_driver) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[1.750456] (wujihand_driver) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[1.752038] (wujihand_driver) StdoutLine: {'line': b'-- Found ament_cmake: 2.7.3 (/opt/ros/kilted/share/ament_cmake/cmake)\n'}
+[1.803732] (-) TimerEvent: {}
+[1.840930] (wujihand_driver) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter \n'}
+[1.900801] (wujihand_driver) StdoutLine: {'line': b'-- Found rclcpp: 29.5.4 (/opt/ros/kilted/share/rclcpp/cmake)\n'}
+[1.903829] (-) TimerEvent: {}
+[2.004061] (-) TimerEvent: {}
+[2.021020] (wujihand_driver) StdoutLine: {'line': b'-- Found rosidl_generator_c: 4.9.5 (/opt/ros/kilted/share/rosidl_generator_c/cmake)\n'}
+[2.027975] (wujihand_driver) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 4.9.5 (/opt/ros/kilted/share/rosidl_generator_cpp/cmake)\n'}
+[2.036908] (wujihand_driver) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[2.046223] (wujihand_driver) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[2.087479] (wujihand_driver) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 7.8.2 (/opt/ros/kilted/share/rmw_implementation_cmake/cmake)\n'}
+[2.089052] (wujihand_driver) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 9.3.3 (/opt/ros/kilted/share/rmw_fastrtps_cpp/cmake)\n'}
+[2.104185] (-) TimerEvent: {}
+[2.139273] (wujihand_driver) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.13")  \n'}
+[2.145634] (wujihand_driver) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[2.204238] (-) TimerEvent: {}
+[2.304496] (-) TimerEvent: {}
+[2.330414] (wujihand_driver) StdoutLine: {'line': b'-- Found std_msgs: 5.5.1 (/opt/ros/kilted/share/std_msgs/cmake)\n'}
+[2.338545] (wujihand_driver) StdoutLine: {'line': b'-- Found sensor_msgs: 5.5.1 (/opt/ros/kilted/share/sensor_msgs/cmake)\n'}
+[2.360257] (wujihand_driver) StdoutLine: {'line': b'-- Found wujihand_msgs: 0.1.0 (/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake)\n'}
+[2.374037] (wujihand_driver) StderrLine: {'line': b'fatal: No names found, cannot describe anything.\n'}
+[2.374181] (wujihand_driver) StdoutLine: {'line': b'-- Unable to extract git tag, using version: 0.0.0\n'}
+[2.374417] (wujihand_driver) StdoutLine: {'line': b'-- Building shared library wujihandcpp\n'}
+[2.375008] (wujihand_driver) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[2.404622] (-) TimerEvent: {}
+[2.500464] (wujihand_driver) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[2.500898] (wujihand_driver) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[2.504693] (-) TimerEvent: {}
+[2.604965] (-) TimerEvent: {}
+[2.705272] (-) TimerEvent: {}
+[2.805503] (-) TimerEvent: {}
+[2.905767] (-) TimerEvent: {}
+[3.006071] (-) TimerEvent: {}
+[3.106453] (-) TimerEvent: {}
+[3.206735] (-) TimerEvent: {}
+[3.307031] (-) TimerEvent: {}
+[3.407306] (-) TimerEvent: {}
+[3.507588] (-) TimerEvent: {}
+[3.607900] (-) TimerEvent: {}
+[3.708212] (-) TimerEvent: {}
+[3.808524] (-) TimerEvent: {}
+[3.908775] (-) TimerEvent: {}
+[4.009086] (-) TimerEvent: {}
+[4.109526] (-) TimerEvent: {}
+[4.209786] (-) TimerEvent: {}
+[4.310059] (-) TimerEvent: {}
+[4.410367] (-) TimerEvent: {}
+[4.510639] (-) TimerEvent: {}
+[4.610928] (-) TimerEvent: {}
+[4.711291] (-) TimerEvent: {}
+[4.811650] (-) TimerEvent: {}
+[4.912156] (-) TimerEvent: {}
+[5.012542] (-) TimerEvent: {}
+[5.113006] (-) TimerEvent: {}
+[5.213459] (-) TimerEvent: {}
+[5.287274] (wujihand_driver) StdoutLine: {'line': b'-- Build spdlog: 1.16.0\n'}
+[5.288948] (wujihand_driver) StdoutLine: {'line': b'-- Build type: Release\n'}
+[5.289463] (wujihand_driver) StdoutLine: {'line': b'-- Looking for fwrite_unlocked\n'}
+[5.313546] (-) TimerEvent: {}
+[5.315879] (wujihand_driver) StdoutLine: {'line': b'-- Looking for fwrite_unlocked - not found\n'}
+[5.316139] (wujihand_driver) StdoutLine: {'line': b'-- Dynamic linking C++ standard library\n'}
+[5.327101] (wujihand_driver) StderrLine: {'line': b'\x1b[0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):\n'}
+[5.327271] (wujihand_driver) StderrLine: {'line': b'  ament_target_dependencies() is deprecated.  Use target_link_libraries()\n'}
+[5.327305] (wujihand_driver) StderrLine: {'line': b'  with modern CMake targets instead.  Try replacing this call with:\n'}
+[5.327335] (wujihand_driver) StderrLine: {'line': b'\n'}
+[5.327365] (wujihand_driver) StderrLine: {'line': b'    target_link_libraries(wujihand_driver_node PUBLIC\n'}
+[5.327392] (wujihand_driver) StderrLine: {'line': b'      ${sensor_msgs_TARGETS}\n'}
+[5.327418] (wujihand_driver) StderrLine: {'line': b'      ${std_msgs_TARGETS}\n'}
+[5.327443] (wujihand_driver) StderrLine: {'line': b'      ${wujihand_msgs_TARGETS}\n'}
+[5.327469] (wujihand_driver) StderrLine: {'line': b'      rclcpp::rclcpp\n'}
+[5.327494] (wujihand_driver) StderrLine: {'line': b'      sensor_msgs::sensor_msgs_library\n'}
+[5.327519] (wujihand_driver) StderrLine: {'line': b'    )\n'}
+[5.327544] (wujihand_driver) StderrLine: {'line': b'\n'}
+[5.327569] (wujihand_driver) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[5.327595] (wujihand_driver) StderrLine: {'line': b'  CMakeLists.txt:36 (ament_target_dependencies)\n'}
+[5.327619] (wujihand_driver) StderrLine: {'line': b'\n'}
+[5.327644] (wujihand_driver) StderrLine: {'line': b'\x1b[0m\n'}
+[5.384208] (wujihand_driver) StdoutLine: {'line': b'-- Configuring done (5.3s)\n'}
+[5.403547] (wujihand_driver) StdoutLine: {'line': b'-- Generating done (0.0s)\n'}
+[5.407080] (wujihand_driver) StdoutLine: {'line': b'-- Build files have been written to: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver\n'}
+[5.413638] (-) TimerEvent: {}
+[5.414612] (wujihand_driver) CommandEnded: {'returncode': 0}
+[5.415175] (wujihand_driver) JobProgress: {'identifier': 'wujihand_driver', 'progress': 'build'}
+[5.415753] (wujihand_driver) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver', '--', '-j24', '-l24'], 'cwd': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver', 'env': OrderedDict({'USER': 'wuji', 'ZED_ENVIRONMENT': 'worktree-shell', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:/opt/ros/kilted/opt/zenoh_cpp_vendor/lib:/opt/ros/kilted/opt/gz_math_vendor/lib:/opt/ros/kilted/opt/gz_utils_vendor/lib:/opt/ros/kilted/opt/rviz_ogre_vendor/lib:/opt/ros/kilted/lib/x86_64-linux-gnu:/opt/ros/kilted/opt/gz_cmake_vendor/lib:/opt/ros/kilted/lib', 'LESS': '-R', 'HOME': '/home/wuji', 'OLDPWD': '/home/wuji/wujihand', 'RUSTUP_UPDATE_ROOT': 'https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup', 'LSCOLORS': 'Gxfxcxdxbxegedabagacad', 'ZSH': '/home/wuji/.oh-my-zsh', 'ROS_PYTHON_VERSION': '3', 'PAGER': '', 'RUSTUP_DIST_SERVER': 'https://mirrors.tuna.tsinghua.edu.cn/rustup', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'WSL_DISTRO_NAME': 'Ubuntu-24.04', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'kilted', 'LOGNAME': 'wuji', 'NAME': 'abcd', 'WSL_INTEROP': '/run/WSL/62850_interop', '_P9K_SSH_TTY': '', 'PULSE_SERVER': 'unix:/mnt/wslg/PulseServer', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'ANTHROPIC_BASE_URL': 'https://us4.pincc.ai/api', 'TERM': 'xterm-256color', 'PATH': '/opt/ros/kilted/bin:/home/wuji/.local/bin:/home/wuji/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/STMicroelectronics/stlink_server:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Python314/Scripts/:/mnt/c/Python314/:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python313/Scripts/:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python313/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/path/clangd_19.1.2/bin:/mnt/c/Program Files/usbipd-win/:/mnt/c/Program Files (x86)/GnuWin32/bin:/mnt/c/Users/wuji/esp/v5.4.1/esp-idf/tools:/mnt/c/Program Files/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/cursor/resources/app/bin:/mnt/c/Program Files/MATLAB/R2025a/runtime/win64:/mnt/c/Program Files/MATLAB/R2025a/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/OpenOCD/bin:/mnt/c/Users/wuji/Desktop/sdk_env_v1.10.0/toolchains/rv32imac_zicsr_zifencei_multilib_b_ext-win:/mnt/c/Program Files/CMake/bin:/mnt/c/Program Files/LLVM/bin:/mnt/c/Program Files (x86)/LLVM/bin:/mnt/c/Program Files/GitHub CLI/:/mnt/c/Users/wuji/.cargo/bin:/mnt/c/Program Files/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin:/mnt/c/Users/wuji/.local/bin:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python312/Scripts/:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python312/:/mnt/c/Users/wuji/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/wuji/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files/JetBrains/CLion 2025.2.2/bin:/mnt/c/Program Files/JetBrains/PyCharm 2025.2.2/bin:/mnt/c/Users/wuji/AppData/Local/Keil_v5/UV4:/mnt/c/Users/wuji/AppData/Roaming/npm:/mnt/c/Program Files/Git/bin:/mnt/c/Users/wuji/AppData/Local/Programs/Zed/bin:/mnt/c/Users/wuji/AppData/Local/Programs/Antigravity/bin', 'XDG_RUNTIME_DIR': '/run/user/1000/', 'DISPLAY': ':0', 'LANG': 'C.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'AMENT_PREFIX_PATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted', 'SHELL': '/usr/bin/zsh', 'ANTHROPIC_AUTH_TOKEN': 'cr_3ea5c4c93a2cc5af7b3a1da894c703d669d5ddec750a34d13ac474b20d05526a', 'CLAUDECODE': '1', 'P9K_SSH': '0', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'PWD': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver', 'PYTHONPATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:/opt/ros/kilted/lib/python3.12/site-packages', 'COLCON': '1', 'WSL2_GUI_APPS_ENABLED': '1', 'HOSTTYPE': 'x86_64', 'CMAKE_PREFIX_PATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted', 'WSLENV': ''}), 'shell': False}
+[5.456580] (wujihand_driver) StdoutLine: {'line': b'[ 29%] \x1b[32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/spdlog.cpp.o\x1b[0m\n'}
+[5.457384] (wujihand_driver) StdoutLine: {'line': b'[ 29%] \x1b[32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/file_sinks.cpp.o\x1b[0m\n'}
+[5.457464] (wujihand_driver) StdoutLine: {'line': b'[ 29%] \x1b[32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/color_sinks.cpp.o\x1b[0m\n'}
+[5.457533] (wujihand_driver) StdoutLine: {'line': b'[ 29%] \x1b[32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/async.cpp.o\x1b[0m\n'}
+[5.457598] (wujihand_driver) StdoutLine: {'line': b'[ 29%] \x1b[32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/stdout_sinks.cpp.o\x1b[0m\n'}
+[5.457872] (wujihand_driver) StdoutLine: {'line': b'[ 35%] \x1b[32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/cfg.cpp.o\x1b[0m\n'}
+[5.458070] (wujihand_driver) StdoutLine: {'line': b'[ 41%] \x1b[32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/bundled_fmtlib_format.cpp.o\x1b[0m\n'}
+[5.513769] (-) TimerEvent: {}
+[5.614158] (-) TimerEvent: {}
+[5.714759] (-) TimerEvent: {}
+[5.815651] (-) TimerEvent: {}
+[5.916187] (-) TimerEvent: {}
+[6.016752] (-) TimerEvent: {}
+[6.117401] (-) TimerEvent: {}
+[6.218066] (-) TimerEvent: {}
+[6.318584] (-) TimerEvent: {}
+[6.419128] (-) TimerEvent: {}
+[6.519626] (-) TimerEvent: {}
+[6.620166] (-) TimerEvent: {}
+[6.720670] (-) TimerEvent: {}
+[6.821226] (-) TimerEvent: {}
+[6.921763] (-) TimerEvent: {}
+[7.022330] (-) TimerEvent: {}
+[7.122690] (-) TimerEvent: {}
+[7.223134] (-) TimerEvent: {}
+[7.323453] (-) TimerEvent: {}
+[7.423822] (-) TimerEvent: {}
+[7.524220] (-) TimerEvent: {}
+[7.624645] (-) TimerEvent: {}
+[7.725135] (-) TimerEvent: {}
+[7.825451] (-) TimerEvent: {}
+[7.925998] (-) TimerEvent: {}
+[8.026503] (-) TimerEvent: {}
+[8.126863] (-) TimerEvent: {}
+[8.227261] (-) TimerEvent: {}
+[8.327528] (-) TimerEvent: {}
+[8.427889] (-) TimerEvent: {}
+[8.528327] (-) TimerEvent: {}
+[8.628718] (-) TimerEvent: {}
+[8.729063] (-) TimerEvent: {}
+[8.829273] (-) TimerEvent: {}
+[8.929569] (-) TimerEvent: {}
+[9.029941] (-) TimerEvent: {}
+[9.130281] (-) TimerEvent: {}
+[9.230539] (-) TimerEvent: {}
+[9.330925] (-) TimerEvent: {}
+[9.431618] (-) TimerEvent: {}
+[9.532061] (-) TimerEvent: {}
+[9.632491] (-) TimerEvent: {}
+[9.733016] (-) TimerEvent: {}
+[9.833419] (-) TimerEvent: {}
+[9.933858] (-) TimerEvent: {}
+[10.034128] (-) TimerEvent: {}
+[10.134416] (-) TimerEvent: {}
+[10.234709] (-) TimerEvent: {}
+[10.335046] (-) TimerEvent: {}
+[10.414977] (wujihand_driver) StdoutLine: {'line': b'[ 47%] \x1b[32m\x1b[1mLinking CXX static library libspdlog.a\x1b[0m\n'}
+[10.435186] (-) TimerEvent: {}
+[10.448989] (wujihand_driver) StdoutLine: {'line': b'[ 47%] Built target spdlog\n'}
+[10.465950] (wujihand_driver) StdoutLine: {'line': b'[ 76%] \x1b[32mBuilding CXX object wujihandcpp/CMakeFiles/wujihandcpp.dir/src/transport/usb.cpp.o\x1b[0m\n'}
+[10.466174] (wujihand_driver) StdoutLine: {'line': b'[ 76%] \x1b[32mBuilding CXX object wujihandcpp/CMakeFiles/wujihandcpp.dir/src/logging/logging.cpp.o\x1b[0m\n'}
+[10.466315] (wujihand_driver) StdoutLine: {'line': b'[ 76%] \x1b[32mBuilding CXX object wujihandcpp/CMakeFiles/wujihandcpp.dir/src/data/helper.cpp.o\x1b[0m\n'}
+[10.466384] (wujihand_driver) StdoutLine: {'line': b'[ 76%] \x1b[32mBuilding CXX object wujihandcpp/CMakeFiles/wujihandcpp.dir/src/device/latch.cpp.o\x1b[0m\n'}
+[10.466419] (wujihand_driver) StdoutLine: {'line': b'[ 76%] \x1b[32mBuilding CXX object wujihandcpp/CMakeFiles/wujihandcpp.dir/src/protocol/handler.cpp.o\x1b[0m\n'}
+[10.535430] (-) TimerEvent: {}
+[10.635838] (-) TimerEvent: {}
+[10.736201] (-) TimerEvent: {}
+[10.836757] (-) TimerEvent: {}
+[10.937147] (-) TimerEvent: {}
+[11.037599] (-) TimerEvent: {}
+[11.138216] (-) TimerEvent: {}
+[11.238657] (-) TimerEvent: {}
+[11.339296] (-) TimerEvent: {}
+[11.439846] (-) TimerEvent: {}
+[11.540347] (-) TimerEvent: {}
+[11.640779] (-) TimerEvent: {}
+[11.741420] (-) TimerEvent: {}
+[11.842029] (-) TimerEvent: {}
+[11.942515] (-) TimerEvent: {}
+[12.042927] (-) TimerEvent: {}
+[12.143366] (-) TimerEvent: {}
+[12.243858] (-) TimerEvent: {}
+[12.344170] (-) TimerEvent: {}
+[12.444600] (-) TimerEvent: {}
+[12.544956] (-) TimerEvent: {}
+[12.645262] (-) TimerEvent: {}
+[12.745618] (-) TimerEvent: {}
+[12.845955] (-) TimerEvent: {}
+[12.946399] (-) TimerEvent: {}
+[13.046671] (-) TimerEvent: {}
+[13.147064] (-) TimerEvent: {}
+[13.235495] (wujihand_driver) StdoutLine: {'line': b'[ 82%] \x1b[32m\x1b[1mLinking CXX shared library libwujihandcpp.so\x1b[0m\n'}
+[13.247219] (-) TimerEvent: {}
+[13.347724] (-) TimerEvent: {}
+[13.448035] (-) TimerEvent: {}
+[13.548336] (-) TimerEvent: {}
+[13.648702] (-) TimerEvent: {}
+[13.749003] (-) TimerEvent: {}
+[13.849243] (-) TimerEvent: {}
+[13.949687] (-) TimerEvent: {}
+[14.050192] (-) TimerEvent: {}
+[14.150524] (-) TimerEvent: {}
+[14.250798] (-) TimerEvent: {}
+[14.351121] (-) TimerEvent: {}
+[14.364587] (wujihand_driver) StdoutLine: {'line': b'[ 82%] Built target wujihandcpp\n'}
+[14.378955] (wujihand_driver) StdoutLine: {'line': b'[ 94%] \x1b[32mBuilding CXX object CMakeFiles/wujihand_driver_node.dir/src/main.cpp.o\x1b[0m\n'}
+[14.379209] (wujihand_driver) StdoutLine: {'line': b'[ 94%] \x1b[32mBuilding CXX object CMakeFiles/wujihand_driver_node.dir/src/wujihand_driver_node.cpp.o\x1b[0m\n'}
+[14.451187] (-) TimerEvent: {}
+[14.551440] (-) TimerEvent: {}
+[14.651678] (-) TimerEvent: {}
+[14.752045] (-) TimerEvent: {}
+[14.852301] (-) TimerEvent: {}
+[14.952676] (-) TimerEvent: {}
+[15.053048] (-) TimerEvent: {}
+[15.153444] (-) TimerEvent: {}
+[15.253902] (-) TimerEvent: {}
+[15.354456] (-) TimerEvent: {}
+[15.454884] (-) TimerEvent: {}
+[15.555287] (-) TimerEvent: {}
+[15.655696] (-) TimerEvent: {}
+[15.756201] (-) TimerEvent: {}
+[15.856748] (-) TimerEvent: {}
+[15.957215] (-) TimerEvent: {}
+[16.057634] (-) TimerEvent: {}
+[16.158045] (-) TimerEvent: {}
+[16.258443] (-) TimerEvent: {}
+[16.358972] (-) TimerEvent: {}
+[16.459623] (-) TimerEvent: {}
+[16.559873] (-) TimerEvent: {}
+[16.660098] (-) TimerEvent: {}
+[16.760468] (-) TimerEvent: {}
+[16.860955] (-) TimerEvent: {}
+[16.961394] (-) TimerEvent: {}
+[17.061743] (-) TimerEvent: {}
+[17.162223] (-) TimerEvent: {}
+[17.262766] (-) TimerEvent: {}
+[17.363135] (-) TimerEvent: {}
+[17.463437] (-) TimerEvent: {}
+[17.563812] (-) TimerEvent: {}
+[17.664289] (-) TimerEvent: {}
+[17.764613] (-) TimerEvent: {}
+[17.865043] (-) TimerEvent: {}
+[17.965346] (-) TimerEvent: {}
+[18.065662] (-) TimerEvent: {}
+[18.166000] (-) TimerEvent: {}
+[18.266423] (-) TimerEvent: {}
+[18.366798] (-) TimerEvent: {}
+[18.467157] (-) TimerEvent: {}
+[18.567460] (-) TimerEvent: {}
+[18.667815] (-) TimerEvent: {}
+[18.768247] (-) TimerEvent: {}
+[18.868566] (-) TimerEvent: {}
+[18.968931] (-) TimerEvent: {}
+[19.069578] (-) TimerEvent: {}
+[19.169904] (-) TimerEvent: {}
+[19.270289] (-) TimerEvent: {}
+[19.370696] (-) TimerEvent: {}
+[19.471140] (-) TimerEvent: {}
+[19.571583] (-) TimerEvent: {}
+[19.671897] (-) TimerEvent: {}
+[19.772250] (-) TimerEvent: {}
+[19.872554] (-) TimerEvent: {}
+[19.972866] (-) TimerEvent: {}
+[20.073245] (-) TimerEvent: {}
+[20.173599] (-) TimerEvent: {}
+[20.273945] (-) TimerEvent: {}
+[20.374406] (-) TimerEvent: {}
+[20.474678] (-) TimerEvent: {}
+[20.575027] (-) TimerEvent: {}
+[20.675405] (-) TimerEvent: {}
+[20.775729] (-) TimerEvent: {}
+[20.876038] (-) TimerEvent: {}
+[20.976404] (-) TimerEvent: {}
+[21.076829] (-) TimerEvent: {}
+[21.177328] (-) TimerEvent: {}
+[21.277685] (-) TimerEvent: {}
+[21.378017] (-) TimerEvent: {}
+[21.478399] (-) TimerEvent: {}
+[21.578692] (-) TimerEvent: {}
+[21.679008] (-) TimerEvent: {}
+[21.779291] (-) TimerEvent: {}
+[21.879707] (-) TimerEvent: {}
+[21.980160] (-) TimerEvent: {}
+[22.080556] (-) TimerEvent: {}
+[22.180865] (-) TimerEvent: {}
+[22.281258] (-) TimerEvent: {}
+[22.381625] (-) TimerEvent: {}
+[22.481987] (-) TimerEvent: {}
+[22.582528] (-) TimerEvent: {}
+[22.682903] (-) TimerEvent: {}
+[22.783259] (-) TimerEvent: {}
+[22.883612] (-) TimerEvent: {}
+[22.983878] (-) TimerEvent: {}
+[23.084145] (-) TimerEvent: {}
+[23.184399] (-) TimerEvent: {}
+[23.284741] (-) TimerEvent: {}
+[23.384979] (-) TimerEvent: {}
+[23.485277] (-) TimerEvent: {}
+[23.585582] (-) TimerEvent: {}
+[23.686111] (-) TimerEvent: {}
+[23.786792] (-) TimerEvent: {}
+[23.887100] (-) TimerEvent: {}
+[23.987361] (-) TimerEvent: {}
+[24.087735] (-) TimerEvent: {}
+[24.188057] (-) TimerEvent: {}
+[24.288380] (-) TimerEvent: {}
+[24.388633] (-) TimerEvent: {}
+[24.488965] (-) TimerEvent: {}
+[24.589300] (-) TimerEvent: {}
+[24.689565] (-) TimerEvent: {}
+[24.789875] (-) TimerEvent: {}
+[24.890237] (-) TimerEvent: {}
+[24.990714] (-) TimerEvent: {}
+[25.091048] (-) TimerEvent: {}
+[25.191351] (-) TimerEvent: {}
+[25.291803] (-) TimerEvent: {}
+[25.392160] (-) TimerEvent: {}
+[25.492432] (-) TimerEvent: {}
+[25.592731] (-) TimerEvent: {}
+[25.693105] (-) TimerEvent: {}
+[25.793388] (-) TimerEvent: {}
+[25.893662] (-) TimerEvent: {}
+[25.994017] (-) TimerEvent: {}
+[26.094292] (-) TimerEvent: {}
+[26.194583] (-) TimerEvent: {}
+[26.294851] (-) TimerEvent: {}
+[26.323358] (wujihand_driver) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable wujihand_driver_node\x1b[0m\n'}
+[26.394914] (-) TimerEvent: {}
+[26.495213] (-) TimerEvent: {}
+[26.549179] (wujihand_driver) StdoutLine: {'line': b'[100%] Built target wujihand_driver_node\n'}
+[26.557034] (wujihand_driver) CommandEnded: {'returncode': 0}
+[26.557608] (wujihand_driver) JobProgress: {'identifier': 'wujihand_driver', 'progress': 'install'}
+[26.563467] (wujihand_driver) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver'], 'cwd': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver', 'env': OrderedDict({'USER': 'wuji', 'ZED_ENVIRONMENT': 'worktree-shell', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:/opt/ros/kilted/opt/zenoh_cpp_vendor/lib:/opt/ros/kilted/opt/gz_math_vendor/lib:/opt/ros/kilted/opt/gz_utils_vendor/lib:/opt/ros/kilted/opt/rviz_ogre_vendor/lib:/opt/ros/kilted/lib/x86_64-linux-gnu:/opt/ros/kilted/opt/gz_cmake_vendor/lib:/opt/ros/kilted/lib', 'LESS': '-R', 'HOME': '/home/wuji', 'OLDPWD': '/home/wuji/wujihand', 'RUSTUP_UPDATE_ROOT': 'https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup', 'LSCOLORS': 'Gxfxcxdxbxegedabagacad', 'ZSH': '/home/wuji/.oh-my-zsh', 'ROS_PYTHON_VERSION': '3', 'PAGER': '', 'RUSTUP_DIST_SERVER': 'https://mirrors.tuna.tsinghua.edu.cn/rustup', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'WSL_DISTRO_NAME': 'Ubuntu-24.04', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'kilted', 'LOGNAME': 'wuji', 'NAME': 'abcd', 'WSL_INTEROP': '/run/WSL/62850_interop', '_P9K_SSH_TTY': '', 'PULSE_SERVER': 'unix:/mnt/wslg/PulseServer', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'ANTHROPIC_BASE_URL': 'https://us4.pincc.ai/api', 'TERM': 'xterm-256color', 'PATH': '/opt/ros/kilted/bin:/home/wuji/.local/bin:/home/wuji/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/STMicroelectronics/stlink_server:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Python314/Scripts/:/mnt/c/Python314/:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python313/Scripts/:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python313/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/path/clangd_19.1.2/bin:/mnt/c/Program Files/usbipd-win/:/mnt/c/Program Files (x86)/GnuWin32/bin:/mnt/c/Users/wuji/esp/v5.4.1/esp-idf/tools:/mnt/c/Program Files/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/cursor/resources/app/bin:/mnt/c/Program Files/MATLAB/R2025a/runtime/win64:/mnt/c/Program Files/MATLAB/R2025a/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/OpenOCD/bin:/mnt/c/Users/wuji/Desktop/sdk_env_v1.10.0/toolchains/rv32imac_zicsr_zifencei_multilib_b_ext-win:/mnt/c/Program Files/CMake/bin:/mnt/c/Program Files/LLVM/bin:/mnt/c/Program Files (x86)/LLVM/bin:/mnt/c/Program Files/GitHub CLI/:/mnt/c/Users/wuji/.cargo/bin:/mnt/c/Program Files/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin:/mnt/c/Users/wuji/.local/bin:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python312/Scripts/:/mnt/c/Users/wuji/AppData/Local/Programs/Python/Python312/:/mnt/c/Users/wuji/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/wuji/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files/JetBrains/CLion 2025.2.2/bin:/mnt/c/Program Files/JetBrains/PyCharm 2025.2.2/bin:/mnt/c/Users/wuji/AppData/Local/Keil_v5/UV4:/mnt/c/Users/wuji/AppData/Roaming/npm:/mnt/c/Program Files/Git/bin:/mnt/c/Users/wuji/AppData/Local/Programs/Zed/bin:/mnt/c/Users/wuji/AppData/Local/Programs/Antigravity/bin', 'XDG_RUNTIME_DIR': '/run/user/1000/', 'DISPLAY': ':0', 'LANG': 'C.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'AMENT_PREFIX_PATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted', 'SHELL': '/usr/bin/zsh', 'ANTHROPIC_AUTH_TOKEN': 'cr_3ea5c4c93a2cc5af7b3a1da894c703d669d5ddec750a34d13ac474b20d05526a', 'CLAUDECODE': '1', 'P9K_SSH': '0', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'PWD': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver', 'PYTHONPATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:/opt/ros/kilted/lib/python3.12/site-packages', 'COLCON': '1', 'WSL2_GUI_APPS_ENABLED': '1', 'HOSTTYPE': 'x86_64', 'CMAKE_PREFIX_PATH': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted', 'WSLENV': ''}), 'shell': False}
+[26.568529] (wujihand_driver) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[26.568740] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/lib/wujihand_driver/wujihand_driver_node\n'}
+[26.569622] (wujihand_driver) StdoutLine: {'line': b'-- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/lib/wujihand_driver/wujihand_driver_node" to ""\n'}
+[26.569718] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/include\n'}
+[26.570088] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/include/wujihand_driver\n'}
+[26.570318] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/include/wujihand_driver/wujihand_driver_node.hpp\n'}
+[26.570673] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/ament_index/resource_index/package_run_dependencies/wujihand_driver\n'}
+[26.571132] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/ament_index/resource_index/parent_prefix_path/wujihand_driver\n'}
+[26.571284] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/environment/ament_prefix_path.sh\n'}
+[26.571477] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/environment/ament_prefix_path.dsv\n'}
+[26.571571] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/environment/path.sh\n'}
+[26.571712] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/environment/path.dsv\n'}
+[26.571787] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/local_setup.bash\n'}
+[26.571923] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/local_setup.sh\n'}
+[26.572030] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/local_setup.zsh\n'}
+[26.572112] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/local_setup.dsv\n'}
+[26.572228] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.dsv\n'}
+[26.572293] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/ament_index/resource_index/packages/wujihand_driver\n'}
+[26.572418] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/cmake/wujihand_driverConfig.cmake\n'}
+[26.572455] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/cmake/wujihand_driverConfig-version.cmake\n'}
+[26.572554] (wujihand_driver) StdoutLine: {'line': b'-- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.xml\n'}
+[26.573461] (wujihand_driver) CommandEnded: {'returncode': 0}
+[26.583507] (wujihand_driver) JobEnded: {'identifier': 'wujihand_driver', 'rc': 0}
+[26.584372] (-) EventReactorShutdown: {}

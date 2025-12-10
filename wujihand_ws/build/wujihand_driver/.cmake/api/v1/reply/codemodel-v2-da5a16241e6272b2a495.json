@@ -1,0 +1,164 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Release-f49efba4529f4c8ea6f1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3
+					]
+				},
+				{
+					"build" : "wujihandcpp",
+					"childIndexes" : 
+					[
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-wujihandcpp-Release-bf847d609c4857b0efbf.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.24"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "_deps/spdlog-build",
+					"jsonFile" : "directory-_deps.spdlog-build-Release-0b81ea075825ae9e3ef6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "wujihand_driver",
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						2
+					],
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "wujihandcpp",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "spdlog",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 2,
+					"id" : "spdlog::@eb35cfce7893ccfeff1e",
+					"jsonFile" : "target-spdlog-Release-62e2fb74379d73ab3b22.json",
+					"name" : "spdlog",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Release-73bd1cb2e5081242c06c.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "wujihand_driver_node::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-wujihand_driver_node-Release-534def5e4b82c611d482.json",
+					"name" : "wujihand_driver_node",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "wujihand_driver_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-wujihand_driver_uninstall-Release-4a8063c5f33277f8d29f.json",
+					"name" : "wujihand_driver_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "wujihandcpp::@39cbee6472ef333372e6",
+					"jsonFile" : "target-wujihandcpp-Release-42eb8974988a02e602f4.json",
+					"name" : "wujihandcpp",
+					"projectIndex" : 1
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver",
+		"source" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

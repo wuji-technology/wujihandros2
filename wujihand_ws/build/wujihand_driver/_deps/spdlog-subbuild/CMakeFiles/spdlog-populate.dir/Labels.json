@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate"
+		},
+		{
+			"file" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate.rule"
+		},
+		{
+			"file" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate-complete.rule"
+		},
+		{
+			"file" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-build.rule"
+		},
+		{
+			"file" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-configure.rule"
+		},
+		{
+			"file" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-download.rule"
+		},
+		{
+			"file" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-install.rule"
+		},
+		{
+			"file" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-mkdir.rule"
+		},
+		{
+			"file" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-patch.rule"
+		},
+		{
+			"file" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-test.rule"
+		},
+		{
+			"file" : "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"spdlog-populate"
+		],
+		"name" : "spdlog-populate"
+	}
+}

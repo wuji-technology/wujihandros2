@@ -1,0 +1,74 @@
+[
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/wujihandcpp",
+  "command": "/usr/bin/c++ -DBUILDING_WUJIHANDCPP -DSPDLOG_COMPILED_LIB -DWUJIHANDCPP_VERSION=\\\"0.0.0\\\" -Dwujihandcpp_EXPORTS -I/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/include -I/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -isystem /usr/include/libusb-1.0 -O3 -DNDEBUG -std=c++20 -flto=auto -fno-fat-lto-objects -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/wujihandcpp.dir/src/data/helper.cpp.o -c /home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src/data/helper.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src/data/helper.cpp",
+  "output": "wujihandcpp/CMakeFiles/wujihandcpp.dir/src/data/helper.cpp.o"
+},
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/wujihandcpp",
+  "command": "/usr/bin/c++ -DBUILDING_WUJIHANDCPP -DSPDLOG_COMPILED_LIB -DWUJIHANDCPP_VERSION=\\\"0.0.0\\\" -Dwujihandcpp_EXPORTS -I/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/include -I/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -isystem /usr/include/libusb-1.0 -O3 -DNDEBUG -std=c++20 -flto=auto -fno-fat-lto-objects -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/wujihandcpp.dir/src/device/latch.cpp.o -c /home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src/device/latch.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src/device/latch.cpp",
+  "output": "wujihandcpp/CMakeFiles/wujihandcpp.dir/src/device/latch.cpp.o"
+},
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/wujihandcpp",
+  "command": "/usr/bin/c++ -DBUILDING_WUJIHANDCPP -DSPDLOG_COMPILED_LIB -DWUJIHANDCPP_VERSION=\\\"0.0.0\\\" -Dwujihandcpp_EXPORTS -I/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/include -I/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -isystem /usr/include/libusb-1.0 -O3 -DNDEBUG -std=c++20 -flto=auto -fno-fat-lto-objects -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/wujihandcpp.dir/src/logging/logging.cpp.o -c /home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src/logging/logging.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src/logging/logging.cpp",
+  "output": "wujihandcpp/CMakeFiles/wujihandcpp.dir/src/logging/logging.cpp.o"
+},
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/wujihandcpp",
+  "command": "/usr/bin/c++ -DBUILDING_WUJIHANDCPP -DSPDLOG_COMPILED_LIB -DWUJIHANDCPP_VERSION=\\\"0.0.0\\\" -Dwujihandcpp_EXPORTS -I/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/include -I/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -isystem /usr/include/libusb-1.0 -O3 -DNDEBUG -std=c++20 -flto=auto -fno-fat-lto-objects -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/wujihandcpp.dir/src/protocol/handler.cpp.o -c /home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src/protocol/handler.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src/protocol/handler.cpp",
+  "output": "wujihandcpp/CMakeFiles/wujihandcpp.dir/src/protocol/handler.cpp.o"
+},
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/wujihandcpp",
+  "command": "/usr/bin/c++ -DBUILDING_WUJIHANDCPP -DSPDLOG_COMPILED_LIB -DWUJIHANDCPP_VERSION=\\\"0.0.0\\\" -Dwujihandcpp_EXPORTS -I/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/include -I/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -isystem /usr/include/libusb-1.0 -O3 -DNDEBUG -std=c++20 -flto=auto -fno-fat-lto-objects -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/wujihandcpp.dir/src/transport/usb.cpp.o -c /home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src/transport/usb.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/src/transport/usb.cpp",
+  "output": "wujihandcpp/CMakeFiles/wujihandcpp.dir/src/transport/usb.cpp.o"
+},
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-build",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -O3 -DNDEBUG -std=c++20 -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/spdlog.dir/src/spdlog.cpp.o -c /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/spdlog.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/spdlog.cpp",
+  "output": "_deps/spdlog-build/CMakeFiles/spdlog.dir/src/spdlog.cpp.o"
+},
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-build",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -O3 -DNDEBUG -std=c++20 -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/spdlog.dir/src/stdout_sinks.cpp.o -c /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/stdout_sinks.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/stdout_sinks.cpp",
+  "output": "_deps/spdlog-build/CMakeFiles/spdlog.dir/src/stdout_sinks.cpp.o"
+},
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-build",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -O3 -DNDEBUG -std=c++20 -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/spdlog.dir/src/color_sinks.cpp.o -c /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/color_sinks.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/color_sinks.cpp",
+  "output": "_deps/spdlog-build/CMakeFiles/spdlog.dir/src/color_sinks.cpp.o"
+},
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-build",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -O3 -DNDEBUG -std=c++20 -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/spdlog.dir/src/file_sinks.cpp.o -c /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/file_sinks.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/file_sinks.cpp",
+  "output": "_deps/spdlog-build/CMakeFiles/spdlog.dir/src/file_sinks.cpp.o"
+},
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-build",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -O3 -DNDEBUG -std=c++20 -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/spdlog.dir/src/async.cpp.o -c /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/async.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/async.cpp",
+  "output": "_deps/spdlog-build/CMakeFiles/spdlog.dir/src/async.cpp.o"
+},
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-build",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -O3 -DNDEBUG -std=c++20 -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/spdlog.dir/src/cfg.cpp.o -c /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/cfg.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/cfg.cpp",
+  "output": "_deps/spdlog-build/CMakeFiles/spdlog.dir/src/cfg.cpp.o"
+},
+{
+  "directory": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-build",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/include -O3 -DNDEBUG -std=c++20 -fPIC -Wall -Wextra -Wpedantic -fvisibility=hidden -o CMakeFiles/spdlog.dir/src/bundled_fmtlib_format.cpp.o -c /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/bundled_fmtlib_format.cpp",
+  "file": "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/_deps/spdlog-src/src/bundled_fmtlib_format.cpp",
+  "output": "_deps/spdlog-build/CMakeFiles/spdlog.dir/src/bundled_fmtlib_format.cpp.o"
+}
+]

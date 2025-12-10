@@ -559,8 +559,6 @@ _Python3_INCLUDE_DIR:INTERNAL=/usr/include/python3.12
 //Python3 Properties
 _Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;12;3;64;;cpython-312-x86_64-linux-gnu;abi3;/usr/lib/python3.12;/usr/lib/python3.12;/usr/local/lib/python3.12/dist-packages;/usr/local/lib/python3.12/dist-packages
 _Python3_INTERPRETER_SIGNATURE:INTERNAL=4c8bfa8951e99fa32e4000a94f8c04a2
-//Interpreter reason failure
-_Python3_Interpreter_REASON_FAILURE:INTERNAL=
 //Path to a library.
 _Python3_LIBRARY_RELEASE:INTERNAL=/usr/lib/x86_64-linux-gnu/libpython3.12.so
 _Python3_NUMPY_SIGNATURE:INTERNAL=d5ddeb909deee809c18fdfbea68bafbe

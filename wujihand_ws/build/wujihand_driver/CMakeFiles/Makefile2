@@ -74,7 +74,40 @@ preinstall:
 clean: CMakeFiles/uninstall.dir/clean
 clean: CMakeFiles/wujihand_driver_uninstall.dir/clean
 clean: CMakeFiles/wujihand_driver_node.dir/clean
+clean: wujihandcpp/clean
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory _deps/spdlog-build
+
+# Recursive "all" directory target.
+_deps/spdlog-build/all: _deps/spdlog-build/CMakeFiles/spdlog.dir/all
+.PHONY : _deps/spdlog-build/all
+
+# Recursive "preinstall" directory target.
+_deps/spdlog-build/preinstall:
+.PHONY : _deps/spdlog-build/preinstall
+
+# Recursive "clean" directory target.
+_deps/spdlog-build/clean: _deps/spdlog-build/CMakeFiles/spdlog.dir/clean
+.PHONY : _deps/spdlog-build/clean
+
+#=============================================================================
+# Directory level rules for directory wujihandcpp
+
+# Recursive "all" directory target.
+wujihandcpp/all: wujihandcpp/CMakeFiles/wujihandcpp.dir/all
+wujihandcpp/all: _deps/spdlog-build/all
+.PHONY : wujihandcpp/all
+
+# Recursive "preinstall" directory target.
+wujihandcpp/preinstall: _deps/spdlog-build/preinstall
+.PHONY : wujihandcpp/preinstall
+
+# Recursive "clean" directory target.
+wujihandcpp/clean: wujihandcpp/CMakeFiles/wujihandcpp.dir/clean
+wujihandcpp/clean: _deps/spdlog-build/clean
+.PHONY : wujihandcpp/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/uninstall.dir
@@ -132,15 +165,16 @@ CMakeFiles/wujihand_driver_uninstall.dir/clean:
 # Target rules for target CMakeFiles/wujihand_driver_node.dir
 
 # All Build rule for target.
-CMakeFiles/wujihand_driver_node.dir/all:
+CMakeFiles/wujihand_driver_node.dir/all: wujihandcpp/CMakeFiles/wujihandcpp.dir/all
+CMakeFiles/wujihand_driver_node.dir/all: _deps/spdlog-build/CMakeFiles/spdlog.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/wujihand_driver_node.dir/build.make CMakeFiles/wujihand_driver_node.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/wujihand_driver_node.dir/build.make CMakeFiles/wujihand_driver_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles --progress-num=1,2,3 "Built target wujihand_driver_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles --progress-num=9,10,11 "Built target wujihand_driver_node"
 .PHONY : CMakeFiles/wujihand_driver_node.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/wujihand_driver_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles 17
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/wujihand_driver_node.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles 0
 .PHONY : CMakeFiles/wujihand_driver_node.dir/rule
@@ -155,12 +189,65 @@ CMakeFiles/wujihand_driver_node.dir/clean:
 .PHONY : CMakeFiles/wujihand_driver_node.dir/clean
 
 #=============================================================================
+# Target rules for target wujihandcpp/CMakeFiles/wujihandcpp.dir
+
+# All Build rule for target.
+wujihandcpp/CMakeFiles/wujihandcpp.dir/all: _deps/spdlog-build/CMakeFiles/spdlog.dir/all
+	$(MAKE) $(MAKESILENT) -f wujihandcpp/CMakeFiles/wujihandcpp.dir/build.make wujihandcpp/CMakeFiles/wujihandcpp.dir/depend
+	$(MAKE) $(MAKESILENT) -f wujihandcpp/CMakeFiles/wujihandcpp.dir/build.make wujihandcpp/CMakeFiles/wujihandcpp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles --progress-num=12,13,14,15,16,17 "Built target wujihandcpp"
+.PHONY : wujihandcpp/CMakeFiles/wujihandcpp.dir/all
+
+# Build rule for subdir invocation for target.
+wujihandcpp/CMakeFiles/wujihandcpp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles 14
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 wujihandcpp/CMakeFiles/wujihandcpp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles 0
+.PHONY : wujihandcpp/CMakeFiles/wujihandcpp.dir/rule
+
+# Convenience name for target.
+wujihandcpp: wujihandcpp/CMakeFiles/wujihandcpp.dir/rule
+.PHONY : wujihandcpp
+
+# clean rule for target.
+wujihandcpp/CMakeFiles/wujihandcpp.dir/clean:
+	$(MAKE) $(MAKESILENT) -f wujihandcpp/CMakeFiles/wujihandcpp.dir/build.make wujihandcpp/CMakeFiles/wujihandcpp.dir/clean
+.PHONY : wujihandcpp/CMakeFiles/wujihandcpp.dir/clean
+
+#=============================================================================
+# Target rules for target _deps/spdlog-build/CMakeFiles/spdlog.dir
+
+# All Build rule for target.
+_deps/spdlog-build/CMakeFiles/spdlog.dir/all:
+	$(MAKE) $(MAKESILENT) -f _deps/spdlog-build/CMakeFiles/spdlog.dir/build.make _deps/spdlog-build/CMakeFiles/spdlog.dir/depend
+	$(MAKE) $(MAKESILENT) -f _deps/spdlog-build/CMakeFiles/spdlog.dir/build.make _deps/spdlog-build/CMakeFiles/spdlog.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target spdlog"
+.PHONY : _deps/spdlog-build/CMakeFiles/spdlog.dir/all
+
+# Build rule for subdir invocation for target.
+_deps/spdlog-build/CMakeFiles/spdlog.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles 8
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/spdlog-build/CMakeFiles/spdlog.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles 0
+.PHONY : _deps/spdlog-build/CMakeFiles/spdlog.dir/rule
+
+# Convenience name for target.
+spdlog: _deps/spdlog-build/CMakeFiles/spdlog.dir/rule
+.PHONY : spdlog
+
+# clean rule for target.
+_deps/spdlog-build/CMakeFiles/spdlog.dir/clean:
+	$(MAKE) $(MAKESILENT) -f _deps/spdlog-build/CMakeFiles/spdlog.dir/build.make _deps/spdlog-build/CMakeFiles/spdlog.dir/clean
+.PHONY : _deps/spdlog-build/CMakeFiles/spdlog.dir/clean
+
+#=============================================================================
 # Special targets to cleanup operation of make.
 
 # Special rule to run CMake to check the build system integrity.
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
+	$(CMAKE_COMMAND) -P /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles/VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

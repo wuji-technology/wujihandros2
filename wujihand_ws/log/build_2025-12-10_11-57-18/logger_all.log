@@ -1,0 +1,180 @@
+[0.132s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'wujihand_driver']
+[0.132s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=24, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['wujihand_driver'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x77998812e6f0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x77998812e090>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x77998812e090>>)
+[0.157s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.157s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.157s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.157s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.157s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.157s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.157s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.173s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.173s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.173s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.173s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.173s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.173s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.173s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.173s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.174s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extensions ['ignore', 'ignore_ament_install']
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extension 'ignore'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extension 'ignore_ament_install'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extensions ['colcon_pkg']
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extension 'colcon_pkg'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extensions ['colcon_meta']
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extension 'colcon_meta'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extensions ['ros']
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extension 'ros'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extensions ['cmake', 'python']
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extension 'cmake'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extension 'python'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extensions ['python_setup_py']
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand) by extension 'python_setup_py'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_description) by extensions ['ignore', 'ignore_ament_install']
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_description) by extension 'ignore'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_description) by extension 'ignore_ament_install'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_description) by extensions ['colcon_pkg']
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_description) by extension 'colcon_pkg'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_description) by extensions ['colcon_meta']
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_description) by extension 'colcon_meta'
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_description) by extensions ['ros']
+[0.175s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_description) by extension 'ros'
+[0.177s] DEBUG:colcon.colcon_core.package_identification:Package 'src/wujihand/wujihand_description' with type 'ros.ament_cmake' and name 'wujihand_description'
+[0.177s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_driver) by extensions ['ignore', 'ignore_ament_install']
+[0.177s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_driver) by extension 'ignore'
+[0.177s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_driver) by extension 'ignore_ament_install'
+[0.177s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_driver) by extensions ['colcon_pkg']
+[0.177s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_driver) by extension 'colcon_pkg'
+[0.177s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_driver) by extensions ['colcon_meta']
+[0.177s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_driver) by extension 'colcon_meta'
+[0.177s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_driver) by extensions ['ros']
+[0.177s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_driver) by extension 'ros'
+[0.177s] DEBUG:colcon.colcon_core.package_identification:Package 'src/wujihand/wujihand_driver' with type 'ros.ament_cmake' and name 'wujihand_driver'
+[0.177s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_msgs) by extensions ['ignore', 'ignore_ament_install']
+[0.177s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_msgs) by extension 'ignore'
+[0.178s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_msgs) by extension 'ignore_ament_install'
+[0.178s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_msgs) by extensions ['colcon_pkg']
+[0.178s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_msgs) by extension 'colcon_pkg'
+[0.178s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_msgs) by extensions ['colcon_meta']
+[0.178s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_msgs) by extension 'colcon_meta'
+[0.178s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_msgs) by extensions ['ros']
+[0.178s] Level 1:colcon.colcon_core.package_identification:_identify(src/wujihand/wujihand_msgs) by extension 'ros'
+[0.178s] DEBUG:colcon.colcon_core.package_identification:Package 'src/wujihand/wujihand_msgs' with type 'ros.ament_cmake' and name 'wujihand_msgs'
+[0.178s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.178s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.178s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.178s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.178s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.188s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'wujihand_description' in 'src/wujihand/wujihand_description'
+[0.188s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'wujihand_msgs' in 'src/wujihand/wujihand_msgs'
+[0.188s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.188s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.189s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 289 installed packages in /opt/ros/kilted
+[0.190s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.208s] Level 5:colcon.colcon_core.verb:set package 'wujihand_driver' build argument 'cmake_args' from command line to 'None'
+[0.208s] Level 5:colcon.colcon_core.verb:set package 'wujihand_driver' build argument 'cmake_target' from command line to 'None'
+[0.208s] Level 5:colcon.colcon_core.verb:set package 'wujihand_driver' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.208s] Level 5:colcon.colcon_core.verb:set package 'wujihand_driver' build argument 'cmake_clean_cache' from command line to 'False'
+[0.208s] Level 5:colcon.colcon_core.verb:set package 'wujihand_driver' build argument 'cmake_clean_first' from command line to 'False'
+[0.208s] Level 5:colcon.colcon_core.verb:set package 'wujihand_driver' build argument 'cmake_force_configure' from command line to 'False'
+[0.208s] Level 5:colcon.colcon_core.verb:set package 'wujihand_driver' build argument 'ament_cmake_args' from command line to 'None'
+[0.208s] Level 5:colcon.colcon_core.verb:set package 'wujihand_driver' build argument 'catkin_cmake_args' from command line to 'None'
+[0.208s] Level 5:colcon.colcon_core.verb:set package 'wujihand_driver' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.208s] DEBUG:colcon.colcon_core.verb:Building package 'wujihand_driver' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver', 'merge_install': False, 'path': '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver', 'symlink_install': False, 'test_result_base': None}
+[0.208s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.209s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.209s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver' with build type 'ament_cmake'
+[0.209s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver'
+[0.211s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.211s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.211s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.328s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver -DCMAKE_INSTALL_PREFIX=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver
+[5.624s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver' returned '0': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver -DCMAKE_INSTALL_PREFIX=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver
+[5.625s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver -- -j24 -l24
+[27.688s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver' returned '0': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver -- -j24 -l24
+[27.694s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver
+[27.704s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(wujihand_driver)
+[27.704s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver' returned '0': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver
+[27.706s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver' for CMake module files
+[27.706s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver' for CMake config files
+[27.706s] Level 1:colcon.colcon_core.shell:create_environment_hook('wujihand_driver', 'cmake_prefix_path')
+[27.706s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/hook/cmake_prefix_path.ps1'
+[27.707s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/hook/cmake_prefix_path.dsv'
+[27.707s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/hook/cmake_prefix_path.sh'
+[27.708s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/lib'
+[27.708s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/bin'
+[27.708s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/lib/pkgconfig/wujihand_driver.pc'
+[27.708s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/lib/python3.12/site-packages'
+[27.709s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/bin'
+[27.709s] INFO:colcon.colcon_core.shell:Creating package script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.ps1'
+[27.709s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.dsv'
+[27.709s] INFO:colcon.colcon_core.shell:Creating package script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.sh'
+[27.710s] INFO:colcon.colcon_core.shell:Creating package script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.bash'
+[27.710s] INFO:colcon.colcon_core.shell:Creating package script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.zsh'
+[27.710s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/colcon-core/packages/wujihand_driver)
+[27.711s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(wujihand_driver)
+[27.711s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver' for CMake module files
+[27.711s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver' for CMake config files
+[27.711s] Level 1:colcon.colcon_core.shell:create_environment_hook('wujihand_driver', 'cmake_prefix_path')
+[27.711s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/hook/cmake_prefix_path.ps1'
+[27.712s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/hook/cmake_prefix_path.dsv'
+[27.712s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/hook/cmake_prefix_path.sh'
+[27.712s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/lib'
+[27.712s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/bin'
+[27.712s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/lib/pkgconfig/wujihand_driver.pc'
+[27.712s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/lib/python3.12/site-packages'
+[27.713s] Level 1:colcon.colcon_core.environment:checking '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/bin'
+[27.713s] INFO:colcon.colcon_core.shell:Creating package script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.ps1'
+[27.713s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.dsv'
+[27.713s] INFO:colcon.colcon_core.shell:Creating package script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.sh'
+[27.713s] INFO:colcon.colcon_core.shell:Creating package script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.bash'
+[27.714s] INFO:colcon.colcon_core.shell:Creating package script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.zsh'
+[27.714s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/colcon-core/packages/wujihand_driver)
+[27.714s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[27.714s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[27.714s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[27.714s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[27.759s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.notify_send': Could not find 'notify-send'
+[27.759s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[27.759s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[27.759s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[27.760s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.Notifications was not provided by any .service files
+[27.760s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[27.760s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/local_setup.ps1'
+[27.761s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/_local_setup_util_ps1.py'
+[27.761s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/setup.ps1'
+[27.762s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/local_setup.sh'
+[27.762s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/_local_setup_util_sh.py'
+[27.763s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/setup.sh'
+[27.763s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/local_setup.bash'
+[27.763s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/setup.bash'
+[27.763s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/local_setup.zsh'
+[27.764s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/setup.zsh'

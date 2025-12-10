@@ -65,6 +65,26 @@ CMAKE_BINARY_DIR = /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target package
+package: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Run CPack packaging tool..."
+	/usr/bin/cpack --config ./CPackConfig.cmake
+.PHONY : package
+
+# Special rule for the target package
+package/fast: package
+.PHONY : package/fast
+
+# Special rule for the target package_source
+package_source:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Run CPack packaging tool for source..."
+	/usr/bin/cpack --config ./CPackSourceConfig.cmake /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CPackSourceConfig.cmake
+.PHONY : package_source
+
+# Special rule for the target package_source
+package_source/fast: package_source
+.PHONY : package_source/fast
+
 # Special rule for the target test
 test:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running tests..."
@@ -168,6 +188,7 @@ preinstall/fast:
 
 # clear depends
 depend:
+	$(CMAKE_COMMAND) -P /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles/VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
@@ -209,6 +230,32 @@ wujihand_driver_node: cmake_check_build_system
 wujihand_driver_node/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/wujihand_driver_node.dir/build.make CMakeFiles/wujihand_driver_node.dir/build
 .PHONY : wujihand_driver_node/fast
+
+#=============================================================================
+# Target rules for targets named wujihandcpp
+
+# Build rule for target.
+wujihandcpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 wujihandcpp
+.PHONY : wujihandcpp
+
+# fast build rule for target.
+wujihandcpp/fast:
+	$(MAKE) $(MAKESILENT) -f wujihandcpp/CMakeFiles/wujihandcpp.dir/build.make wujihandcpp/CMakeFiles/wujihandcpp.dir/build
+.PHONY : wujihandcpp/fast
+
+#=============================================================================
+# Target rules for targets named spdlog
+
+# Build rule for target.
+spdlog: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 spdlog
+.PHONY : spdlog
+
+# fast build rule for target.
+spdlog/fast:
+	$(MAKE) $(MAKESILENT) -f _deps/spdlog-build/CMakeFiles/spdlog.dir/build.make _deps/spdlog-build/CMakeFiles/spdlog.dir/build
+.PHONY : spdlog/fast
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -269,11 +316,15 @@ help:
 	@echo "... install/local"
 	@echo "... install/strip"
 	@echo "... list_install_components"
+	@echo "... package"
+	@echo "... package_source"
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... uninstall"
 	@echo "... wujihand_driver_uninstall"
+	@echo "... spdlog"
 	@echo "... wujihand_driver_node"
+	@echo "... wujihandcpp"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
@@ -291,6 +342,7 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
+	$(CMAKE_COMMAND) -P /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles/VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

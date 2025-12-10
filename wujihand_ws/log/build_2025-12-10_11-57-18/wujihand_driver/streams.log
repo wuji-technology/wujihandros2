@@ -1,0 +1,103 @@
+[0.118s] Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver -DCMAKE_INSTALL_PREFIX=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver
+[0.222s] -- The C compiler identification is GNU 13.3.0
+[0.770s] -- The CXX compiler identification is GNU 13.3.0
+[1.267s] -- Detecting C compiler ABI info
+[1.461s] -- Detecting C compiler ABI info - done
+[1.466s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.466s] -- Detecting C compile features
+[1.466s] -- Detecting C compile features - done
+[1.544s] -- Detecting CXX compiler ABI info
+[1.744s] -- Detecting CXX compiler ABI info - done
+[1.750s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[1.750s] -- Detecting CXX compile features
+[1.750s] -- Detecting CXX compile features - done
+[1.751s] -- Found ament_cmake: 2.7.3 (/opt/ros/kilted/share/ament_cmake/cmake)
+[1.840s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[1.900s] -- Found rclcpp: 29.5.4 (/opt/ros/kilted/share/rclcpp/cmake)
+[2.020s] -- Found rosidl_generator_c: 4.9.5 (/opt/ros/kilted/share/rosidl_generator_c/cmake)
+[2.027s] -- Found rosidl_generator_cpp: 4.9.5 (/opt/ros/kilted/share/rosidl_generator_cpp/cmake)
+[2.036s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.046s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.087s] -- Found rmw_implementation_cmake: 7.8.2 (/opt/ros/kilted/share/rmw_implementation_cmake/cmake)
+[2.088s] -- Found rmw_fastrtps_cpp: 9.3.3 (/opt/ros/kilted/share/rmw_fastrtps_cpp/cmake)
+[2.139s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.13")  
+[2.145s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[2.330s] -- Found std_msgs: 5.5.1 (/opt/ros/kilted/share/std_msgs/cmake)
+[2.338s] -- Found sensor_msgs: 5.5.1 (/opt/ros/kilted/share/sensor_msgs/cmake)
+[2.360s] -- Found wujihand_msgs: 0.1.0 (/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake)
+[2.373s] fatal: No names found, cannot describe anything.
+[2.373s] -- Unable to extract git tag, using version: 0.0.0
+[2.374s] -- Building shared library wujihandcpp
+[2.374s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[2.500s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[2.500s] -- Found Threads: TRUE  
+[5.287s] -- Build spdlog: 1.16.0
+[5.288s] -- Build type: Release
+[5.289s] -- Looking for fwrite_unlocked
+[5.315s] -- Looking for fwrite_unlocked - not found
+[5.315s] -- Dynamic linking C++ standard library
+[5.326s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[5.326s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[5.327s]   with modern CMake targets instead.  Try replacing this call with:
+[5.327s] 
+[5.327s]     target_link_libraries(wujihand_driver_node PUBLIC
+[5.327s]       ${sensor_msgs_TARGETS}
+[5.327s]       ${std_msgs_TARGETS}
+[5.327s]       ${wujihand_msgs_TARGETS}
+[5.327s]       rclcpp::rclcpp
+[5.327s]       sensor_msgs::sensor_msgs_library
+[5.327s]     )
+[5.327s] 
+[5.327s] Call Stack (most recent call first):
+[5.327s]   CMakeLists.txt:36 (ament_target_dependencies)
+[5.327s] 
+[5.327s] [0m
+[5.384s] -- Configuring done (5.3s)
+[5.403s] -- Generating done (0.0s)
+[5.406s] -- Build files have been written to: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver
+[5.414s] Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver' returned '0': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver -DCMAKE_INSTALL_PREFIX=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver
+[5.415s] Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver -- -j24 -l24
+[5.456s] [ 29%] [32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/spdlog.cpp.o[0m
+[5.457s] [ 29%] [32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/file_sinks.cpp.o[0m
+[5.457s] [ 29%] [32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/color_sinks.cpp.o[0m
+[5.457s] [ 29%] [32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/async.cpp.o[0m
+[5.457s] [ 29%] [32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/stdout_sinks.cpp.o[0m
+[5.457s] [ 35%] [32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/cfg.cpp.o[0m
+[5.457s] [ 41%] [32mBuilding CXX object _deps/spdlog-build/CMakeFiles/spdlog.dir/src/bundled_fmtlib_format.cpp.o[0m
+[10.414s] [ 47%] [32m[1mLinking CXX static library libspdlog.a[0m
+[10.448s] [ 47%] Built target spdlog
+[10.465s] [ 76%] [32mBuilding CXX object wujihandcpp/CMakeFiles/wujihandcpp.dir/src/transport/usb.cpp.o[0m
+[10.465s] [ 76%] [32mBuilding CXX object wujihandcpp/CMakeFiles/wujihandcpp.dir/src/logging/logging.cpp.o[0m
+[10.466s] [ 76%] [32mBuilding CXX object wujihandcpp/CMakeFiles/wujihandcpp.dir/src/data/helper.cpp.o[0m
+[10.466s] [ 76%] [32mBuilding CXX object wujihandcpp/CMakeFiles/wujihandcpp.dir/src/device/latch.cpp.o[0m
+[10.466s] [ 76%] [32mBuilding CXX object wujihandcpp/CMakeFiles/wujihandcpp.dir/src/protocol/handler.cpp.o[0m
+[13.235s] [ 82%] [32m[1mLinking CXX shared library libwujihandcpp.so[0m
+[14.364s] [ 82%] Built target wujihandcpp
+[14.378s] [ 94%] [32mBuilding CXX object CMakeFiles/wujihand_driver_node.dir/src/main.cpp.o[0m
+[14.378s] [ 94%] [32mBuilding CXX object CMakeFiles/wujihand_driver_node.dir/src/wujihand_driver_node.cpp.o[0m
+[26.323s] [100%] [32m[1mLinking CXX executable wujihand_driver_node[0m
+[26.549s] [100%] Built target wujihand_driver_node
+[26.556s] Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver' returned '0': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver -- -j24 -l24
+[26.563s] Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver
+[26.568s] -- Install configuration: "Release"
+[26.568s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/lib/wujihand_driver/wujihand_driver_node
+[26.569s] -- Set non-toolchain portion of runtime path of "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/lib/wujihand_driver/wujihand_driver_node" to ""
+[26.569s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/include
+[26.569s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/include/wujihand_driver
+[26.570s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/include/wujihand_driver/wujihand_driver_node.hpp
+[26.570s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/ament_index/resource_index/package_run_dependencies/wujihand_driver
+[26.570s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/ament_index/resource_index/parent_prefix_path/wujihand_driver
+[26.571s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/environment/ament_prefix_path.sh
+[26.571s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/environment/ament_prefix_path.dsv
+[26.571s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/environment/path.sh
+[26.571s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/environment/path.dsv
+[26.571s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/local_setup.bash
+[26.571s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/local_setup.sh
+[26.571s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/local_setup.zsh
+[26.571s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/local_setup.dsv
+[26.571s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.dsv
+[26.572s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/ament_index/resource_index/packages/wujihand_driver
+[26.572s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/cmake/wujihand_driverConfig.cmake
+[26.572s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/cmake/wujihand_driverConfig-version.cmake
+[26.572s] -- Installing: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver/share/wujihand_driver/package.xml
+[26.573s] Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver' returned '0': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver

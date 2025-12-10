@@ -120,7 +120,7 @@ wujihand_driver_node: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wuji
 wujihand_driver_node: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_introspection_cpp.so
 wujihand_driver_node: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_typesupport_cpp.so
 wujihand_driver_node: /home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/libwujihand_msgs__rosidl_generator_py.so
-wujihand_driver_node: /usr/local/lib/libwujihandcpp.so
+wujihand_driver_node: wujihandcpp/libwujihandcpp.so
 wujihand_driver_node: /opt/ros/kilted/lib/liblibstatistics_collector.so
 wujihand_driver_node: /opt/ros/kilted/lib/librcl.so
 wujihand_driver_node: /opt/ros/kilted/lib/librmw_implementation.so
@@ -206,6 +206,7 @@ wujihand_driver_node: /opt/ros/kilted/lib/librosidl_typesupport_c.so
 wujihand_driver_node: /opt/ros/kilted/lib/librcpputils.so
 wujihand_driver_node: /opt/ros/kilted/lib/librosidl_runtime_c.so
 wujihand_driver_node: /opt/ros/kilted/lib/librcutils.so
+wujihand_driver_node: _deps/spdlog-build/libspdlog.a
 wujihand_driver_node: CMakeFiles/wujihand_driver_node.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable wujihand_driver_node"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/wujihand_driver_node.dir/link.txt --verbose=$(VERBOSE)

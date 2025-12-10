@@ -1,0 +1,65 @@
+[0.173s] Invoking command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver -DCMAKE_INSTALL_PREFIX=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver
+[0.295s] -- The C compiler identification is GNU 13.3.0
+[0.907s] -- The CXX compiler identification is GNU 13.3.0
+[1.542s] -- Detecting C compiler ABI info
+[1.822s] -- Detecting C compiler ABI info - done
+[1.828s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.828s] -- Detecting C compile features
+[1.828s] -- Detecting C compile features - done
+[1.925s] -- Detecting CXX compiler ABI info
+[2.148s] -- Detecting CXX compiler ABI info - done
+[2.154s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.154s] -- Detecting CXX compile features
+[2.154s] -- Detecting CXX compile features - done
+[2.159s] -- Found ament_cmake: 2.7.3 (/opt/ros/kilted/share/ament_cmake/cmake)
+[2.266s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[2.346s] -- Found rclcpp: 29.5.4 (/opt/ros/kilted/share/rclcpp/cmake)
+[2.482s] -- Found rosidl_generator_c: 4.9.5 (/opt/ros/kilted/share/rosidl_generator_c/cmake)
+[2.491s] -- Found rosidl_generator_cpp: 4.9.5 (/opt/ros/kilted/share/rosidl_generator_cpp/cmake)
+[2.503s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.524s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.590s] -- Found rmw_implementation_cmake: 7.8.2 (/opt/ros/kilted/share/rmw_implementation_cmake/cmake)
+[2.594s] -- Found rmw_fastrtps_cpp: 9.3.3 (/opt/ros/kilted/share/rmw_fastrtps_cpp/cmake)
+[2.664s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.13")  
+[2.672s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[2.859s] -- Found std_msgs: 5.5.1 (/opt/ros/kilted/share/std_msgs/cmake)
+[2.870s] -- Found sensor_msgs: 5.5.1 (/opt/ros/kilted/share/sensor_msgs/cmake)
+[2.905s] -- Found wujihand_msgs: 0.1.0 (/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/share/wujihand_msgs/cmake)
+[2.920s] fatal: No names found, cannot describe anything.
+[2.920s] -- Unable to extract git tag, using version: 0.0.0
+[2.921s] -- Building shared library wujihandcpp
+[2.923s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[3.062s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[3.063s] -- Found Threads: TRUE  
+[6.118s] -- Build spdlog: 1.16.0
+[6.122s] -- Build type: Release
+[6.123s] -- Looking for fwrite_unlocked
+[6.165s] -- Looking for fwrite_unlocked - not found
+[6.166s] -- Dynamic linking C++ standard library
+[9.098s] [31mCMake Error at /usr/share/cmake-3.28/Modules/CPack.cmake:685 (message):
+[9.098s]   CPack license resource file:
+[9.098s]   "/home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver/LICENSE"
+[9.098s]   could not be found.
+[9.098s] Call Stack (most recent call first):
+[9.098s]   /usr/share/cmake-3.28/Modules/CPack.cmake:690 (cpack_check_file_exists)
+[9.098s]   /home/wuji/wujihand/wujihand-ros2/third_party/wujihandpy/wujihandcpp/CMakeLists.txt:191 (include)
+[9.098s] 
+[9.098s] [0m
+[9.106s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[9.107s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[9.107s]   with modern CMake targets instead.  Try replacing this call with:
+[9.107s] 
+[9.107s]     target_link_libraries(wujihand_driver_node PUBLIC
+[9.107s]       ${sensor_msgs_TARGETS}
+[9.107s]       ${std_msgs_TARGETS}
+[9.107s]       ${wujihand_msgs_TARGETS}
+[9.107s]       rclcpp::rclcpp
+[9.107s]       sensor_msgs::sensor_msgs_library
+[9.107s]     )
+[9.107s] 
+[9.107s] Call Stack (most recent call first):
+[9.107s]   CMakeLists.txt:33 (ament_target_dependencies)
+[9.107s] 
+[9.107s] [0m
+[9.181s] -- Configuring incomplete, errors occurred!
+[9.195s] Invoked command in '/home/wuji/wujihand/wujihand-ros2/wujihand_ws/build/wujihand_driver' returned '1': AMENT_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted LD_LIBRARY_PATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/wuji/wujihand/wujihand-ros2/wujihand_ws/src/wujihand/wujihand_driver -DCMAKE_INSTALL_PREFIX=/home/wuji/wujihand/wujihand-ros2/wujihand_ws/install/wujihand_driver
