@@ -57,4 +57,7 @@ install(DIRECTORY include/
   DESTINATION include
 )
 
+# Add library path to LD_LIBRARY_PATH via environment hook
+ament_environment_hooks("${ament_cmake_package_templates_ENVIRONMENT_HOOK_LIBRARY_PATH}")
+
 ament_package()
