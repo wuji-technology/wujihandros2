@@ -3,7 +3,9 @@ build/
 install/
 log/
 debian/
+.deb_build/
 *.deb
+compile_commands.json
 
 # IDE
 .vscode/
