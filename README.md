@@ -107,6 +107,4 @@ ros2 run wujihand_bringup wave_demo.py
 
 ## 更多文档
 
-- [API 参考](docs/API.md) - Topics、Services、Parameters 详细说明
-- [故障排查](docs/TROUBLESHOOTING.md) - 常见问题解决方案
-- [开发指南](docs/DEVELOPMENT.md) - 如何添加新功能
+- [API 参考](docs/API.md) - Topics、Services、Parameters、错误处理
