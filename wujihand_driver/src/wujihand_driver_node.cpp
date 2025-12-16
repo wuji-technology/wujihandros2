@@ -20,11 +20,10 @@
 namespace wujihand_driver {
 
 const std::array<std::string, WujiHandDriverNode::NUM_JOINTS> WujiHandDriverNode::JOINT_NAMES = {
-    "finger1_joint1", "finger1_joint2", "finger1_joint3", "finger1_joint4",
-    "finger2_joint1", "finger2_joint2", "finger2_joint3", "finger2_joint4",
-    "finger3_joint1", "finger3_joint2", "finger3_joint3", "finger3_joint4",
-    "finger4_joint1", "finger4_joint2", "finger4_joint3", "finger4_joint4",
-    "finger5_joint1", "finger5_joint2", "finger5_joint3", "finger5_joint4"};
+    "finger1_joint1", "finger1_joint2", "finger1_joint3", "finger1_joint4", "finger2_joint1",
+    "finger2_joint2", "finger2_joint3", "finger2_joint4", "finger3_joint1", "finger3_joint2",
+    "finger3_joint3", "finger3_joint4", "finger4_joint1", "finger4_joint2", "finger4_joint3",
+    "finger4_joint4", "finger5_joint1", "finger5_joint2", "finger5_joint3", "finger5_joint4"};
 
 WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_connected_(false) {
   // Declare parameters
@@ -49,8 +48,8 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
   }
 
   // Create publishers (use SensorDataQoS for compatibility with robot_state_publisher)
-  joint_state_pub_ = this->create_publisher<sensor_msgs::msg::JointState>(
-      "joint_states", rclcpp::SensorDataQoS());
+  joint_state_pub_ =
+      this->create_publisher<sensor_msgs::msg::JointState>("joint_states", rclcpp::SensorDataQoS());
   diagnostics_pub_ =
       this->create_publisher<wujihand_msgs::msg::HandDiagnostics>("hand_diagnostics", 10);
 
@@ -71,12 +70,10 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
   // Declare read-only parameters for hardware info
   this->declare_parameter("handedness", handedness_);
   this->declare_parameter("firmware_version", firmware_version_);
-  this->declare_parameter(
-      "joint_upper_limits",
-      std::vector<double>(joint_upper_limits_.begin(), joint_upper_limits_.end()));
-  this->declare_parameter(
-      "joint_lower_limits",
-      std::vector<double>(joint_lower_limits_.begin(), joint_lower_limits_.end()));
+  this->declare_parameter("joint_upper_limits", std::vector<double>(joint_upper_limits_.begin(),
+                                                                    joint_upper_limits_.end()));
+  this->declare_parameter("joint_lower_limits", std::vector<double>(joint_lower_limits_.begin(),
+                                                                    joint_lower_limits_.end()));
 
   // Initialize pre-allocated JointState message
   joint_state_msg_.name.reserve(NUM_JOINTS);
@@ -103,9 +100,8 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
       this->create_wall_timer(std::chrono::duration_cast<std::chrono::nanoseconds>(cmd_period),
                               std::bind(&WujiHandDriverNode::send_default_command, this));
 
-  RCLCPP_INFO(this->get_logger(),
-              "WujiHand driver started (state: %.1f Hz, diagnostics: %.1f Hz)", publish_rate_,
-              diagnostics_rate_);
+  RCLCPP_INFO(this->get_logger(), "WujiHand driver started (state: %.1f Hz, diagnostics: %.1f Hz)",
+              publish_rate_, diagnostics_rate_);
 }
 
 WujiHandDriverNode::~WujiHandDriverNode() {
@@ -154,8 +150,7 @@ bool WujiHandDriverNode::connect_hardware() {
     double initial_positions[NUM_FINGERS][JOINTS_PER_FINGER];
     for (size_t f = 0; f < NUM_FINGERS; ++f) {
       for (size_t j = 0; j < JOINTS_PER_FINGER; ++j) {
-        auto pos = hand_->finger(f).joint(j)
-            .get<wujihandcpp::data::joint::ActualPosition>();
+        auto pos = hand_->finger(f).joint(j).get<wujihandcpp::data::joint::ActualPosition>();
         initial_positions[f][j] = pos;
         last_target_positions_[to_flat_index(f, j)] = pos;
       }
@@ -359,9 +354,7 @@ void WujiHandDriverNode::reset_error_callback(
     } else if (request->finger_id < NUM_FINGERS) {
       if (request->joint_id == 255) {
         for (size_t j = 0; j < JOINTS_PER_FINGER; ++j) {
-          hand_->finger(request->finger_id)
-              .joint(j)
-              .write<wujihandcpp::data::joint::ResetError>(1);
+          hand_->finger(request->finger_id).joint(j).write<wujihandcpp::data::joint::ResetError>(1);
         }
         response->success = true;
         response->message = "Finger errors reset";
