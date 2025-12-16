@@ -39,8 +39,22 @@ PACKAGE_DIR="debian/${PACKAGE_NAME}_${VERSION}-1_${ARCH}"
 mkdir -p "${PACKAGE_DIR}/DEBIAN"
 mkdir -p "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}"
 
-# Copy installed files
+# Copy installed files (excluding workspace setup files that conflict with ros-workspace)
 cp -r "${INSTALL_DIR}"/* "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/"
+
+# Remove conflicting workspace files
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/local_setup.bash"
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/local_setup.sh"
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/local_setup.zsh"
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/local_setup.ps1"
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/setup.bash"
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/setup.sh"
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/setup.zsh"
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/setup.ps1"
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/.colcon_install_layout"
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/COLCON_IGNORE"
+rm -rf "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/_local_setup_util_sh.py"
+rm -rf "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/_local_setup_util_ps1.py"
 
 # Generate control file
 cat > "${PACKAGE_DIR}/DEBIAN/control" << EOF
@@ -60,12 +74,12 @@ EOF
 echo "Building deb package..."
 dpkg-deb --build "${PACKAGE_DIR}"
 
-# Move to parent directory
-mv "${PACKAGE_DIR}.deb" "../${PACKAGE_NAME}_${VERSION}-1_${ARCH}.deb"
+# Move to project root directory
+mv "${PACKAGE_DIR}.deb" "${PACKAGE_NAME}_${VERSION}-1_${ARCH}.deb"
 
 echo ""
 echo "Package built successfully:"
-echo "  ../${PACKAGE_NAME}_${VERSION}-1_${ARCH}.deb"
+echo "  ${PACKAGE_NAME}_${VERSION}-1_${ARCH}.deb"
 echo ""
 echo "Install with:"
-echo "  sudo dpkg -i ../${PACKAGE_NAME}_${VERSION}-1_${ARCH}.deb"
+echo "  sudo dpkg -i ${PACKAGE_NAME}_${VERSION}-1_${ARCH}.deb"
