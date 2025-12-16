@@ -18,7 +18,7 @@ jobs:
                 include:
                     - ros_distro: humble
                       os_version: "22.04"
-                    - ros_distro: jazzy
+                    - ros_distro: kilted
                       os_version: "24.04"
 
         container:
@@ -48,13 +48,12 @@ jobs:
               run: |
                   chmod +x build_deb.sh
                   ./build_deb.sh ${{ matrix.ros_distro }}
-                  cp ../ros-${{ matrix.ros_distro }}-wujihand_*.deb .
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: ros-${{ matrix.ros_distro }}-wujihand-deb
-                  path: ros-${{ matrix.ros_distro }}-wujihand_*.deb
+                  name: ros-${{ matrix.ros_distro }}-wujihand-ros2-deb
+                  path: ros-${{ matrix.ros_distro }}-wujihand-ros2_*.deb
 
     release:
         needs: build-debs
