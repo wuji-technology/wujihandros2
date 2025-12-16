@@ -1,19 +1,15 @@
 # WujiHand ROS2
 
-[![Humble](https://img.shields.io/badge/ROS2-Humble-blue)](https://docs.ros.org/en/humble/)
-[![Kilted](https://img.shields.io/badge/ROS2-Kilted-blue)](https://docs.ros.org/en/kilted/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
-
 **English** | [中文](README.md)
 
 ROS2 driver package for WujiHand dexterous hand, providing high-frequency joint state publishing (1000Hz) and real-time control interface.
 
-## Supported Versions
+## Build Status
 
-| ROS2 Version | Ubuntu |
-|:------------:|:------:|
-| Humble | 22.04 |
-| Kilted | 24.04 |
+| ROS2 Version | Ubuntu | Build Status | Deb Package |
+|:------------:|:------:|:------------:|:-----------:|
+| Humble | 22.04 | [![CI](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) | [Download](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) |
+| Kilted | 24.04 | [![CI](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) | [Download](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) |
 
 ## Installation
 

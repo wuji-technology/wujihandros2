@@ -1,19 +1,15 @@
 # WujiHand ROS2
 
-[![Humble](https://img.shields.io/badge/ROS2-Humble-blue)](https://docs.ros.org/en/humble/)
-[![Kilted](https://img.shields.io/badge/ROS2-Kilted-blue)](https://docs.ros.org/en/kilted/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
-
 [English](README_EN.md) | **中文**
 
 WujiHand 灵巧手 ROS2 驱动包，提供高频关节状态发布（1000Hz）和实时控制接口。
 
-## 版本支持
+## 构建状态
 
-| ROS2 版本 | Ubuntu |
-|:---------:|:------:|
-| Humble | 22.04 |
-| Kilted | 24.04 |
+| ROS2 版本 | Ubuntu | 构建状态 | Deb 包 |
+|:---------:|:------:|:--------:|:------:|
+| Humble | 22.04 | [![CI](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) | [下载](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) |
+| Kilted | 24.04 | [![CI](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) | [下载](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) |
 
 ## 安装
 
