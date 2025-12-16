@@ -8,7 +8,7 @@ set -e
 ROS_DISTRO=${1:-kilted}
 VERSION="0.1.0"
 ARCH=$(dpkg --print-architecture)
-PACKAGE_NAME="ros-${ROS_DISTRO}-wujihand"
+PACKAGE_NAME="ros-${ROS_DISTRO}-wujihand-ros2"
 
 echo "Building ${PACKAGE_NAME} ${VERSION} for ${ARCH}..."
 
@@ -74,12 +74,13 @@ EOF
 echo "Building deb package..."
 dpkg-deb --build "${PACKAGE_DIR}"
 
-# Move to project root directory
-mv "${PACKAGE_DIR}.deb" "${PACKAGE_NAME}_${VERSION}-1_${ARCH}.deb"
+# Move to project root directory with new naming format
+DEB_FILENAME="${PACKAGE_NAME}_${VERSION}_${ARCH}.deb"
+mv "${PACKAGE_DIR}.deb" "${DEB_FILENAME}"
 
 echo ""
 echo "Package built successfully:"
-echo "  ${PACKAGE_NAME}_${VERSION}-1_${ARCH}.deb"
+echo "  ${DEB_FILENAME}"
 echo ""
 echo "Install with:"
-echo "  sudo dpkg -i ${PACKAGE_NAME}_${VERSION}-1_${ARCH}.deb"
+echo "  sudo dpkg -i ${DEB_FILENAME}"

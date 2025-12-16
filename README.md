@@ -71,7 +71,7 @@ sudo dpkg -i wujihandcpp-1.3.0-amd64.deb
 ### 2. 安装驱动包
 
 ```bash
-sudo dpkg -i ros-kilted-wujihand_0.1.0-1_amd64.deb
+sudo dpkg -i ros-kilted-wujihand-ros2_0.1.0_amd64.deb
 ```
 
 ### 3. 测试驱动
