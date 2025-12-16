@@ -21,25 +21,32 @@ fi
 # Source ROS
 source /opt/ros/${ROS_DISTRO}/setup.bash
 
-# Clean previous builds
-rm -rf build install log
-rm -rf debian/tmp debian/.debhelper debian/${PACKAGE_NAME}*
-rm -f ../${PACKAGE_NAME}*.deb ../${PACKAGE_NAME}*.changes ../${PACKAGE_NAME}*.buildinfo
+# Use separate build directory to avoid affecting local development
+BUILD_DIR=".deb_build"
+rm -rf "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
+
+# Clean previous debian builds
+rm -rf debian
+rm -f ${PACKAGE_NAME}*.deb
 
 # Create package directory structure
-INSTALL_DIR="debian/tmp/opt/ros/${ROS_DISTRO}"
+INSTALL_DIR="${BUILD_DIR}/install"
 mkdir -p "${INSTALL_DIR}"
 
-# Build with colcon
+# Build with colcon using separate directories
 echo "Building packages with colcon..."
-colcon build --merge-install --install-base "${INSTALL_DIR}"
+colcon build \
+    --build-base "${BUILD_DIR}/build" \
+    --install-base "${INSTALL_DIR}" \
+    --merge-install
 
 # Create DEBIAN control directory
 PACKAGE_DIR="debian/${PACKAGE_NAME}_${VERSION}-1_${ARCH}"
 mkdir -p "${PACKAGE_DIR}/DEBIAN"
 mkdir -p "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}"
 
-# Copy installed files (excluding workspace setup files that conflict with ros-workspace)
+# Copy installed files
 cp -r "${INSTALL_DIR}"/* "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/"
 
 # Remove conflicting workspace files
@@ -53,8 +60,8 @@ rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/setup.zsh"
 rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/setup.ps1"
 rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/.colcon_install_layout"
 rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/COLCON_IGNORE"
-rm -rf "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/_local_setup_util_sh.py"
-rm -rf "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/_local_setup_util_ps1.py"
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/_local_setup_util_sh.py"
+rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/_local_setup_util_ps1.py"
 
 # Generate control file
 cat > "${PACKAGE_DIR}/DEBIAN/control" << EOF
@@ -74,9 +81,12 @@ EOF
 echo "Building deb package..."
 dpkg-deb --build "${PACKAGE_DIR}"
 
-# Move to project root directory with new naming format
+# Move to project root directory
 DEB_FILENAME="${PACKAGE_NAME}_${VERSION}_${ARCH}.deb"
 mv "${PACKAGE_DIR}.deb" "${DEB_FILENAME}"
+
+# Clean up build directory
+rm -rf "${BUILD_DIR}" debian
 
 echo ""
 echo "Package built successfully:"

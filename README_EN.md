@@ -4,33 +4,33 @@
 [![Kilted](https://img.shields.io/badge/ROS2-Kilted-blue)](https://docs.ros.org/en/kilted/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 
-[English](README_EN.md) | **中文**
+**English** | [中文](README.md)
 
-WujiHand 灵巧手 ROS2 驱动包，提供高频关节状态发布（1000Hz）和实时控制接口。
+ROS2 driver package for WujiHand dexterous hand, providing high-frequency joint state publishing (1000Hz) and real-time control interface.
 
-## 版本支持
+## Supported Versions
 
-| ROS2 版本 | Ubuntu |
-|:---------:|:------:|
+| ROS2 Version | Ubuntu |
+|:------------:|:------:|
 | Humble | 22.04 |
 | Kilted | 24.04 |
 
-## 安装
+## Installation
 
-### 方式一：源码编译
+### Option 1: Build from Source
 
 <details>
 <summary><b>Ubuntu 22.04 (Humble)</b></summary>
 
 ```bash
-# 安装 ROS2 Humble 及依赖
+# Install ROS2 Humble and dependencies
 sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-rviz2 ros-humble-sensor-msgs ros-humble-std-msgs \
     ros-humble-xacro ros-humble-foxglove-bridge \
     python3-colcon-common-extensions python3-rosdep
 
-# 安装 wujihandcpp SDK
+# Install wujihandcpp SDK
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.3.0/wujihandcpp-1.3.0-amd64.deb
 sudo dpkg -i wujihandcpp-1.3.0-amd64.deb
 ```
@@ -41,41 +41,41 @@ sudo dpkg -i wujihandcpp-1.3.0-amd64.deb
 <summary><b>Ubuntu 24.04 (Kilted)</b></summary>
 
 ```bash
-# 安装 ROS2 Kilted 及依赖
+# Install ROS2 Kilted and dependencies
 sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-rviz2 ros-kilted-sensor-msgs ros-kilted-std-msgs \
     ros-kilted-xacro ros-kilted-foxglove-bridge \
     python3-colcon-common-extensions python3-rosdep
 
-# 安装 wujihandcpp SDK
+# Install wujihandcpp SDK
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.3.0/wujihandcpp-1.3.0-amd64.deb
 sudo dpkg -i wujihandcpp-1.3.0-amd64.deb
 ```
 
 </details>
 
-**编译与运行：**
+**Build and Run:**
 
 ```bash
 cd wujihandros2
-source env.sh          # 加载环境（自动检测 ROS2 版本）
-colcon build           # 编译
-source env.sh          # 重新加载环境
+source env.sh          # Load environment (auto-detect ROS2 version)
+colcon build           # Build
+source env.sh          # Reload environment
 ```
 
-### 方式二：Deb 包安装
+### Option 2: Deb Package Installation
 
 <details>
 <summary><b>Ubuntu 22.04 (Humble)</b></summary>
 
 ```bash
-# 安装依赖
+# Install dependencies
 sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-sensor-msgs ros-humble-std-msgs
 
-# 安装 SDK 和驱动
+# Install SDK and driver
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.3.0/wujihandcpp-1.3.0-amd64.deb
 sudo dpkg -i wujihandcpp-1.3.0-amd64.deb
 sudo dpkg -i ros-humble-wujihand-ros2_0.1.0_amd64.deb
@@ -87,12 +87,12 @@ sudo dpkg -i ros-humble-wujihand-ros2_0.1.0_amd64.deb
 <summary><b>Ubuntu 24.04 (Kilted)</b></summary>
 
 ```bash
-# 安装依赖
+# Install dependencies
 sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-sensor-msgs ros-kilted-std-msgs
 
-# 安装 SDK 和驱动
+# Install SDK and driver
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.3.0/wujihandcpp-1.3.0-amd64.deb
 sudo dpkg -i wujihandcpp-1.3.0-amd64.deb
 sudo dpkg -i ros-kilted-wujihand-ros2_0.1.0_amd64.deb
@@ -100,76 +100,76 @@ sudo dpkg -i ros-kilted-wujihand-ros2_0.1.0_amd64.deb
 
 </details>
 
-## 快速开始
+## Quick Start
 
-### 启动驱动
+### Launch Driver
 
 ```bash
-# 终端 1: 启动驱动
+# Terminal 1: Launch driver
 cd wujihandros2
 source env.sh
 ros2 launch wujihand_bringup wujihand.launch.py
 ```
 
-启动成功后会看到：
+On successful launch, you will see:
 ```
 [wujihand_driver]: Connected to WujiHand (right)
 [wujihand_driver]: WujiHand driver started (state: 1000.0 Hz, diagnostics: 10.0 Hz)
 ```
 
-### 验证运行
+### Verify Operation
 
 ```bash
-# 终端 2: 查看关节状态
+# Terminal 2: Check joint states
 cd wujihandros2
 source env.sh
 ros2 topic echo /joint_states --once
 ```
 
-### 运行演示
+### Run Demo
 
 ```bash
-# 波浪演示：五指依次弯曲伸展
+# Wave demo: fingers bend and extend sequentially
 ros2 run wujihand_bringup wave_demo.py
 ```
 
-## 启动方式
+## Launch Options
 
-| 命令 | 说明 |
-|:-----|:-----|
-| `ros2 launch wujihand_bringup wujihand.launch.py` | 仅驱动 |
-| `ros2 launch wujihand_bringup wujihand_rviz.launch.py` | 驱动 + RViz 可视化 |
-| `ros2 launch wujihand_bringup wujihand_foxglove.launch.py` | 驱动 + Foxglove/Lichtblick |
+| Command | Description |
+|:--------|:------------|
+| `ros2 launch wujihand_bringup wujihand.launch.py` | Driver only |
+| `ros2 launch wujihand_bringup wujihand_rviz.launch.py` | Driver + RViz visualization |
+| `ros2 launch wujihand_bringup wujihand_foxglove.launch.py` | Driver + Foxglove/Lichtblick |
 
-> **提示**: Foxglove launch 同时支持 [Foxglove Studio](https://foxglove.dev/) 和 [Lichtblick](https://github.com/Lichtblick-Suite/lichtblick)，连接地址为 `ws://localhost:8765`
+> **Note**: Foxglove launch supports both [Foxglove Studio](https://foxglove.dev/) and [Lichtblick](https://github.com/Lichtblick-Suite/lichtblick), connect to `ws://localhost:8765`
 
-## 基础使用
+## Basic Usage
 
-### 控制命令
+### Control Commands
 
 ```bash
-# 所有关节归零
+# Move all joints to zero position
 ros2 topic pub /joint_commands sensor_msgs/msg/JointState \
   "{position: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]}" --once
 ```
 
-### 状态查看
+### View Status
 
 ```bash
-ros2 topic echo /joint_states       # 关节状态 (1000Hz)
-ros2 topic echo /hand_diagnostics   # 诊断信息 (10Hz)
+ros2 topic echo /joint_states       # Joint states (1000Hz)
+ros2 topic echo /hand_diagnostics   # Diagnostics (10Hz)
 ```
 
-### 服务调用
+### Service Calls
 
 ```bash
-# 使能/失能手指
+# Enable/disable finger
 ros2 service call /set_enabled wujihand_msgs/srv/SetEnabled "{finger_id: 0, enabled: true}"
 
-# 重置错误
+# Reset error
 ros2 service call /reset_error wujihand_msgs/srv/ResetError "{finger_id: 0}"
 ```
 
-## 文档
+## Documentation
 
-- [API 参考](docs/API.md) - Topics、Services、Parameters、错误处理
+- [API Reference](docs/API.md) - Topics, Services, Parameters, Error Handling
