@@ -1,17 +1,10 @@
 import os
-from datetime import datetime
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import (
-    DeclareLaunchArgument,
-    ExecuteProcess,
-    IncludeLaunchDescription,
-    OpaqueFunction,
-)
-from launch.conditions import IfCondition
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 
@@ -29,18 +22,6 @@ def generate_launch_description():
         description="Serial number of the WujiHand device",
     )
 
-    record_arg = DeclareLaunchArgument(
-        "record",
-        default_value="false",
-        description="Enable MCAP recording",
-    )
-
-    record_path_arg = DeclareLaunchArgument(
-        "record_path",
-        default_value=os.path.expanduser("~/wujihand_recordings"),
-        description="Path to save MCAP recordings",
-    )
-
     # Read URDF file
     with open(urdf_file, "r") as f:
         robot_description = f.read()
@@ -52,6 +33,7 @@ def generate_launch_description():
         name="robot_state_publisher",
         parameters=[{"robot_description": robot_description}],
         output="screen",
+        emulate_tty=True,
     )
 
     # WujiHand driver launch
@@ -83,49 +65,14 @@ def generate_launch_description():
             }
         ],
         output="screen",
+        emulate_tty=True,
     )
-
-    # MCAP recording function
-    def start_mcap_recording(context):
-        record_enabled = LaunchConfiguration("record").perform(context)
-        if record_enabled.lower() != "true":
-            return []
-
-        record_path = LaunchConfiguration("record_path").perform(context)
-        os.makedirs(record_path, exist_ok=True)
-
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        bag_name = f"wujihand_{timestamp}"
-
-        return [
-            ExecuteProcess(
-                cmd=[
-                    "ros2",
-                    "bag",
-                    "record",
-                    "-o",
-                    os.path.join(record_path, bag_name),
-                    "-s",
-                    "mcap",
-                    "/joint_states",
-                    "/hand_diagnostics",
-                    "/tf",
-                    "/tf_static",
-                ],
-                output="screen",
-            )
-        ]
-
-    mcap_recording = OpaqueFunction(function=start_mcap_recording)
 
     return LaunchDescription(
         [
             serial_number_arg,
-            record_arg,
-            record_path_arg,
             robot_state_publisher_node,
             wujihand_launch,
             foxglove_bridge_node,
-            mcap_recording,
         ]
     )

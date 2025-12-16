@@ -83,10 +83,10 @@ class WujiHandDriverNode : public rclcpp::Node {
   std::string firmware_version_;
   std::atomic<bool> diagnostics_busy_{false};
   std::mutex hardware_mutex_;  // Mutex for thread-safe hardware access
+  std::chrono::steady_clock::time_point last_command_time_;  // Track external commands
 
   // Pre-allocated messages for efficiency
   sensor_msgs::msg::JointState joint_state_msg_;
-  wujihand_msgs::msg::HandDiagnostics diagnostics_msg_;
 
   // Callbacks
   void command_callback(const sensor_msgs::msg::JointState::SharedPtr msg);

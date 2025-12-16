@@ -4,6 +4,7 @@ WujiHand Wave Motion Demo
 
 Demonstrates wave motion control:
 - Wave motion: fingers move in sinusoidal pattern at 100Hz
+- Uses time-based calculation to avoid timer jitter
 
 Usage:
   1. Start the driver: ros2 launch wujihand_bringup wujihand.launch.py
@@ -11,39 +12,23 @@ Usage:
 """
 
 import math
+import time
 
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
 
-JOINT_NAMES = [
-    "finger1_joint1",
-    "finger1_joint2",
-    "finger1_joint3",
-    "finger1_joint4",
-    "finger2_joint1",
-    "finger2_joint2",
-    "finger2_joint3",
-    "finger2_joint4",
-    "finger3_joint1",
-    "finger3_joint2",
-    "finger3_joint3",
-    "finger3_joint4",
-    "finger4_joint1",
-    "finger4_joint2",
-    "finger4_joint3",
-    "finger4_joint4",
-    "finger5_joint1",
-    "finger5_joint2",
-    "finger5_joint3",
-    "finger5_joint4",
-]
-
 
 class WaveDemo(Node):
     def __init__(self):
         super().__init__("wave_demo")
-        self.x = 0.0
+
+        # Record start time for time-based calculation
+        self.start_time = time.perf_counter()
+
+        # Wave parameters
+        self.frequency = 0.5  # Hz (one cycle per 2 seconds)
+        self.amplitude = 0.8  # radians
 
         # Pre-allocate message (no names = faster O(n) processing in driver)
         self.msg = JointState()
@@ -59,8 +44,12 @@ class WaveDemo(Node):
         self.get_logger().info("Press Ctrl+C to stop")
 
     def wave_callback(self):
-        # Sinusoidal wave: y = (1 - cos(x)) * 0.8
-        y = (1.0 - math.cos(self.x)) * 0.8
+        # Use elapsed time for smooth motion (immune to timer jitter)
+        elapsed = time.perf_counter() - self.start_time
+        phase = 2.0 * math.pi * self.frequency * elapsed
+
+        # Sinusoidal wave: y = (1 - cos(phase)) * amplitude
+        y = (1.0 - math.cos(phase)) * self.amplitude
 
         # Thumb (F1): keep still (indices 0-3 stay 0)
 
@@ -72,9 +61,6 @@ class WaveDemo(Node):
             self.msg.position[base + 3] = y  # joint4
 
         self.cmd_pub.publish(self.msg)
-
-        # Increment phase (full cycle per ~2 seconds)
-        self.x += math.pi / 100.0
 
 
 def main(args=None):

@@ -5,20 +5,14 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    serial_number_arg = DeclareLaunchArgument(
-        "serial_number",
-        default_value="",
-        description="Serial number of the WujiHand device",
+    handedness_arg = DeclareLaunchArgument(
+        "handedness",
+        default_value="right",
+        description="Hand type: 'left' or 'right'",
     )
 
     publish_rate_arg = DeclareLaunchArgument(
         "publish_rate", default_value="1000.0", description="State publish rate in Hz"
-    )
-
-    filter_cutoff_freq_arg = DeclareLaunchArgument(
-        "filter_cutoff_freq",
-        default_value="10.0",
-        description="Low-pass filter cutoff frequency in Hz",
     )
 
     diagnostics_rate_arg = DeclareLaunchArgument(
@@ -27,15 +21,14 @@ def generate_launch_description():
         description="Diagnostics publish rate in Hz",
     )
 
-    wujihand_driver_node = Node(
-        package="wujihand_driver",
-        executable="wujihand_driver_node",
+    mock_driver_node = Node(
+        package="wujihand_bringup",
+        executable="mock_driver.py",
         name="wujihand_driver",
         parameters=[
             {
-                "serial_number": LaunchConfiguration("serial_number"),
+                "handedness": LaunchConfiguration("handedness"),
                 "publish_rate": LaunchConfiguration("publish_rate"),
-                "filter_cutoff_freq": LaunchConfiguration("filter_cutoff_freq"),
                 "diagnostics_rate": LaunchConfiguration("diagnostics_rate"),
             }
         ],
@@ -45,10 +38,9 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            serial_number_arg,
+            handedness_arg,
             publish_rate_arg,
-            filter_cutoff_freq_arg,
             diagnostics_rate_arg,
-            wujihand_driver_node,
+            mock_driver_node,
         ]
     )

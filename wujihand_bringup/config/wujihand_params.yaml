@@ -1,6 +1,0 @@
-wujihand_driver:
-  ros__parameters:
-    serial_number: ""
-    publish_rate: 1000.0
-    filter_cutoff_freq: 10.0
-    diagnostics_rate: 10.0

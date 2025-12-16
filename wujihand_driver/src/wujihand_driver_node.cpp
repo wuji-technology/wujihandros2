@@ -85,9 +85,6 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
     joint_state_msg_.name.push_back(JOINT_NAMES[i]);
   }
 
-  // Initialize pre-allocated diagnostics message
-  diagnostics_msg_.handedness = handedness_;
-
   // Create state publish timer (high frequency)
   auto state_period = std::chrono::duration<double>(1.0 / publish_rate_);
   state_timer_ =
@@ -227,6 +224,9 @@ void WujiHandDriverNode::command_callback(const sensor_msgs::msg::JointState::Sh
 
   // Send to hardware
   controller_->set_joint_target_position(positions);
+
+  // Record command time to suppress default command
+  last_command_time_ = std::chrono::steady_clock::now();
 }
 
 void WujiHandDriverNode::publish_state() {
@@ -391,6 +391,13 @@ size_t WujiHandDriverNode::to_flat_index(size_t finger_id, size_t joint_id) {
 
 void WujiHandDriverNode::send_default_command() {
   if (!hardware_connected_ || !controller_) {
+    return;
+  }
+
+  // Skip if we received an external command recently (within 50ms)
+  auto now = std::chrono::steady_clock::now();
+  auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_command_time_);
+  if (elapsed.count() < 50) {
     return;
   }
 
