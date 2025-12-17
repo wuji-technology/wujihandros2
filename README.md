@@ -27,8 +27,8 @@ sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     python3-colcon-common-extensions python3-rosdep
 
 # 安装 wujihandcpp SDK
-wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.3.0/wujihandcpp-1.3.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.3.0-amd64.deb
+wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
+sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
 ```
 
 </details>
@@ -45,8 +45,8 @@ sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     python3-colcon-common-extensions python3-rosdep
 
 # 安装 wujihandcpp SDK
-wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.3.0/wujihandcpp-1.3.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.3.0-amd64.deb
+wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
+sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
 ```
 
 </details>
@@ -72,8 +72,8 @@ sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-sensor-msgs ros-humble-std-msgs
 
 # 安装 SDK 和驱动
-wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.3.0/wujihandcpp-1.3.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.3.0-amd64.deb
+wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
+sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
 sudo dpkg -i ros-humble-wujihand_0.1.0_amd64.deb
 ```
 
@@ -89,8 +89,8 @@ sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-sensor-msgs ros-kilted-std-msgs
 
 # 安装 SDK 和驱动
-wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.3.0/wujihandcpp-1.3.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.3.0-amd64.deb
+wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
+sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
 sudo dpkg -i ros-kilted-wujihand_0.1.0_amd64.deb
 ```
 
