@@ -98,12 +98,6 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
       this->create_wall_timer(std::chrono::duration_cast<std::chrono::nanoseconds>(diag_period),
                               std::bind(&WujiHandDriverNode::publish_diagnostics, this));
 
-  // Create default command timer (100Hz) to keep PDO communication active
-  auto cmd_period = std::chrono::duration<double>(1.0 / 100.0);
-  command_timer_ =
-      this->create_wall_timer(std::chrono::duration_cast<std::chrono::nanoseconds>(cmd_period),
-                              std::bind(&WujiHandDriverNode::send_default_command, this));
-
   RCLCPP_INFO(this->get_logger(), "WujiHand driver started (state: %.1f Hz, diagnostics: %.1f Hz)",
               publish_rate_, diagnostics_rate_);
 }
@@ -225,9 +219,6 @@ void WujiHandDriverNode::command_callback(const sensor_msgs::msg::JointState::Sh
 
   // Send to hardware
   controller_->set_joint_target_position(positions);
-
-  // Record command time to suppress default command
-  last_command_time_ = std::chrono::steady_clock::now();
 }
 
 void WujiHandDriverNode::publish_state() {
@@ -238,9 +229,7 @@ void WujiHandDriverNode::publish_state() {
   auto now = this->now();
 
   // Get actual positions from realtime controller
-  // Note: This returns filtered target positions when using realtime_controller.
-  // For true hardware feedback, we would need to read directly from hardware,
-  // but that would be too slow for 1kHz publishing.
+  // SDK 1.4.0+: TPDO proactively reports actual positions from hardware
   const auto& positions = controller_->get_joint_actual_position();
 
   // Build and publish JointState message
@@ -386,29 +375,6 @@ void WujiHandDriverNode::reset_error_callback(
 
 size_t WujiHandDriverNode::to_flat_index(size_t finger_id, size_t joint_id) {
   return finger_id * JOINTS_PER_FINGER + joint_id;
-}
-
-void WujiHandDriverNode::send_default_command() {
-  if (!hardware_connected_ || !controller_) {
-    return;
-  }
-
-  // Skip if we received an external command recently (within 50ms)
-  auto now = std::chrono::steady_clock::now();
-  auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_command_time_);
-  if (elapsed.count() < 50) {
-    return;
-  }
-
-  // Send current target positions to keep PDO communication active
-  // This triggers the SDK to update actual position feedback
-  double positions[NUM_FINGERS][JOINTS_PER_FINGER];
-  for (size_t f = 0; f < NUM_FINGERS; ++f) {
-    for (size_t j = 0; j < JOINTS_PER_FINGER; ++j) {
-      positions[f][j] = last_target_positions_[to_flat_index(f, j)];
-    }
-  }
-  controller_->set_joint_target_position(positions);
 }
 
 }  // namespace wujihand_driver
