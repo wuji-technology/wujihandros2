@@ -4,6 +4,13 @@
 
 ROS2 driver package for WujiHand dexterous hand, providing high-frequency joint state publishing (1000Hz) and real-time control interface.
 
+## Requirements
+
+| Component | Minimum Version | Description |
+|:----------|:----------------|:------------|
+| wujihandcpp SDK | 1.4.0 | C++ SDK |
+| Firmware | 1.1.0 | TPDO proactive reporting support |
+
 ## Build Status
 
 | ROS2 Version | Ubuntu | Build Status | Deb Package |
