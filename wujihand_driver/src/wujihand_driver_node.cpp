@@ -127,9 +127,9 @@ bool WujiHandDriverNode::connect_hardware() {
     // Enable all joints
     hand_->write<wujihandcpp::data::joint::Enabled>(true);
 
-    // Read handedness
+    // Read handedness (0 = right, 1 = left)
     auto handedness_value = hand_->read<wujihandcpp::data::hand::Handedness>();
-    handedness_ = (handedness_value == 0) ? "left" : "right";
+    handedness_ = (handedness_value == 0) ? "right" : "left";
 
     // Read firmware version
     auto version = hand_->read<wujihandcpp::data::hand::FirmwareVersion>();
