@@ -5,10 +5,14 @@ import subprocess
 import time
 
 from ament_index_python.packages import get_package_share_directory
+from launch import logging
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
+
+# Get launch logger
+_logger = logging.get_logger(__name__)
 
 
 def spawn_robot_state_publisher(context):
@@ -51,10 +55,13 @@ def spawn_robot_state_publisher(context):
         time.sleep(0.5)
 
     if hand_type is None:
-        print("[WARN] Could not detect handedness, defaulting to 'right'")
-        hand_type = "right"
+        _logger.error(
+            f"Could not detect handedness from {driver_node_name} after 15 seconds. "
+            "Please ensure the driver node is running and the device is connected."
+        )
+        return []
 
-    print(f"[INFO] Detected handedness: {hand_type}")
+    _logger.info(f"Detected handedness: {hand_type}")
 
     # Use xacro to process the URDF with prefix
     xacro_file = os.path.join(
@@ -69,11 +76,11 @@ def spawn_robot_state_publisher(context):
             timeout=10.0,
         )
         if result.returncode != 0:
-            print(f"[ERROR] xacro failed: {result.stderr}")
+            _logger.error(f"xacro failed: {result.stderr}")
             return []
         robot_description = result.stdout
     except (subprocess.TimeoutExpired, subprocess.SubprocessError, OSError) as e:
-        print(f"[ERROR] Failed to process xacro: {e}")
+        _logger.error(f"Failed to process xacro: {e}")
         return []
 
     # Return robot_state_publisher node with URDF string as parameter

@@ -59,7 +59,7 @@ def generate_launch_description():
 
     # Auto-detect handedness and spawn robot_state_publisher after driver starts
     auto_detect_action = TimerAction(
-        period=1.0,  # Wait 1 second for driver to start
+        period=2.0,  # Wait 2 seconds for driver to fully initialize
         actions=[OpaqueFunction(function=spawn_robot_state_publisher)],
     )
 
