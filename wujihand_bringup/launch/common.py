@@ -1,46 +1,101 @@
 """Common launch utilities for WujiHand."""
 
 import os
+import subprocess
+import time
 
 from ament_index_python.packages import get_package_share_directory
+from launch import logging
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import Command
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
+
+# Get launch logger
+_logger = logging.get_logger(__name__)
 
 
-def get_robot_state_publisher_node(hand_name, hand_type):
-    """Create robot_state_publisher node with XACRO processing.
+def spawn_robot_state_publisher(context):
+    """Spawn robot_state_publisher after detecting handedness from driver.
+
+    This function polls the driver node for the handedness parameter,
+    then creates a robot_state_publisher with the appropriate URDF.
 
     Args:
-        hand_name: LaunchConfiguration for hand namespace/prefix
-        hand_type: LaunchConfiguration for hand type (left/right)
+        context: Launch context
 
     Returns:
-        Node action for robot_state_publisher
+        List containing robot_state_publisher Node, or empty list on failure
     """
+    hand_name = LaunchConfiguration("hand_name").perform(context)
+    driver_node_name = f"/{hand_name}/wujihand_driver"
     wujihand_description_dir = get_package_share_directory("wujihand_description")
-    xacro_file = os.path.join(wujihand_description_dir, "urdf", "wujihand.urdf.xacro")
-    robot_description_content = Command(
-        [
-            "xacro ",
-            xacro_file,
-            " prefix:=",
-            hand_name,
-            "/",
-            " hand_type:=",
-            hand_type,
-        ]
-    )
 
-    return Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        name="robot_state_publisher",
-        namespace=hand_name,
-        parameters=[{"robot_description": robot_description_content}],
-        output="screen",
-        emulate_tty=True,
+    # Poll for handedness parameter (retry up to 30 times with 0.5s interval)
+    hand_type = None
+    for _ in range(30):
+        try:
+            result = subprocess.run(
+                ["ros2", "param", "get", driver_node_name, "handedness"],
+                capture_output=True,
+                text=True,
+                timeout=2.0,
+            )
+            if result.returncode == 0:
+                output = result.stdout.strip().lower()
+                if "left" in output:
+                    hand_type = "left"
+                    break
+                elif "right" in output:
+                    hand_type = "right"
+                    break
+        except (subprocess.TimeoutExpired, subprocess.SubprocessError, OSError):
+            # Expected during driver startup, continue polling
+            pass
+        time.sleep(0.5)
+
+    if hand_type is None:
+        _logger.error(
+            f"Could not detect handedness from {driver_node_name} after 15 seconds. "
+            "Please ensure the driver node is running and the device is connected."
+        )
+        return []
+
+    _logger.info(f"Detected handedness: {hand_type}")
+
+    # Use xacro to process the URDF with prefix
+    xacro_file = os.path.join(
+        wujihand_description_dir, "urdf", f"{hand_type}.urdf.xacro"
     )
+    prefix = f"{hand_name}/"
+    try:
+        result = subprocess.run(
+            ["xacro", xacro_file, f"prefix:={prefix}"],
+            capture_output=True,
+            text=True,
+            timeout=10.0,
+        )
+        if result.returncode != 0:
+            _logger.error(f"xacro failed: {result.stderr}")
+            return []
+        robot_description = result.stdout
+    except (subprocess.TimeoutExpired, subprocess.SubprocessError, OSError) as e:
+        _logger.error(f"Failed to process xacro: {e}")
+        return []
+
+    # Return robot_state_publisher node with URDF string as parameter
+    return [
+        Node(
+            package="robot_state_publisher",
+            executable="robot_state_publisher",
+            name="robot_state_publisher",
+            namespace=hand_name,
+            parameters=[
+                {"robot_description": ParameterValue(robot_description, value_type=str)}
+            ],
+            output="screen",
+        )
+    ]
 
 
 def get_common_launch_arguments():
@@ -54,11 +109,6 @@ def get_common_launch_arguments():
             "hand_name",
             default_value="hand_0",
             description="Hand name used as namespace and URDF prefix",
-        ),
-        DeclareLaunchArgument(
-            "hand_type",
-            default_value="right",
-            description="Hand type: 'left' or 'right'",
         ),
         DeclareLaunchArgument(
             "serial_number",

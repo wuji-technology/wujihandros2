@@ -5,24 +5,24 @@ import sys
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import (
+    IncludeLaunchDescription,
+    OpaqueFunction,
+    TimerAction,
+)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 # Add launch directory to path for local imports
 sys.path.insert(0, os.path.dirname(__file__))
-from common import get_common_launch_arguments, get_robot_state_publisher_node
+from common import get_common_launch_arguments, spawn_robot_state_publisher
 
 
 def generate_launch_description():
     wujihand_bringup_dir = get_package_share_directory("wujihand_bringup")
 
     hand_name = LaunchConfiguration("hand_name")
-    hand_type = LaunchConfiguration("hand_type")
-
-    # Robot state publisher with XACRO processing
-    robot_state_publisher_node = get_robot_state_publisher_node(hand_name, hand_type)
 
     # WujiHand driver launch
     wujihand_launch = IncludeLaunchDescription(
@@ -57,11 +57,20 @@ def generate_launch_description():
         emulate_tty=True,
     )
 
+    # Auto-detect handedness and spawn robot_state_publisher after driver starts
+    auto_detect_action = TimerAction(
+        period=2.0,  # Wait 2 seconds for driver to fully initialize
+        actions=[OpaqueFunction(function=spawn_robot_state_publisher)],
+    )
+
     return LaunchDescription(
         get_common_launch_arguments()
         + [
-            robot_state_publisher_node,
+            # Always launch driver first
             wujihand_launch,
+            # Auto-detect handedness and spawn robot_state_publisher
+            auto_detect_action,
+            # Foxglove Bridge
             foxglove_bridge_node,
         ]
     )

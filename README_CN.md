@@ -35,7 +35,7 @@ sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
 
 # 安装 wujihandcpp SDK
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
+sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 ```
 
 </details>
@@ -53,7 +53,7 @@ sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
 
 # 安装 wujihandcpp SDK
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
+sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 ```
 
 </details>
@@ -62,9 +62,18 @@ sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
 
 ```bash
 cd wujihandros2
-source env.sh          # 加载环境（自动检测 ROS2 版本）
-colcon build           # 编译
-source env.sh          # 重新加载环境
+
+# Humble
+source /opt/ros/humble/setup.bash
+
+# 或 Kilted
+source /opt/ros/kilted/setup.bash
+
+# 编译
+colcon build
+
+# 加载工作空间
+source install/setup.bash
 ```
 
 ### 方式二：Deb 包安装
@@ -78,13 +87,13 @@ sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-sensor-msgs ros-humble-std-msgs
 
-# 安装 SDK
+# 安装 wujihandcpp SDK
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
+sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 
 # 安装驱动（从 releases 页面下载）
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/releases/download/v0.1.0/ros-humble-wujihand_0.1.0_amd64.deb
-sudo dpkg -i ros-humble-wujihand_0.1.0_amd64.deb
+sudo apt install ./ros-humble-wujihand_0.1.0_amd64.deb
 ```
 
 </details>
@@ -98,13 +107,13 @@ sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-sensor-msgs ros-kilted-std-msgs
 
-# 安装 SDK
+# 安装 wujihandcpp SDK
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
+sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 
 # 安装驱动（从 releases 页面下载）
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/releases/download/v0.1.0/ros-kilted-wujihand_0.1.0_amd64.deb
-sudo dpkg -i ros-kilted-wujihand_0.1.0_amd64.deb
+sudo apt install ./ros-kilted-wujihand_0.1.0_amd64.deb
 ```
 
 </details>
@@ -116,7 +125,8 @@ sudo dpkg -i ros-kilted-wujihand_0.1.0_amd64.deb
 ```bash
 # 终端 1: 启动驱动
 cd wujihandros2
-source env.sh
+source /opt/ros/kilted/setup.bash  # 或 humble
+source install/setup.bash
 ros2 launch wujihand_bringup wujihand.launch.py
 ```
 
@@ -130,8 +140,8 @@ ros2 launch wujihand_bringup wujihand.launch.py
 
 ```bash
 # 终端 2: 查看关节状态
-cd wujihandros2
-source env.sh
+source /opt/ros/kilted/setup.bash  # 或 humble
+source install/setup.bash
 ros2 topic echo /hand_0/joint_states --once
 ```
 
@@ -155,39 +165,33 @@ ros2 run wujihand_bringup wave_demo.py
 | 参数 | 默认值 | 说明 |
 |:-----|:-------|:-----|
 | `hand_name` | `hand_0` | 手的名称，用作 namespace 和 TF 前缀 |
-| `hand_type` | `right` | 手的类型：`left` 或 `right`（决定 URDF 模型） |
 | `serial_number` | `""` | 设备序列号（空则自动检测） |
 | `publish_rate` | `1000.0` | 关节状态发布频率 (Hz) |
 | `filter_cutoff_freq` | `10.0` | 低通滤波截止频率 (Hz) |
 | `diagnostics_rate` | `10.0` | 诊断信息发布频率 (Hz) |
 
-> **说明**: `hand_name` 和 `hand_type` 是两个独立的参数：
-> - `hand_name`: 命名空间和 TF 前缀（如 `hand_0`、`left_hand`、`my_hand`）
-> - `hand_type`: 物理手型，影响加载的 mesh 文件（`left/` 或 `right/` 目录）
+> **说明**: 左右手类型从硬件自动检测，无需手动指定。
 
 ### 单手示例
 
 ```bash
-# 默认：右手，命名空间为 "hand_0"
+# 默认命名空间为 "hand_0"
 ros2 launch wujihand_bringup wujihand_foxglove.launch.py
 
-# 左手，使用默认命名空间
-ros2 launch wujihand_bringup wujihand_foxglove.launch.py hand_type:=left
-
-# 右手，自定义命名空间
+# 自定义命名空间
 ros2 launch wujihand_bringup wujihand_foxglove.launch.py hand_name:=my_hand
 ```
 
 ### 多手配置
 
 ```bash
-# 启动左手
+# 启动左手（通过序列号区分）
 ros2 launch wujihand_bringup wujihand_foxglove.launch.py \
-    hand_name:=left_hand hand_type:=left serial_number:=ABC123 &
+    hand_name:=left_hand serial_number:=ABC123 &
 
 # 启动右手
 ros2 launch wujihand_bringup wujihand_foxglove.launch.py \
-    hand_name:=right_hand hand_type:=right serial_number:=DEF456 &
+    hand_name:=right_hand serial_number:=DEF456 &
 ```
 
 话题结构：
@@ -235,12 +239,30 @@ ros2 topic echo /hand_0/hand_diagnostics   # 诊断信息 (10Hz)
 ### 服务调用
 
 ```bash
-# 使能/失能手指
-ros2 service call /hand_0/set_enabled wujihand_msgs/srv/SetEnabled "{finger_id: 0, enabled: true}"
+# 禁用所有关节（失能）
+ros2 service call /hand_0/set_enabled wujihand_msgs/srv/SetEnabled \
+  "{finger_id: 255, joint_id: 255, enabled: false}"
 
-# 重置错误
-ros2 service call /hand_0/reset_error wujihand_msgs/srv/ResetError "{finger_id: 0}"
+# 启用所有关节（使能）
+ros2 service call /hand_0/set_enabled wujihand_msgs/srv/SetEnabled \
+  "{finger_id: 255, joint_id: 255, enabled: true}"
+
+# 启用单个手指（如食指 finger_id=1）
+ros2 service call /hand_0/set_enabled wujihand_msgs/srv/SetEnabled \
+  "{finger_id: 1, joint_id: 255, enabled: true}"
+
+# 重置所有错误
+ros2 service call /hand_0/reset_error wujihand_msgs/srv/ResetError \
+  "{finger_id: 255, joint_id: 255}"
 ```
+
+**参数说明：**
+| 参数 | 值 | 含义 |
+|:-----|:-----|:------|
+| `finger_id` | 0-4 | 拇指、食指、中指、无名指、小指 |
+| `finger_id` | 255 | 所有手指 |
+| `joint_id` | 0-3 | 各关节 |
+| `joint_id` | 255 | 所有关节 |
 
 ## 文档
 

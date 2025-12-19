@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="wujihand">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="wujihand-right">
 
   <!-- Arguments -->
   <xacro:arg name="prefix" default="" />
-  <xacro:arg name="hand_type" default="right" />
 
   <!-- Properties -->
   <xacro:property name="prefix" value="$(arg prefix)" />
-  <xacro:property name="hand_type" value="$(arg hand_type)" />
 
   <!-- Material -->
   <material name="wujihand_gray">
@@ -25,14 +23,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/palm_link.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/palm_link.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/palm_link_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/palm_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -48,14 +46,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger1_link1.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger1_link1.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger1_link1_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger1_link1.STL" />
       </geometry>
     </collision>
   </link>
@@ -78,14 +76,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger1_link2.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger1_link2.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger1_link2_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger1_link2.STL" />
       </geometry>
     </collision>
   </link>
@@ -108,14 +106,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger1_link3.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger1_link3.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger1_link3_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger1_link3.STL" />
       </geometry>
     </collision>
   </link>
@@ -138,14 +136,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger1_link4.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger1_link4.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger1_link4_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger1_link4.STL" />
       </geometry>
     </collision>
   </link>
@@ -168,14 +166,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger1_tip_link.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger1_tip_link.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger1_tip_link_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger1_tip_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -197,14 +195,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger2_link1.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger2_link1.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger2_link1_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger2_link1.STL" />
       </geometry>
     </collision>
   </link>
@@ -227,14 +225,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger2_link2.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger2_link2.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger2_link2_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger2_link2.STL" />
       </geometry>
     </collision>
   </link>
@@ -257,14 +255,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger2_link3.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger2_link3.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger2_link3_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger2_link3.STL" />
       </geometry>
     </collision>
   </link>
@@ -287,14 +285,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger2_link4.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger2_link4.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger2_link4_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger2_link4.STL" />
       </geometry>
     </collision>
   </link>
@@ -317,14 +315,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger2_tip_link.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger2_tip_link.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger2_tip_link_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger2_tip_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -346,14 +344,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger3_link1.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger3_link1.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger3_link1_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger3_link1.STL" />
       </geometry>
     </collision>
   </link>
@@ -376,14 +374,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger3_link2.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger3_link2.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger3_link2_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger3_link2.STL" />
       </geometry>
     </collision>
   </link>
@@ -406,14 +404,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger3_link3.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger3_link3.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger3_link3_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger3_link3.STL" />
       </geometry>
     </collision>
   </link>
@@ -436,14 +434,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger3_link4.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger3_link4.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger3_link4_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger3_link4.STL" />
       </geometry>
     </collision>
   </link>
@@ -466,14 +464,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger3_tip_link.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger3_tip_link.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger3_tip_link_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger3_tip_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -495,14 +493,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger4_link1.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger4_link1.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger4_link1_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger4_link1.STL" />
       </geometry>
     </collision>
   </link>
@@ -525,14 +523,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger4_link2.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger4_link2.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger4_link2_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger4_link2.STL" />
       </geometry>
     </collision>
   </link>
@@ -555,14 +553,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger4_link3.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger4_link3.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger4_link3_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger4_link3.STL" />
       </geometry>
     </collision>
   </link>
@@ -585,14 +583,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger4_link4.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger4_link4.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger4_link4_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger4_link4.STL" />
       </geometry>
     </collision>
   </link>
@@ -615,14 +613,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger4_tip_link.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger4_tip_link.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger4_tip_link_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger4_tip_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -644,14 +642,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger5_link1.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger5_link1.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger5_link1_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger5_link1.STL" />
       </geometry>
     </collision>
   </link>
@@ -674,14 +672,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger5_link2.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger5_link2.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger5_link2_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger5_link2.STL" />
       </geometry>
     </collision>
   </link>
@@ -704,14 +702,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger5_link3.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger5_link3.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger5_link3_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger5_link3.STL" />
       </geometry>
     </collision>
   </link>
@@ -734,14 +732,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger5_link4.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger5_link4.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger5_link4_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger5_link4.STL" />
       </geometry>
     </collision>
   </link>
@@ -764,14 +762,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger5_tip_link.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger5_tip_link.STL" />
       </geometry>
       <material name="wujihand_gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://wujihand_description/meshes/${hand_type}/finger5_tip_link_collision.STL" />
+        <mesh filename="package://wujihand_description/meshes/right/finger5_tip_link.STL" />
       </geometry>
     </collision>
   </link>

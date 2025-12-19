@@ -2,12 +2,11 @@
 
 ## 命名空间和前缀
 
-所有话题、服务和 TF 坐标系都使用 `hand_name` 参数作为前缀，支持多手同时运行。
+所有话题、服务和 TF 坐标系都使用 `hand_name` 参数作为前缀，支持多手同时运行。左右手类型从硬件自动检测。
 
 | 参数 | 说明 | 影响范围 |
 |-----|------|---------|
 | `hand_name` | 命名空间/前缀 | Topics, Services, TF frames, Joint names |
-| `hand_type` | 手型 (left/right) | URDF mesh 文件路径 |
 
 **默认配置** (`hand_name:=hand_0`):
 ```
@@ -19,13 +18,13 @@ Joints:     hand_0/finger1_joint1, hand_0/finger1_joint2, ...
 
 **多手配置示例**:
 ```bash
-# 左手
+# 左手（通过序列号区分）
 ros2 launch wujihand_bringup wujihand_foxglove.launch.py \
-    hand_name:=left_hand hand_type:=left
+    hand_name:=left_hand serial_number:=ABC123
 
 # 右手
 ros2 launch wujihand_bringup wujihand_foxglove.launch.py \
-    hand_name:=right_hand hand_type:=right
+    hand_name:=right_hand serial_number:=DEF456
 ```
 
 ---
@@ -125,8 +124,9 @@ ros2 service call /hand_0/reset_error wujihand_msgs/srv/ResetError \
 | 参数 | 默认值 | 说明 |
 |-----|-------|------|
 | `hand_name` | `hand_0` | 命名空间和 TF 前缀 |
-| `hand_type` | `right` | 手型：`left` 或 `right`（影响 URDF mesh） |
 | `serial_number` | `""` | 设备序列号，空则自动连接 |
+
+> **说明**：左右手类型从硬件自动检测，无需手动指定。
 
 ### 驱动参数
 
@@ -222,11 +222,33 @@ pkill -f robot_state_publisher
 ros2 launch wujihand_bringup wujihand.launch.py
 ```
 
-### ros2 topic list 卡住
+### ros2 topic/service list 显示不完整
+
+ROS2 daemon 可能缓存了旧的节点信息，导致话题或服务列表不完整：
 
 ```bash
+# 重启 daemon
 ros2 daemon stop
 ros2 daemon start
+sleep 2
+
+# 重新查看
+ros2 topic list
+ros2 service list
+```
+
+### 找不到 set_enabled/reset_error 服务
+
+1. 确认驱动正在运行：
+```bash
+ps aux | grep wujihand_driver
+```
+
+2. 重启 ROS2 daemon（见上）
+
+3. 使用 `--no-daemon` 选项直接查询：
+```bash
+ros2 service list --no-daemon | grep -E "set_enabled|reset_error"
 ```
 
 ### RViz 模型不显示

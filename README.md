@@ -35,7 +35,7 @@ sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
 
 # Install wujihandcpp SDK
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
+sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 ```
 
 </details>
@@ -53,7 +53,7 @@ sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
 
 # Install wujihandcpp SDK
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
+sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 ```
 
 </details>
@@ -62,9 +62,18 @@ sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
 
 ```bash
 cd wujihandros2
-source env.sh          # Load environment (auto-detect ROS2 version)
-colcon build           # Build
-source env.sh          # Reload environment
+
+# Humble
+source /opt/ros/humble/setup.bash
+
+# Or Kilted
+source /opt/ros/kilted/setup.bash
+
+# Build
+colcon build
+
+# Source workspace
+source install/setup.bash
 ```
 
 ### Option 2: Deb Package Installation
@@ -78,13 +87,13 @@ sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-sensor-msgs ros-humble-std-msgs
 
-# Install SDK
+# Install wujihandcpp SDK
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
+sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 
 # Install driver (download from releases page)
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/releases/download/v0.1.0/ros-humble-wujihand_0.1.0_amd64.deb
-sudo dpkg -i ros-humble-wujihand_0.1.0_amd64.deb
+sudo apt install ./ros-humble-wujihand_0.1.0_amd64.deb
 ```
 
 </details>
@@ -98,13 +107,13 @@ sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-sensor-msgs ros-kilted-std-msgs
 
-# Install SDK
+# Install wujihandcpp SDK
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo dpkg -i wujihandcpp-1.4.0-amd64.deb
+sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 
 # Install driver (download from releases page)
 wget https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/releases/download/v0.1.0/ros-kilted-wujihand_0.1.0_amd64.deb
-sudo dpkg -i ros-kilted-wujihand_0.1.0_amd64.deb
+sudo apt install ./ros-kilted-wujihand_0.1.0_amd64.deb
 ```
 
 </details>
@@ -116,7 +125,8 @@ sudo dpkg -i ros-kilted-wujihand_0.1.0_amd64.deb
 ```bash
 # Terminal 1: Launch driver
 cd wujihandros2
-source env.sh
+source /opt/ros/kilted/setup.bash  # or humble
+source install/setup.bash
 ros2 launch wujihand_bringup wujihand.launch.py
 ```
 
@@ -130,8 +140,8 @@ On successful launch, you will see:
 
 ```bash
 # Terminal 2: Check joint states
-cd wujihandros2
-source env.sh
+source /opt/ros/kilted/setup.bash  # or humble
+source install/setup.bash
 ros2 topic echo /hand_0/joint_states --once
 ```
 
@@ -155,39 +165,33 @@ ros2 run wujihand_bringup wave_demo.py
 | Parameter | Default | Description |
 |:----------|:--------|:------------|
 | `hand_name` | `hand_0` | Hand name, used as namespace and TF prefix |
-| `hand_type` | `right` | Hand type: `left` or `right` (determines URDF mesh) |
 | `serial_number` | `""` | Device serial number (empty for auto-detect) |
 | `publish_rate` | `1000.0` | Joint state publish rate in Hz |
 | `filter_cutoff_freq` | `10.0` | Low-pass filter cutoff frequency in Hz |
 | `diagnostics_rate` | `10.0` | Diagnostics publish rate in Hz |
 
-> **Note**: `hand_name` and `hand_type` are independent parameters:
-> - `hand_name`: Namespace and TF prefix (e.g., `hand_0`, `left_hand`, `my_hand`)
-> - `hand_type`: Physical hand model, affects mesh files (`left/` or `right/` directory)
+> **Note**: Left/right hand type is auto-detected from hardware, no manual specification needed.
 
 ### Single Hand Examples
 
 ```bash
-# Default: right hand with namespace "hand_0"
+# Default namespace "hand_0"
 ros2 launch wujihand_bringup wujihand_foxglove.launch.py
 
-# Left hand with default namespace
-ros2 launch wujihand_bringup wujihand_foxglove.launch.py hand_type:=left
-
-# Right hand with custom namespace
+# Custom namespace
 ros2 launch wujihand_bringup wujihand_foxglove.launch.py hand_name:=my_hand
 ```
 
 ### Multi-Hand Setup
 
 ```bash
-# Launch left hand
+# Launch left hand (distinguished by serial number)
 ros2 launch wujihand_bringup wujihand_foxglove.launch.py \
-    hand_name:=left_hand hand_type:=left serial_number:=ABC123 &
+    hand_name:=left_hand serial_number:=ABC123 &
 
 # Launch right hand
 ros2 launch wujihand_bringup wujihand_foxglove.launch.py \
-    hand_name:=right_hand hand_type:=right serial_number:=DEF456 &
+    hand_name:=right_hand serial_number:=DEF456 &
 ```
 
 Topic structure:
@@ -235,12 +239,30 @@ ros2 topic echo /hand_0/hand_diagnostics   # Diagnostics (10Hz)
 ### Service Calls
 
 ```bash
-# Enable/disable finger
-ros2 service call /hand_0/set_enabled wujihand_msgs/srv/SetEnabled "{finger_id: 0, enabled: true}"
+# Disable all joints
+ros2 service call /hand_0/set_enabled wujihand_msgs/srv/SetEnabled \
+  "{finger_id: 255, joint_id: 255, enabled: false}"
 
-# Reset error
-ros2 service call /hand_0/reset_error wujihand_msgs/srv/ResetError "{finger_id: 0}"
+# Enable all joints
+ros2 service call /hand_0/set_enabled wujihand_msgs/srv/SetEnabled \
+  "{finger_id: 255, joint_id: 255, enabled: true}"
+
+# Enable single finger (e.g., index finger_id=1)
+ros2 service call /hand_0/set_enabled wujihand_msgs/srv/SetEnabled \
+  "{finger_id: 1, joint_id: 255, enabled: true}"
+
+# Reset all errors
+ros2 service call /hand_0/reset_error wujihand_msgs/srv/ResetError \
+  "{finger_id: 255, joint_id: 255}"
 ```
+
+**Parameter Reference:**
+| Parameter | Value | Meaning |
+|:----------|:------|:--------|
+| `finger_id` | 0-4 | Thumb, Index, Middle, Ring, Little |
+| `finger_id` | 255 | All fingers |
+| `joint_id` | 0-3 | Individual joints |
+| `joint_id` | 255 | All joints |
 
 ## Documentation
 

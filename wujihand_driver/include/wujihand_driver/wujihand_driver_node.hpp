@@ -66,7 +66,6 @@ class WujiHandDriverNode : public rclcpp::Node {
   // Timers
   rclcpp::TimerBase::SharedPtr state_timer_;
   rclcpp::TimerBase::SharedPtr diagnostics_timer_;
-  rclcpp::TimerBase::SharedPtr command_timer_;  // Default command timer (100Hz)
 
   // Parameters
   std::string serial_number_;
@@ -84,7 +83,6 @@ class WujiHandDriverNode : public rclcpp::Node {
   std::string firmware_version_;
   std::atomic<bool> diagnostics_busy_{false};
   std::mutex hardware_mutex_;  // Mutex for thread-safe hardware access
-  std::chrono::steady_clock::time_point last_command_time_;  // Track external commands
 
   // Pre-allocated messages for efficiency
   sensor_msgs::msg::JointState joint_state_msg_;
@@ -93,7 +91,6 @@ class WujiHandDriverNode : public rclcpp::Node {
   void command_callback(const sensor_msgs::msg::JointState::SharedPtr msg);
   void publish_state();
   void publish_diagnostics();
-  void send_default_command();  // Send default position command to trigger PDO
 
   // Service callbacks
   void set_enabled_callback(const std::shared_ptr<wujihand_msgs::srv::SetEnabled::Request> request,
