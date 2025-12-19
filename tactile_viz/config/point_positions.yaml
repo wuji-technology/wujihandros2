@@ -16,13 +16,15 @@ tactile_viz_node:
         x: 0.0
         y: 0.0
         z: 0.0
-      spacing: 0.005  # 5mm between points
+      spacing: 0.5  # 5mm between points
       rows: 6
       cols: 6
 
     # Visualization parameters
-    arrow_scale: 0.001    # Multiplier from force value to arrow length (meters)
-    sphere_radius: 0.002  # Radius of point spheres (2mm)
+    arrow_scale: 0.1    # Multiplier from force value to arrow length (meters)
+    sphere_radius: 0.2  # Radius of point spheres
+    arrow_shaft_diameter: 0.05  # Arrow shaft diameter
+    arrow_head_diameter: 0.1    # Arrow head diameter
 
 # Future extension: specify individual point positions
 # Uncomment and fill in to override grid positions

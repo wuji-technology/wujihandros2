@@ -35,7 +35,7 @@ endif()
 message(STATUS "Found wujihandcpp: ${WUJIHANDCPP_LIBRARY}")
 message(STATUS "Found wujihandcpp include: ${WUJIHANDCPP_INCLUDE_DIR}")
 
-# Build executable
+# Build tactile_viz_node executable
 add_executable(tactile_viz_node
   src/tactile_viz_node.cpp
 )
@@ -58,8 +58,32 @@ target_link_libraries(tactile_viz_node
   ${WUJIHANDCPP_LIBRARY}
 )
 
-# Install executable
-install(TARGETS tactile_viz_node
+# Build tactile_stats_node executable
+add_executable(tactile_stats_node
+  src/tactile_stats_node.cpp
+)
+
+target_include_directories(tactile_stats_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+  ${WUJIHANDCPP_INCLUDE_DIR}
+)
+
+# Set default log directory to workspace/tactile_viz/log
+target_compile_definitions(tactile_stats_node PRIVATE
+  TACTILE_VIZ_LOG_DIR="${CMAKE_CURRENT_SOURCE_DIR}/log"
+)
+
+ament_target_dependencies(tactile_stats_node
+  rclcpp
+)
+
+target_link_libraries(tactile_stats_node
+  ${WUJIHANDCPP_LIBRARY}
+)
+
+# Install executables
+install(TARGETS tactile_viz_node tactile_stats_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
