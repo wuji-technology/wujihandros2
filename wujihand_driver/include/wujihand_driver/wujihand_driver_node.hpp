@@ -22,6 +22,7 @@
 #include <string>
 #include <thread>
 #include <wujihandcpp/data/hand.hpp>
+#include <wujihandcpp/data/helper.hpp>
 #include <wujihandcpp/data/joint.hpp>
 #include <wujihandcpp/device/controller.hpp>
 #include <wujihandcpp/device/hand.hpp>

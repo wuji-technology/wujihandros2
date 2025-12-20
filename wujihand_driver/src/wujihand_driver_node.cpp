@@ -43,6 +43,12 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
   // Initialize last target positions
   last_target_positions_.fill(0.0);
 
+  // Declare read-only parameters for hardware info (must be declared before connect_hardware)
+  this->declare_parameter("handedness", std::string(""));
+  this->declare_parameter("firmware_version", std::string(""));
+  this->declare_parameter("joint_upper_limits", std::vector<double>(NUM_JOINTS, 0.0));
+  this->declare_parameter("joint_lower_limits", std::vector<double>(NUM_JOINTS, 0.0));
+
   // Connect to hardware
   if (!connect_hardware()) {
     RCLCPP_ERROR(this->get_logger(), "Failed to connect to WujiHand hardware");
@@ -68,14 +74,6 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
   reset_error_srv_ = this->create_service<wujihand_msgs::srv::ResetError>(
       "reset_error", std::bind(&WujiHandDriverNode::reset_error_callback, this,
                                std::placeholders::_1, std::placeholders::_2));
-
-  // Declare read-only parameters for hardware info
-  this->declare_parameter("handedness", handedness_);
-  this->declare_parameter("firmware_version", firmware_version_);
-  this->declare_parameter("joint_upper_limits", std::vector<double>(joint_upper_limits_.begin(),
-                                                                    joint_upper_limits_.end()));
-  this->declare_parameter("joint_lower_limits", std::vector<double>(joint_lower_limits_.begin(),
-                                                                    joint_lower_limits_.end()));
 
   // Initialize pre-allocated JointState message
   // Joint names are prefixed with joint_prefix_ to match URDF link/joint names
@@ -125,11 +123,10 @@ bool WujiHandDriverNode::connect_hardware() {
     auto handedness_value = hand_->read<wujihandcpp::data::hand::Handedness>();
     handedness_ = (handedness_value == 0) ? "right" : "left";
 
-    // Read firmware version
-    auto version = hand_->read<wujihandcpp::data::hand::FirmwareVersion>();
-    firmware_version_ = std::to_string((version >> 16) & 0xFF) + "." +
-                        std::to_string((version >> 8) & 0xFF) + "." +
-                        std::to_string(version & 0xFF);
+    // Read full system firmware version (unified version for the entire system)
+    auto version = hand_->read<wujihandcpp::data::hand::FullSystemFirmwareVersion>();
+    wujihandcpp::data::FirmwareVersionData version_data(version);
+    firmware_version_ = version_data.to_string();
 
     // Set joint limits (placeholder values - could be read from hardware in future)
     for (size_t i = 0; i < NUM_JOINTS; ++i) {
@@ -156,6 +153,14 @@ bool WujiHandDriverNode::connect_hardware() {
 
     // Send initial target position to start realtime communication
     controller_->set_joint_target_position(initial_positions);
+
+    // Update ROS parameters with hardware info so other nodes can query them
+    this->set_parameter(rclcpp::Parameter("handedness", handedness_));
+    this->set_parameter(rclcpp::Parameter("firmware_version", firmware_version_));
+    this->set_parameter(rclcpp::Parameter("joint_upper_limits",
+        std::vector<double>(joint_upper_limits_.begin(), joint_upper_limits_.end())));
+    this->set_parameter(rclcpp::Parameter("joint_lower_limits",
+        std::vector<double>(joint_lower_limits_.begin(), joint_lower_limits_.end())));
 
     hardware_connected_ = true;
     RCLCPP_INFO(this->get_logger(), "Connected to WujiHand (%s)", handedness_.c_str());
