@@ -34,8 +34,8 @@ jobs:
                   apt-get install -y wget dpkg-dev
 
                   # Install wujihandcpp SDK
-                  wget -q https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.3.0/wujihandcpp-1.3.0-amd64.deb
-                  dpkg -i --force-overwrite wujihandcpp-1.3.0-amd64.deb || true
+                  wget -q https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
+                  dpkg -i --force-overwrite wujihandcpp-1.4.0-amd64.deb || true
                   apt-get install -f -y
 
                   # Install ROS dependencies

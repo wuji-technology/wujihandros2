@@ -70,7 +70,7 @@ Version: ${VERSION}-1
 Section: misc
 Priority: optional
 Architecture: ${ARCH}
-Depends: ros-${ROS_DISTRO}-ros-base, ros-${ROS_DISTRO}-sensor-msgs, ros-${ROS_DISTRO}-std-msgs, ros-${ROS_DISTRO}-robot-state-publisher, wujihandcpp (>= 1.3.0)
+Depends: ros-${ROS_DISTRO}-ros-base, ros-${ROS_DISTRO}-sensor-msgs, ros-${ROS_DISTRO}-std-msgs, ros-${ROS_DISTRO}-robot-state-publisher, wujihandcpp (>= 1.4.0)
 Maintainer: Wuji Technology <support@wuji.com>
 Description: WujiHand ROS2 Driver
  ROS2 driver package for WujiHand dexterous hand.
