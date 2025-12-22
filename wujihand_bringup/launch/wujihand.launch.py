@@ -2,6 +2,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
@@ -36,6 +37,11 @@ def generate_launch_description():
     # Build joint_prefix as "hand_name/" to match XACRO-generated URDF
     joint_prefix = PythonExpression(["'", LaunchConfiguration("hand_name"), "/'"])
 
+    # Force serial_number to string type (workaround for ROS2 Kilted type inference)
+    serial_number_str = ParameterValue(
+        LaunchConfiguration("serial_number"), value_type=str
+    )
+
     wujihand_driver_node = Node(
         package="wujihand_driver",
         executable="wujihand_driver_node",
@@ -43,7 +49,7 @@ def generate_launch_description():
         namespace=LaunchConfiguration("hand_name"),
         parameters=[
             {
-                "serial_number": LaunchConfiguration("serial_number"),
+                "serial_number": serial_number_str,
                 "joint_prefix": joint_prefix,
                 "publish_rate": LaunchConfiguration("publish_rate"),
                 "filter_cutoff_freq": LaunchConfiguration("filter_cutoff_freq"),
