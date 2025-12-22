@@ -15,8 +15,8 @@ WujiHand 灵巧手 ROS2 驱动包，提供高频关节状态发布（1000Hz）�
 
 | ROS2 版本 | Ubuntu | 构建状态 | Deb 包 |
 |:---------:|:------:|:--------:|:------:|
-| Humble | 22.04 | [![CI](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) | [下载](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/releases) |
-| Kilted | 24.04 | [![CI](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) | [下载](https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/releases) |
+| Humble | 22.04 | [![CI](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) | [下载](https://github.com/wuji-technology/wujihandros2/releases) |
+| Kilted | 24.04 | [![CI](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) | [下载](https://github.com/wuji-technology/wujihandros2/releases) |
 
 ## 安装
 
@@ -34,7 +34,7 @@ sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     python3-colcon-common-extensions python3-rosdep
 
 # 安装 wujihandcpp SDK
-wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
+wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
 sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 ```
 
@@ -52,7 +52,7 @@ sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     python3-colcon-common-extensions python3-rosdep
 
 # 安装 wujihandcpp SDK
-wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
+wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
 sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 ```
 
@@ -88,11 +88,11 @@ sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-sensor-msgs ros-humble-std-msgs
 
 # 安装 wujihandcpp SDK
-wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
+wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
 sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 
 # 安装驱动（从 releases 页面下载）
-wget https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/releases/download/v0.1.0/ros-humble-wujihand_0.1.0_amd64.deb
+wget https://github.com/wuji-technology/wujihandros2/releases/download/v0.1.0/ros-humble-wujihand_0.1.0_amd64.deb
 sudo apt install ./ros-humble-wujihand_0.1.0_amd64.deb
 ```
 
@@ -108,11 +108,11 @@ sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-sensor-msgs ros-kilted-std-msgs
 
 # 安装 wujihandcpp SDK
-wget https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
+wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
 sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 
 # 安装驱动（从 releases 页面下载）
-wget https://github.com/Wuji-Technology-Co-Ltd/wujihandros2/releases/download/v0.1.0/ros-kilted-wujihand_0.1.0_amd64.deb
+wget https://github.com/wuji-technology/wujihandros2/releases/download/v0.1.0/ros-kilted-wujihand_0.1.0_amd64.deb
 sudo apt install ./ros-kilted-wujihand_0.1.0_amd64.deb
 ```
 

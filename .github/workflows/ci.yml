@@ -32,7 +32,7 @@ jobs:
                   apt-get install -y wget
 
                   # Install wujihandcpp SDK
-                  wget -q https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
+                  wget -q https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
                   dpkg -i --force-overwrite wujihandcpp-1.4.0-amd64.deb || true
                   apt-get install -f -y
 
@@ -83,7 +83,7 @@ jobs:
                   apt-get install -y wget dpkg-dev
 
                   # Install wujihandcpp SDK
-                  wget -q https://github.com/Wuji-Technology-Co-Ltd/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
+                  wget -q https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
                   dpkg -i --force-overwrite wujihandcpp-1.4.0-amd64.deb || true
                   apt-get install -f -y
 
