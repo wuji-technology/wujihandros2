@@ -21,28 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- ROS2 driver for Wuji Hand with wujihandcpp SDK 1.4.0
 - Multi-hand namespace support with XACRO for running multiple hands simultaneously
-- Adapt driver to wujihandcpp SDK 1.4.0
-- CI build status badge in README
+- Auto-detect handedness from hardware (0=right, 1=left)
 - Separate xacro files for left and right hand models
-
-### Fixed
-
-- Auto-detect handedness from hardware instead of manual configuration
-- Correct handedness mapping (0=right, 1=left)
-- Rename deb package to ros-{distro}-wujihand
-- Fix release.yml workflow and clean up repository
-
-### Changed
-
-- Use ROS logging API and improve error handling in launch files
-- Extract spawn_robot_state_publisher to common.py
-- Remove hand_type parameter, use auto-detect only
-- Update README structure and installation instructions
-
-### Removed
-
-- Simulation-related code and documentation
+- ROS logging API integration and error handling in launch files
+- Common utility module (spawn_robot_state_publisher)
+- CI build status badge in README
 
 [Unreleased]: https://github.com/wuji-technology/wujihandros2/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/wuji-technology/wujihandros2/releases/tag/v0.1.0
