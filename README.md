@@ -1,26 +1,69 @@
-# WujiHand ROS2
+# wujihandros2
 
-**English** | [中文](README_CN.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Release](https://img.shields.io/github/v/release/wuji-technology/wujihandros2)](https://github.com/wuji-technology/wujihandros2/releases)
 
-ROS2 driver package for WujiHand dexterous hand, providing high-frequency joint state publishing (1000Hz) and real-time control interface.
-
-## Requirements
-
-| Component | Minimum Version | Description |
-|:----------|:----------------|:------------|
-| wujihandcpp SDK | 1.4.0 | C++ SDK |
-| Firmware | 1.1.0 | TPDO proactive reporting support |
-
-## Build Status
+ROS2 driver package for Wuji Hand dexterous hand. Provides 1000Hz joint state publishing, real-time control interface, multi-hand setup, and RViz visualization.
 
 | ROS2 Version | Ubuntu | Build Status | Deb Package |
 |:------------:|:------:|:------------:|:-----------:|
-| Humble | 22.04 | [![CI](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) | [Download](https://github.com/wuji-technology/wujihandros2/releases) |
-| Kilted | 24.04 | [![CI](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml?query=branch%3Amaster) | [Download](https://github.com/wuji-technology/wujihandros2/releases) |
+| Humble | 22.04 | [![CI](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml) | [Download](https://github.com/wuji-technology/wujihandros2/releases) |
+| Kilted | 24.04 | [![CI](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/wuji-technology/wujihandros2/actions/workflows/ci.yml) | [Download](https://github.com/wuji-technology/wujihandros2/releases) |
 
-## Installation
+## Table of Contents
 
-### Option 1: Build from Source
+- [Repository Structure](#repository-structure)
+- [Usage](#usage)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running](#running)
+    - [1. Quick Start](#1-quick-start)
+    - [2. Launch Options](#2-launch-options)
+    - [3. Basic Usage](#3-basic-usage)
+- [Appendix](#appendix)
+- [Contact](#contact)
+
+## Repository Structure
+
+```text
+├── wujihand_bringup/
+│   ├── launch/
+│   └── scripts/
+├── wujihand_description/
+│   ├── meshes/
+│   ├── rviz/
+│   └── urdf/
+├── wujihand_driver/
+│   ├── include/
+│   └── src/
+├── wujihand_msgs/
+│   ├── msg/
+│   └── srv/
+├── docs/
+└── README.md
+```
+
+### Directory Description
+
+| Directory | Description |
+|-----------|-------------|
+| `wujihand_bringup/` | Launch files and demo scripts for starting the driver |
+| `wujihand_description/` | URDF models, mesh files, and RViz configuration |
+| `wujihand_driver/` | Core ROS2 driver node for hardware communication |
+| `wujihand_msgs/` | Custom ROS2 message and service definitions |
+| `docs/` | API reference and documentation |
+
+## Usage
+
+### Prerequisites
+
+| Component | Minimum Version | Description |
+|:----------|:----------------|:------------|
+| wujihandcpp SDK | 1.4.0 | C++ SDK for hardware communication |
+| Firmware | 1.1.0 | TPDO proactive reporting support |
+
+### Installation
+
+#### Option 1: Build from Source
 
 <details>
 <summary><b>Ubuntu 22.04 (Humble)</b></summary>
@@ -30,8 +73,7 @@ ROS2 driver package for WujiHand dexterous hand, providing high-frequency joint 
 sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-rviz2 ros-humble-sensor-msgs ros-humble-std-msgs \
-    ros-humble-xacro ros-humble-foxglove-bridge \
-    python3-colcon-common-extensions python3-rosdep
+    ros-humble-xacro python3-colcon-common-extensions python3-rosdep
 
 # Install wujihandcpp SDK
 wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
@@ -48,8 +90,7 @@ sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-rviz2 ros-kilted-sensor-msgs ros-kilted-std-msgs \
-    ros-kilted-xacro ros-kilted-foxglove-bridge \
-    python3-colcon-common-extensions python3-rosdep
+    ros-kilted-xacro python3-colcon-common-extensions python3-rosdep
 
 # Install wujihandcpp SDK
 wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
@@ -61,22 +102,14 @@ sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 **Build and Run:**
 
 ```bash
+git clone https://github.com/wuji-technology/wujihandros2.git
 cd wujihandros2
-
-# Humble
-source /opt/ros/humble/setup.bash
-
-# Or Kilted
-source /opt/ros/kilted/setup.bash
-
-# Build
+source /opt/ros/humble/setup.bash  # or kilted
 colcon build
-
-# Source workspace
 source install/setup.bash
 ```
 
-### Option 2: Deb Package Installation
+#### Option 2: Deb Package
 
 <details>
 <summary><b>Ubuntu 22.04 (Humble)</b></summary>
@@ -91,7 +124,7 @@ sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
 wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
 sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 
-# Install driver (download from releases page)
+# Install driver
 wget https://github.com/wuji-technology/wujihandros2/releases/download/v0.1.0/ros-humble-wujihand_0.1.0_amd64.deb
 sudo apt install ./ros-humble-wujihand_0.1.0_amd64.deb
 ```
@@ -111,90 +144,89 @@ sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
 wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
 sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 
-# Install driver (download from releases page)
+# Install driver
 wget https://github.com/wuji-technology/wujihandros2/releases/download/v0.1.0/ros-kilted-wujihand_0.1.0_amd64.deb
 sudo apt install ./ros-kilted-wujihand_0.1.0_amd64.deb
 ```
 
 </details>
 
-## Quick Start
+### Running
 
-### Launch Driver
+#### 1. Quick Start
+
+**Launch Driver:**
 
 ```bash
-# Terminal 1: Launch driver
 cd wujihandros2
-source /opt/ros/kilted/setup.bash  # or humble
+source /opt/ros/humble/setup.bash  # or kilted
 source install/setup.bash
 ros2 launch wujihand_bringup wujihand.launch.py
 ```
 
-On successful launch, you will see:
-```
+On successful launch:
+
+```text
 [wujihand_driver]: Connected to WujiHand (right)
 [wujihand_driver]: WujiHand driver started (state: 1000.0 Hz, diagnostics: 10.0 Hz)
 ```
 
-### Verify Operation
+**Verify Operation:**
 
 ```bash
-# Terminal 2: Check joint states
-source /opt/ros/kilted/setup.bash  # or humble
-source install/setup.bash
 ros2 topic echo /hand_0/joint_states --once
 ```
 
-### Run Demo
+**Run Demo:**
 
 ```bash
 # Wave demo: fingers bend and extend sequentially
 ros2 run wujihand_bringup wave_demo.py
 ```
 
-## Launch Options
+#### 2. Launch Options
 
 | Command | Description |
 |:--------|:------------|
 | `ros2 launch wujihand_bringup wujihand.launch.py` | Driver only |
 | `ros2 launch wujihand_bringup wujihand_rviz.launch.py` | Driver + RViz visualization |
-| `ros2 launch wujihand_bringup wujihand_foxglove.launch.py` | Driver + Foxglove/Lichtblick |
 
-### Launch Parameters
+**Launch Parameters:**
 
 | Parameter | Default | Description |
 |:----------|:--------|:------------|
-| `hand_name` | `hand_0` | Hand name, used as namespace and TF prefix |
+| `hand_name` | `hand_0` | Namespace and TF prefix |
 | `serial_number` | `""` | Device serial number (empty for auto-detect) |
-| `publish_rate` | `1000.0` | Joint state publish rate in Hz |
-| `filter_cutoff_freq` | `10.0` | Low-pass filter cutoff frequency in Hz |
-| `diagnostics_rate` | `10.0` | Diagnostics publish rate in Hz |
+| `publish_rate` | `1000.0` | Joint state publish rate (Hz) |
+| `filter_cutoff_freq` | `10.0` | Low-pass filter cutoff frequency (Hz) |
+| `diagnostics_rate` | `10.0` | Diagnostics publish rate (Hz) |
 
 > **Note**: Left/right hand type is auto-detected from hardware, no manual specification needed.
 
-### Single Hand Examples
+**Single-Hand Examples:**
 
 ```bash
 # Default namespace "hand_0"
-ros2 launch wujihand_bringup wujihand_foxglove.launch.py
+ros2 launch wujihand_bringup wujihand.launch.py
 
 # Custom namespace
-ros2 launch wujihand_bringup wujihand_foxglove.launch.py hand_name:=my_hand
+ros2 launch wujihand_bringup wujihand.launch.py hand_name:=my_hand
 ```
 
-### Multi-Hand Setup
+**Multi-Hand Setup:**
 
 ```bash
 # Launch left hand (distinguished by serial number)
-ros2 launch wujihand_bringup wujihand_foxglove.launch.py \
+ros2 launch wujihand_bringup wujihand.launch.py \
     hand_name:=left_hand serial_number:=ABC123 &
 
 # Launch right hand
-ros2 launch wujihand_bringup wujihand_foxglove.launch.py \
+ros2 launch wujihand_bringup wujihand.launch.py \
     hand_name:=right_hand serial_number:=DEF456 &
 ```
 
 Topic structure:
+
 ```
 /left_hand/joint_states
 /left_hand/joint_commands
@@ -208,6 +240,7 @@ Topic structure:
 ```
 
 TF frames (with prefix):
+
 ```
 left_hand/palm_link
 left_hand/finger1_link1
@@ -217,11 +250,9 @@ right_hand/finger1_link1
 ...
 ```
 
-> **Note**: Foxglove launch supports both [Foxglove Studio](https://foxglove.dev/) and [Lichtblick](https://github.com/Lichtblick-Suite/lichtblick), connect to `ws://localhost:8765`
+#### 3. Basic Usage
 
-## Basic Usage
-
-### Control Commands
+**Control Commands:**
 
 ```bash
 # Move all joints to zero position
@@ -229,14 +260,14 @@ ros2 topic pub /hand_0/joint_commands sensor_msgs/msg/JointState \
   "{position: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]}" --once
 ```
 
-### View Status
+**View Status:**
 
 ```bash
 ros2 topic echo /hand_0/joint_states       # Joint states (1000Hz)
 ros2 topic echo /hand_0/hand_diagnostics   # Diagnostics (10Hz)
 ```
 
-### Service Calls
+**Service Calls:**
 
 ```bash
 # Disable all joints
@@ -257,6 +288,7 @@ ros2 service call /hand_0/reset_error wujihand_msgs/srv/ResetError \
 ```
 
 **Parameter Reference:**
+
 | Parameter | Value | Meaning |
 |:----------|:------|:--------|
 | `finger_id` | 0-4 | Thumb, Index, Middle, Ring, Little |
@@ -264,6 +296,10 @@ ros2 service call /hand_0/reset_error wujihand_msgs/srv/ResetError \
 | `joint_id` | 0-3 | Individual joints |
 | `joint_id` | 255 | All joints |
 
-## Documentation
+## Appendix
 
-- [API Reference](docs/API.md) - Topics, Services, Parameters, Error Handling
+- **API Reference**: [docs/API.md](docs/API.md) - Topics, Services, Parameters, Error Handling
+
+## Contact
+
+For any questions, please contact [support@wuji.tech](mailto:support@wuji.tech).
