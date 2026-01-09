@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Populate `effort` field in `joint_states` topic with real-time effort data
+- Add `effort_limits` field to `HandDiagnostics` message for monitoring effort limit settings
+
 ### Fixed
 
 - Use SensorDataQoS for joint_commands subscription to support high-frequency control
@@ -14,10 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade wujihandcpp SDK to v1.4.0
 - Fix RViz display and parameter issues
 - Force serial_number to string type for ROS2 Kilted compatibility
-
-### Changed
-
-- Rename organization from Wuji-Technology-Co-Ltd to wuji-technology
 
 ## [0.1.0] - 2025-12-19
 

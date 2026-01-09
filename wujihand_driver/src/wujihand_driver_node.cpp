@@ -284,6 +284,7 @@ void WujiHandDriverNode::publish_diagnostics() {
             msg.joint_temperatures[idx] = joint.read<wujihandcpp::data::joint::Temperature>();
             msg.error_codes[idx] = joint.read<wujihandcpp::data::joint::ErrorCode>();
             msg.enabled[idx] = (msg.error_codes[idx] == 0);
+            msg.effort_limits[idx] = joint.read<wujihandcpp::data::joint::EffortLimit>();
           }
         }
       }
