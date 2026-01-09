@@ -18,8 +18,8 @@ tactile_viz_node:
     arrow_z_offset: 0.02         # Z offset for arrows to avoid mesh overlap (20mm)
 
     # Smoothing and filtering
-    smoothing_alpha: 1.0    # Exponential smoothing factor (0-1, lower = smoother)
+    smoothing_alpha: 0.1    # Exponential smoothing factor (0-1, lower = smoother)
     force_threshold_show: 5.0   # Force threshold to show arrow
     force_threshold_hide: 2.0   # Force threshold to hide arrow (hysteresis)
     max_slope: 500.0        # Max allowed slope (N/s), reject data with higher rate of change
-    slope_filter_enabled: false  # Enable/disable slope-based outlier filtering
+    slope_filter_enabled: true  # Enable/disable slope-based outlier filtering

@@ -11,6 +11,7 @@
 #include <cmath>
 #include <array>
 #include <memory>
+#include <vector>
 
 #include <rclcpp/rclcpp.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
@@ -31,6 +32,7 @@ public:
     {
         // Declare parameters
         declare_parameter("frame_id", "base_link");  // Match URDF base frame
+        declare_parameter("raw_frame_id", "raw_base_link");  // Separate frame for raw data
         declare_parameter("publish_rate", 100.0);
         declare_parameter("position_scale", 10.0);  // Scale factor for point positions (10x to match URDF)
         declare_parameter("arrow_scale", 0.01);    // Scale factor for force to arrow length
@@ -45,6 +47,7 @@ public:
 
         // Get parameters
         frame_id_ = get_parameter("frame_id").as_string();
+        raw_frame_id_ = get_parameter("raw_frame_id").as_string();
         double publish_rate = get_parameter("publish_rate").as_double();
         position_scale_ = get_parameter("position_scale").as_double();
         arrow_scale_ = get_parameter("arrow_scale").as_double();
@@ -62,18 +65,21 @@ public:
             smoothed_forces_[i] = {0.0, 0.0, 0.0};
             prev_raw_forces_[i] = {0.0, 0.0, 0.0};
             arrow_visible_[i] = false;
+            raw_arrow_visible_[i] = false;
         }
         smoothed_resultant_ = {0.0, 0.0, 0.0};
         prev_raw_resultant_ = {0.0, 0.0, 0.0};
         resultant_visible_ = false;
+        raw_resultant_visible_ = false;
         last_update_time_ = now();
         first_sample_ = true;
 
         // Initialize point positions from URDF definition (36_points.urdf)
         initialize_urdf_positions();
 
-        // Create publisher
-        marker_pub_ = create_publisher<MarkerArray>("/tactile_markers", 100);
+        // Create publishers for raw and filtered markers
+        raw_marker_pub_ = create_publisher<MarkerArray>("/tactile_markers_raw", 100);
+        filtered_marker_pub_ = create_publisher<MarkerArray>("/tactile_markers_filtered", 100);
 
         // Create static transform broadcaster for tactile frame
         tf_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
@@ -86,9 +92,11 @@ public:
             std::bind(&TactileVizNode::timer_callback, this));
 
         RCLCPP_INFO(get_logger(), "Tactile visualization node started");
-        RCLCPP_INFO(get_logger(), "  Frame ID: %s", frame_id_.c_str());
+        RCLCPP_INFO(get_logger(), "  Filtered frame: %s", frame_id_.c_str());
+        RCLCPP_INFO(get_logger(), "  Raw frame: %s", raw_frame_id_.c_str());
         RCLCPP_INFO(get_logger(), "  Publish rate: %.1f Hz", publish_rate);
-        RCLCPP_INFO(get_logger(), "  Position scale: %.1fx (force arrows only, spheres from URDF)", position_scale_);
+        RCLCPP_INFO(get_logger(), "  Raw markers topic: /tactile_markers_raw (frame: %s)", raw_frame_id_.c_str());
+        RCLCPP_INFO(get_logger(), "  Filtered markers topic: /tactile_markers_filtered (frame: %s)", frame_id_.c_str());
     }
 
 private:
@@ -161,18 +169,37 @@ private:
     }
 
     void publish_static_transform() {
-        geometry_msgs::msg::TransformStamped transform;
-        transform.header.stamp = now();
-        transform.header.frame_id = "world";
-        transform.child_frame_id = "base_link";  // Always publish world -> base_link
-        transform.transform.translation.x = 0.0;
-        transform.transform.translation.y = 0.0;
-        transform.transform.translation.z = 0.0;
-        transform.transform.rotation.x = 0.0;
-        transform.transform.rotation.y = 0.0;
-        transform.transform.rotation.z = 0.0;
-        transform.transform.rotation.w = 1.0;
-        tf_broadcaster_->sendTransform(transform);
+        std::vector<geometry_msgs::msg::TransformStamped> transforms;
+
+        // Transform for filtered data: world -> base_link (at origin)
+        geometry_msgs::msg::TransformStamped filtered_tf;
+        filtered_tf.header.stamp = now();
+        filtered_tf.header.frame_id = "world";
+        filtered_tf.child_frame_id = frame_id_;
+        filtered_tf.transform.translation.x = 0.0;
+        filtered_tf.transform.translation.y = 0.0;
+        filtered_tf.transform.translation.z = 0.0;
+        filtered_tf.transform.rotation.x = 0.0;
+        filtered_tf.transform.rotation.y = 0.0;
+        filtered_tf.transform.rotation.z = 0.0;
+        filtered_tf.transform.rotation.w = 1.0;
+        transforms.push_back(filtered_tf);
+
+        // Transform for raw data: world -> raw_base_link (offset to the right)
+        geometry_msgs::msg::TransformStamped raw_tf;
+        raw_tf.header.stamp = now();
+        raw_tf.header.frame_id = "world";
+        raw_tf.child_frame_id = raw_frame_id_;
+        raw_tf.transform.translation.x = 3.0;  // Offset 3 meters to the right
+        raw_tf.transform.translation.y = 0.0;
+        raw_tf.transform.translation.z = 0.0;
+        raw_tf.transform.rotation.x = 0.0;
+        raw_tf.transform.rotation.y = 0.0;
+        raw_tf.transform.rotation.z = 0.0;
+        raw_tf.transform.rotation.w = 1.0;
+        transforms.push_back(raw_tf);
+
+        tf_broadcaster_->sendTransform(transforms);
     }
 
     void timer_callback() {
@@ -182,7 +209,8 @@ private:
             return;
         }
 
-        MarkerArray markers;
+        MarkerArray raw_markers;
+        MarkerArray filtered_markers;
         auto stamp = now();
 
         // Calculate time delta for slope calculation
@@ -192,10 +220,15 @@ private:
 
         // Create markers for each tactile point
         for (int i = 0; i < 36; ++i) {
-            // Get raw values
-            double raw_x = data.points[i].x;
-            double raw_y = data.points[i].y;
-            double raw_z = data.points[i].z;
+            // Get raw values (before any filtering)
+            double orig_raw_x = data.points[i].x;
+            double orig_raw_y = data.points[i].y;
+            double orig_raw_z = data.points[i].z;
+
+            // Values after slope filter
+            double raw_x = orig_raw_x;
+            double raw_y = orig_raw_y;
+            double raw_z = orig_raw_z;
 
             // Apply slope-based outlier filter
             if (slope_filter_enabled_ && !first_sample_) {
@@ -217,7 +250,59 @@ private:
             smoothed_forces_[i].z = smoothing_alpha_ * raw_z +
                                     (1.0 - smoothing_alpha_) * smoothed_forces_[i].z;
 
-            // Get smoothed force vector
+            // ===== RAW MARKERS (before filtering) =====
+            double raw_magnitude = std::sqrt(orig_raw_x*orig_raw_x + orig_raw_y*orig_raw_y + orig_raw_z*orig_raw_z);
+
+            // Color based on force magnitude (blue -> green -> red)
+            double raw_normalized = std::min(raw_magnitude / 500.0, 1.0);
+            float raw_color_r = static_cast<float>(raw_normalized);
+            float raw_color_g = static_cast<float>(1.0 - std::abs(raw_normalized - 0.5) * 2);
+            float raw_color_b = static_cast<float>(1.0 - raw_normalized);
+
+            Marker raw_arrow;
+            raw_arrow.header.frame_id = raw_frame_id_;
+            raw_arrow.header.stamp = stamp;
+            raw_arrow.ns = "raw_tactile_forces";
+            raw_arrow.id = i;
+            raw_arrow.type = Marker::ARROW;
+
+            // Hysteresis logic for raw arrows
+            if (!raw_arrow_visible_[i] && raw_magnitude > force_threshold_show_) {
+                raw_arrow_visible_[i] = true;
+            } else if (raw_arrow_visible_[i] && raw_magnitude < force_threshold_hide_) {
+                raw_arrow_visible_[i] = false;
+            }
+
+            if (raw_arrow_visible_[i] && raw_magnitude > 0.001) {
+                raw_arrow.action = Marker::ADD;
+
+                geometry_msgs::msg::Point start, end;
+                start.x = point_positions_[i].x;
+                start.y = point_positions_[i].y;
+                start.z = point_positions_[i].z + arrow_z_offset_;
+
+                double arrow_length = raw_magnitude * arrow_scale_;
+                end.x = start.x + (orig_raw_x / raw_magnitude) * arrow_length;
+                end.y = start.y + (orig_raw_y / raw_magnitude) * arrow_length;
+                end.z = start.z + (orig_raw_z / raw_magnitude) * arrow_length;
+
+                raw_arrow.points.push_back(start);
+                raw_arrow.points.push_back(end);
+
+                raw_arrow.scale.x = arrow_shaft_diameter_;
+                raw_arrow.scale.y = arrow_head_diameter_;
+                raw_arrow.scale.z = arrow_head_diameter_;
+
+                raw_arrow.color.r = raw_color_r;
+                raw_arrow.color.g = raw_color_g;
+                raw_arrow.color.b = raw_color_b;
+                raw_arrow.color.a = 1.0f;
+            } else {
+                raw_arrow.action = Marker::DELETE;
+            }
+            raw_markers.markers.push_back(raw_arrow);
+
+            // ===== FILTERED MARKERS (after smoothing) =====
             double fx = smoothed_forces_[i].x;
             double fy = smoothed_forces_[i].y;
             double fz = smoothed_forces_[i].z;
@@ -229,71 +314,107 @@ private:
             float color_g = static_cast<float>(1.0 - std::abs(normalized_force - 0.5) * 2);
             float color_b = static_cast<float>(1.0 - normalized_force);
 
-            // Arrow marker for force vector (spheres are shown via URDF)
             Marker arrow;
             arrow.header.frame_id = frame_id_;
             arrow.header.stamp = stamp;
-            arrow.ns = "tactile_forces";
+            arrow.ns = "filtered_tactile_forces";
             arrow.id = i;
             arrow.type = Marker::ARROW;
 
-            // Hysteresis logic: show when exceeds threshold_show, hide when below threshold_hide
+            // Hysteresis logic for filtered arrows
             if (!arrow_visible_[i] && force_magnitude > force_threshold_show_) {
                 arrow_visible_[i] = true;
             } else if (arrow_visible_[i] && force_magnitude < force_threshold_hide_) {
                 arrow_visible_[i] = false;
             }
 
-            if (arrow_visible_[i]) {  // Show arrow based on hysteresis state
+            if (arrow_visible_[i] && force_magnitude > 0.001) {
                 arrow.action = Marker::ADD;
 
-                // Arrow defined by start and end points (with z offset to avoid mesh overlap)
                 geometry_msgs::msg::Point start, end;
                 start.x = point_positions_[i].x;
                 start.y = point_positions_[i].y;
                 start.z = point_positions_[i].z + arrow_z_offset_;
 
-                // Scale force to arrow length
                 double arrow_length = force_magnitude * arrow_scale_;
-                double norm = force_magnitude;
-                end.x = start.x + (fx / norm) * arrow_length;
-                end.y = start.y + (fy / norm) * arrow_length;
-                end.z = start.z + (fz / norm) * arrow_length;
+                end.x = start.x + (fx / force_magnitude) * arrow_length;
+                end.y = start.y + (fy / force_magnitude) * arrow_length;
+                end.z = start.z + (fz / force_magnitude) * arrow_length;
 
                 arrow.points.push_back(start);
                 arrow.points.push_back(end);
 
-                // Arrow shaft and head dimensions
-                arrow.scale.x = arrow_shaft_diameter_;  // Shaft diameter
-                arrow.scale.y = arrow_head_diameter_;   // Head diameter
-                arrow.scale.z = arrow_head_diameter_;   // Head length
+                arrow.scale.x = arrow_shaft_diameter_;
+                arrow.scale.y = arrow_head_diameter_;
+                arrow.scale.z = arrow_head_diameter_;
 
-                // Color based on force magnitude
                 arrow.color.r = color_r;
                 arrow.color.g = color_g;
                 arrow.color.b = color_b;
                 arrow.color.a = 1.0f;
             } else {
-                // Delete marker when force is too small
                 arrow.action = Marker::DELETE;
             }
-            markers.markers.push_back(arrow);
+            filtered_markers.markers.push_back(arrow);
         }
 
-        // Add resultant force marker at center
-        Marker resultant_arrow;
-        resultant_arrow.header.frame_id = frame_id_;
-        resultant_arrow.header.stamp = stamp;
-        resultant_arrow.ns = "resultant_force";
-        resultant_arrow.id = 0;
-        resultant_arrow.type = Marker::ARROW;
+        // ===== RAW RESULTANT FORCE =====
+        double orig_raw_rfx = data.resultant_force.x;
+        double orig_raw_rfy = data.resultant_force.y;
+        double orig_raw_rfz = data.resultant_force.z;
 
-        // Get raw resultant values and apply slope filter
-        double raw_rfx = data.resultant_force.x;
-        double raw_rfy = data.resultant_force.y;
-        double raw_rfz = data.resultant_force.z;
+        Marker raw_resultant_arrow;
+        raw_resultant_arrow.header.frame_id = raw_frame_id_;
+        raw_resultant_arrow.header.stamp = stamp;
+        raw_resultant_arrow.ns = "raw_resultant_force";
+        raw_resultant_arrow.id = 0;
+        raw_resultant_arrow.type = Marker::ARROW;
 
-        // Apply slope filter to resultant (check first_sample_ before it's cleared)
+        double raw_rf_magnitude = std::sqrt(orig_raw_rfx*orig_raw_rfx + orig_raw_rfy*orig_raw_rfy + orig_raw_rfz*orig_raw_rfz);
+
+        // Hysteresis for raw resultant force
+        if (!raw_resultant_visible_ && raw_rf_magnitude > force_threshold_show_) {
+            raw_resultant_visible_ = true;
+        } else if (raw_resultant_visible_ && raw_rf_magnitude < force_threshold_hide_) {
+            raw_resultant_visible_ = false;
+        }
+
+        if (raw_resultant_visible_ && raw_rf_magnitude > 0.001) {
+            raw_resultant_arrow.action = Marker::ADD;
+
+            geometry_msgs::msg::Point start, end;
+            start.x = point_positions_[17].x;
+            start.y = point_positions_[17].y;
+            start.z = point_positions_[17].z + arrow_z_offset_;
+
+            double arrow_length = raw_rf_magnitude * arrow_scale_ * 2;
+            end.x = start.x + (orig_raw_rfx / raw_rf_magnitude) * arrow_length;
+            end.y = start.y + (orig_raw_rfy / raw_rf_magnitude) * arrow_length;
+            end.z = start.z + (orig_raw_rfz / raw_rf_magnitude) * arrow_length;
+
+            raw_resultant_arrow.points.push_back(start);
+            raw_resultant_arrow.points.push_back(end);
+
+            raw_resultant_arrow.scale.x = arrow_shaft_diameter_ * 2;
+            raw_resultant_arrow.scale.y = arrow_head_diameter_ * 2;
+            raw_resultant_arrow.scale.z = arrow_head_diameter_ * 2;
+
+            // Orange for raw resultant force
+            raw_resultant_arrow.color.r = 1.0f;
+            raw_resultant_arrow.color.g = 0.5f;
+            raw_resultant_arrow.color.b = 0.0f;
+            raw_resultant_arrow.color.a = 1.0f;
+        } else {
+            raw_resultant_arrow.action = Marker::DELETE;
+        }
+        raw_markers.markers.push_back(raw_resultant_arrow);
+
+        // ===== FILTERED RESULTANT FORCE =====
+        double raw_rfx = orig_raw_rfx;
+        double raw_rfy = orig_raw_rfy;
+        double raw_rfz = orig_raw_rfz;
+
+        // Apply slope filter to resultant
         if (slope_filter_enabled_ && !first_sample_) {
             raw_rfx = filter_by_slope(raw_rfx, prev_raw_resultant_.x, dt);
             raw_rfy = filter_by_slope(raw_rfy, prev_raw_resultant_.y, dt);
@@ -312,6 +433,13 @@ private:
         smoothed_resultant_.z = smoothing_alpha_ * raw_rfz +
                                 (1.0 - smoothing_alpha_) * smoothed_resultant_.z;
 
+        Marker resultant_arrow;
+        resultant_arrow.header.frame_id = frame_id_;
+        resultant_arrow.header.stamp = stamp;
+        resultant_arrow.ns = "filtered_resultant_force";
+        resultant_arrow.id = 0;
+        resultant_arrow.type = Marker::ARROW;
+
         double rfx = smoothed_resultant_.x;
         double rfy = smoothed_resultant_.y;
         double rfz = smoothed_resultant_.z;
@@ -324,16 +452,15 @@ private:
             resultant_visible_ = false;
         }
 
-        if (resultant_visible_) {
+        if (resultant_visible_ && rf_magnitude > 0.001) {
             resultant_arrow.action = Marker::ADD;
 
             geometry_msgs::msg::Point start, end;
-            // Center of grid (with z offset to avoid mesh overlap)
-            start.x = point_positions_[17].x;  // Approximately center
+            start.x = point_positions_[17].x;
             start.y = point_positions_[17].y;
             start.z = point_positions_[17].z + arrow_z_offset_;
 
-            double arrow_length = rf_magnitude * arrow_scale_ * 2;  // Larger for resultant
+            double arrow_length = rf_magnitude * arrow_scale_ * 2;
             end.x = start.x + (rfx / rf_magnitude) * arrow_length;
             end.y = start.y + (rfy / rf_magnitude) * arrow_length;
             end.z = start.z + (rfz / rf_magnitude) * arrow_length;
@@ -341,11 +468,11 @@ private:
             resultant_arrow.points.push_back(start);
             resultant_arrow.points.push_back(end);
 
-            resultant_arrow.scale.x = arrow_shaft_diameter_ * 2;  // Thicker shaft
+            resultant_arrow.scale.x = arrow_shaft_diameter_ * 2;
             resultant_arrow.scale.y = arrow_head_diameter_ * 2;
             resultant_arrow.scale.z = arrow_head_diameter_ * 2;
 
-            // Yellow for resultant force
+            // Yellow for filtered resultant force
             resultant_arrow.color.r = 1.0f;
             resultant_arrow.color.g = 1.0f;
             resultant_arrow.color.b = 0.0f;
@@ -353,12 +480,14 @@ private:
         } else {
             resultant_arrow.action = Marker::DELETE;
         }
-        markers.markers.push_back(resultant_arrow);
+        filtered_markers.markers.push_back(resultant_arrow);
 
-        // Mark first sample as processed (after all slope filtering is done)
+        // Mark first sample as processed
         first_sample_ = false;
 
-        marker_pub_->publish(markers);
+        // Publish both marker arrays
+        raw_marker_pub_->publish(raw_markers);
+        filtered_marker_pub_->publish(filtered_markers);
     }
 
     /**
@@ -387,12 +516,14 @@ private:
     wujihandcpp::protocol::Handler handler_;
 
     // ROS2 components
-    rclcpp::Publisher<MarkerArray>::SharedPtr marker_pub_;
+    rclcpp::Publisher<MarkerArray>::SharedPtr raw_marker_pub_;
+    rclcpp::Publisher<MarkerArray>::SharedPtr filtered_marker_pub_;
     rclcpp::TimerBase::SharedPtr timer_;
     std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_broadcaster_;
 
     // Configuration
     std::string frame_id_;
+    std::string raw_frame_id_;
     double position_scale_;
     double arrow_scale_;
     double arrow_shaft_diameter_;
@@ -418,8 +549,10 @@ private:
     Force prev_raw_resultant_;
 
     // Hysteresis state for arrow visibility
-    std::array<bool, 36> arrow_visible_;
+    std::array<bool, 36> arrow_visible_;      // Filtered arrows
+    std::array<bool, 36> raw_arrow_visible_;  // Raw arrows
     bool resultant_visible_;
+    bool raw_resultant_visible_;
 
     // Time tracking for slope calculation
     rclcpp::Time last_update_time_;

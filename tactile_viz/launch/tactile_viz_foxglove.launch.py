@@ -2,9 +2,17 @@
 Launch file for tactile visualization with Foxglove
 
 Starts:
-- tactile_viz_node: Reads tactile data and publishes MarkerArray
-- robot_state_publisher: Publishes 36_points.urdf for reference visualization
+- tactile_viz_node: Reads tactile data and publishes MarkerArray (raw & filtered)
+- robot_state_publisher (x2): Publishes URDF for both raw and filtered visualization
 - foxglove_bridge: WebSocket bridge for Foxglove/Lichtblick (ws://localhost:8765)
+
+In Foxglove, add two 3D Panels:
+- Panel 1 (Filtered):
+  - URDF topic: /filtered/robot_description
+  - Markers topic: /tactile_markers_filtered
+- Panel 2 (Raw):
+  - URDF topic: /raw/robot_description
+  - Markers topic: /tactile_markers_raw
 """
 
 import os
@@ -13,6 +21,30 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+
+
+def create_raw_urdf(urdf_content: str) -> str:
+    """Create raw version of URDF by prefixing all link/joint names with 'raw_'"""
+    raw_urdf = urdf_content
+
+    # Update robot name
+    raw_urdf = raw_urdf.replace('name="36_points_robot"', 'name="36_points_robot_raw"')
+
+    # Replace link names with quotes to avoid partial matches
+    # e.g., "point_link_1" won't match in "point_link_10"
+    for i in range(1, 37):
+        raw_urdf = raw_urdf.replace(f'"point_link_{i}"', f'"raw_point_link_{i}"')
+
+    # Replace joint names with quotes
+    for i in range(1, 37):
+        raw_urdf = raw_urdf.replace(f'"joint_{i}"', f'"raw_joint_{i}"')
+
+    # Replace other link/joint names (these have unique names, no partial match risk)
+    raw_urdf = raw_urdf.replace('"base_link"', '"raw_base_link"')
+    raw_urdf = raw_urdf.replace('"surface_link"', '"raw_surface_link"')
+    raw_urdf = raw_urdf.replace('"surface_joint"', '"raw_surface_joint"')
+
+    return raw_urdf
 
 
 def generate_launch_description():
@@ -25,7 +57,10 @@ def generate_launch_description():
 
     # Read URDF file content
     with open(urdf_file, 'r') as f:
-        robot_description = f.read()
+        robot_description_filtered = f.read()
+
+    # Create raw version with all links/joints prefixed with 'raw_'
+    robot_description_raw = create_raw_urdf(robot_description_filtered)
 
     # Declare launch arguments
     port_arg = DeclareLaunchArgument(
@@ -34,14 +69,32 @@ def generate_launch_description():
         description='Foxglove bridge WebSocket port'
     )
 
-    # Robot state publisher for URDF visualization
-    robot_state_publisher_node = Node(
+    # Robot state publisher for FILTERED visualization
+    # Also publishes to /robot_description for default Foxglove compatibility
+    robot_state_publisher_filtered = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
+        namespace='filtered',
         output='screen',
         parameters=[{
-            'robot_description': robot_description,
+            'robot_description': robot_description_filtered,
+            'publish_frequency': 10.0,
+        }],
+        remappings=[
+            ('robot_description', '/robot_description'),  # Also publish to global topic
+        ],
+    )
+
+    # Robot state publisher for RAW visualization
+    robot_state_publisher_raw = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        namespace='raw',
+        output='screen',
+        parameters=[{
+            'robot_description': robot_description_raw,
             'publish_frequency': 10.0,
         }],
     )
@@ -67,7 +120,9 @@ def generate_launch_description():
                 'send_buffer_limit': 50000000,
                 'use_sim_time': False,
                 'max_qos_depth': 10,
-                'asset_uri_allowlist': ['package://.*'],
+                'capabilities': ['clientPublish', 'services', 'connectionGraph', 'assets'],
+                'asset_uri_allowlist': ['package://.*', 'file://.*'],
+                'include_hidden': False,
             }
         ],
         output='screen',
@@ -75,7 +130,8 @@ def generate_launch_description():
 
     return LaunchDescription([
         port_arg,
-        robot_state_publisher_node,
+        robot_state_publisher_filtered,
+        robot_state_publisher_raw,
         tactile_viz_node,
         foxglove_bridge_node,
     ])
