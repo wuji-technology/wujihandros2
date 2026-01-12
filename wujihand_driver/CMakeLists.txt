@@ -34,6 +34,10 @@ if(NOT WUJIHANDCPP_LIBRARY OR NOT WUJIHANDCPP_INCLUDE_DIR)
     message(FATAL_ERROR "wujihandcpp not found. Please install the wujihandcpp deb package or build wujihandpy first.")
 endif()
 
+if(NOT WUJIHANDCPP_SPDLOG_LIBRARY)
+    message(FATAL_ERROR "spdlog not found. Please install libspdlog-dev or build wujihandpy first.")
+endif()
+
 find_package(Threads REQUIRED)
 
 message(STATUS "Found wujihandcpp: ${WUJIHANDCPP_LIBRARY}")
