@@ -31,17 +31,14 @@ jobs:
             - name: Install dependencies
               run: |
                   apt-get update
-                  apt-get install -y wget dpkg-dev jq
+                  apt-get install -y wget dpkg-dev
 
                   # Install wujihandcpp SDK (latest release including pre-release)
-                  # Use Accept header to get clean JSON, filter control chars with sed
-                  LATEST_RELEASE=$(curl -sH "Accept: application/vnd.github+json" \
+                  # Use grep to extract URL directly, avoiding jq parse issues with control chars
+                  DEB_URL=$(curl -sH "Accept: application/vnd.github+json" \
                     https://api.github.com/repos/wuji-technology/wujihandpy/releases | \
-                    sed 's/[\x00-\x1F]//g' | \
-                    jq -r '[.[] | select(.assets[]?.name | contains("wujihandcpp"))] | .[0]')
-                  VERSION=$(echo "$LATEST_RELEASE" | jq -r '.tag_name')
-                  DEB_URL=$(echo "$LATEST_RELEASE" | jq -r '.assets[] | select(.name | endswith("-amd64.deb")) | .browser_download_url')
-                  echo "Installing wujihandcpp $VERSION"
+                    grep -oP '"browser_download_url":\s*"\K[^"]*wujihandcpp[^"]*-amd64\.deb' | head -1)
+                  echo "Installing wujihandcpp from: $DEB_URL"
                   wget -q "$DEB_URL"
                   dpkg -i --force-overwrite wujihandcpp-*.deb || true
                   apt-get install -f -y
