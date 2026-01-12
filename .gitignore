@@ -18,7 +18,3 @@ __pycache__/
 
 # Environment setup script (local only)
 env.sh
-
-# Claude-mem generated files (keep root CLAUDE.md)
-**/CLAUDE.md
-!/CLAUDE.md

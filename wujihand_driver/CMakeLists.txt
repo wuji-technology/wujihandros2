@@ -15,26 +15,13 @@ find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(wujihand_msgs REQUIRED)
 
-# Find wujihandcpp
-# Set WUJIHANDPY_SOURCE_DIR env var to use source build, otherwise uses system install
-if(DEFINED ENV{WUJIHANDPY_SOURCE_DIR})
-    set(WUJIHANDPY_DIR "$ENV{WUJIHANDPY_SOURCE_DIR}")
-    set(WUJIHANDCPP_INCLUDE_DIR "${WUJIHANDPY_DIR}/wujihandcpp/include")
-    set(WUJIHANDCPP_LIBRARY "${WUJIHANDPY_DIR}/build/wujihandcpp/libwujihandcpp.a")
-    set(WUJIHANDCPP_SPDLOG_LIBRARY "${WUJIHANDPY_DIR}/build/_deps/spdlog-build/libspdlog.a")
-    message(STATUS "Using wujihandcpp from source: ${WUJIHANDPY_DIR}")
-else()
-    find_library(WUJIHANDCPP_LIBRARY NAMES wujihandcpp PATHS /usr/lib)
-    find_path(WUJIHANDCPP_INCLUDE_DIR NAMES wujihandcpp/device/hand.hpp PATHS /usr/include)
-    find_library(WUJIHANDCPP_SPDLOG_LIBRARY NAMES spdlog PATHS /usr/lib)
-    message(STATUS "Using system-installed wujihandcpp")
-endif()
+# Find wujihandcpp (installed via deb package)
+find_library(WUJIHANDCPP_LIBRARY NAMES wujihandcpp PATHS /usr/lib)
+find_path(WUJIHANDCPP_INCLUDE_DIR NAMES wujihandcpp/device/hand.hpp PATHS /usr/include)
 
 if(NOT WUJIHANDCPP_LIBRARY OR NOT WUJIHANDCPP_INCLUDE_DIR)
-    message(FATAL_ERROR "wujihandcpp not found. Please install the wujihandcpp deb package or build wujihandpy first.")
+    message(FATAL_ERROR "wujihandcpp not found. Please install the wujihandcpp deb package.")
 endif()
-
-find_package(Threads REQUIRED)
 
 message(STATUS "Found wujihandcpp: ${WUJIHANDCPP_LIBRARY}")
 message(STATUS "Found wujihandcpp include: ${WUJIHANDCPP_INCLUDE_DIR}")
@@ -60,9 +47,6 @@ ament_target_dependencies(wujihand_driver_node
 
 target_link_libraries(wujihand_driver_node
   ${WUJIHANDCPP_LIBRARY}
-  ${WUJIHANDCPP_SPDLOG_LIBRARY}
-  usb-1.0
-  Threads::Threads
 )
 
 # Install

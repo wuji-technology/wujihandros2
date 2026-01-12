@@ -13,4 +13,3 @@ float32 input_voltage
 float32[20] joint_temperatures
 uint32[20] error_codes
 bool[20] enabled
-float32[20] effort_limits  # Current effort limit settings (A)
