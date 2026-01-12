@@ -22,3 +22,6 @@ env.sh
 # Claude-mem generated files (keep root CLAUDE.md)
 **/CLAUDE.md
 !/CLAUDE.md
+
+# Local config files (environment-specific)
+*.local.*

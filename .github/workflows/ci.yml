@@ -36,8 +36,14 @@ jobs:
                   DEB_URL=$(curl -sH "Accept: application/vnd.github+json" \
                     https://api.github.com/repos/wuji-technology/wujihandpy/releases | \
                     grep -oP '"browser_download_url":\s*"\K[^"]*wujihandcpp[^"]*-amd64\.deb' | head -1)
+
+                  if [ -z "$DEB_URL" ]; then
+                    echo "Error: Failed to get wujihandcpp deb URL from GitHub releases"
+                    exit 1
+                  fi
+
                   echo "Installing wujihandcpp from: $DEB_URL"
-                  wget -q "$DEB_URL"
+                  wget -q "$DEB_URL" || { echo "Error: Failed to download $DEB_URL"; exit 1; }
                   dpkg -i --force-overwrite wujihandcpp-*.deb || true
                   apt-get install -f -y
 
@@ -87,9 +93,20 @@ jobs:
                   apt-get update
                   apt-get install -y wget dpkg-dev
 
-                  # Install wujihandcpp SDK
-                  wget -q https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-                  dpkg -i --force-overwrite wujihandcpp-1.4.0-amd64.deb || true
+                  # Install wujihandcpp SDK (latest release including pre-release)
+                  # Use grep to extract URL directly, avoiding jq parse issues with control chars
+                  DEB_URL=$(curl -sH "Accept: application/vnd.github+json" \
+                    https://api.github.com/repos/wuji-technology/wujihandpy/releases | \
+                    grep -oP '"browser_download_url":\s*"\K[^"]*wujihandcpp[^"]*-amd64\.deb' | head -1)
+
+                  if [ -z "$DEB_URL" ]; then
+                    echo "Error: Failed to get wujihandcpp deb URL from GitHub releases"
+                    exit 1
+                  fi
+
+                  echo "Installing wujihandcpp from: $DEB_URL"
+                  wget -q "$DEB_URL" || { echo "Error: Failed to download $DEB_URL"; exit 1; }
+                  dpkg -i --force-overwrite wujihandcpp-*.deb || true
                   apt-get install -f -y
 
                   # Install ROS dependencies

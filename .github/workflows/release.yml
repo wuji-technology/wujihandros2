@@ -38,8 +38,14 @@ jobs:
                   DEB_URL=$(curl -sH "Accept: application/vnd.github+json" \
                     https://api.github.com/repos/wuji-technology/wujihandpy/releases | \
                     grep -oP '"browser_download_url":\s*"\K[^"]*wujihandcpp[^"]*-amd64\.deb' | head -1)
+
+                  if [ -z "$DEB_URL" ]; then
+                    echo "Error: Failed to get wujihandcpp deb URL from GitHub releases"
+                    exit 1
+                  fi
+
                   echo "Installing wujihandcpp from: $DEB_URL"
-                  wget -q "$DEB_URL"
+                  wget -q "$DEB_URL" || { echo "Error: Failed to download $DEB_URL"; exit 1; }
                   dpkg -i --force-overwrite wujihandcpp-*.deb || true
                   apt-get install -f -y
 
