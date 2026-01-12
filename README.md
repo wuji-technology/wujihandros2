@@ -56,10 +56,16 @@ ROS2 driver package for Wuji Hand dexterous hand. Provides 1000Hz joint state pu
 
 ### Prerequisites
 
-| Component | Minimum Version | Description |
-|:----------|:----------------|:------------|
-| wujihandcpp SDK | 1.4.0 | C++ SDK for hardware communication |
-| Firmware | 1.1.0 | TPDO proactive reporting support |
+| Component | Minimum Version |
+|:----------|:----------------|
+| wujihandcpp | 1.5.0 |
+| Firmware | 1.2.0 |
+
+```bash
+# Install wujihandcpp SDK
+wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.5.0/wujihandcpp-1.5.0-amd64.deb
+sudo apt install ./wujihandcpp-1.5.0-amd64.deb
+```
 
 ### Installation
 
@@ -74,10 +80,6 @@ sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-rviz2 ros-humble-sensor-msgs ros-humble-std-msgs \
     ros-humble-xacro python3-colcon-common-extensions python3-rosdep
-
-# Install wujihandcpp SDK
-wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 ```
 
 </details>
@@ -91,10 +93,6 @@ sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-rviz2 ros-kilted-sensor-msgs ros-kilted-std-msgs \
     ros-kilted-xacro python3-colcon-common-extensions python3-rosdep
-
-# Install wujihandcpp SDK
-wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 ```
 
 </details>
@@ -120,10 +118,6 @@ sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-sensor-msgs ros-humble-std-msgs
 
-# Install wujihandcpp SDK
-wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo apt install ./wujihandcpp-1.4.0-amd64.deb
-
 # Install driver
 wget https://github.com/wuji-technology/wujihandros2/releases/download/v0.1.0/ros-humble-wujihand_0.1.0_amd64.deb
 sudo apt install ./ros-humble-wujihand_0.1.0_amd64.deb
@@ -139,10 +133,6 @@ sudo apt install ./ros-humble-wujihand_0.1.0_amd64.deb
 sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-sensor-msgs ros-kilted-std-msgs
-
-# Install wujihandcpp SDK
-wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 
 # Install driver
 wget https://github.com/wuji-technology/wujihandros2/releases/download/v0.1.0/ros-kilted-wujihand_0.1.0_amd64.deb

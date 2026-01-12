@@ -31,11 +31,16 @@ jobs:
             - name: Install dependencies
               run: |
                   apt-get update
-                  apt-get install -y wget dpkg-dev
+                  apt-get install -y wget dpkg-dev jq
 
-                  # Install wujihandcpp SDK
-                  wget -q https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-                  dpkg -i --force-overwrite wujihandcpp-1.4.0-amd64.deb || true
+                  # Install wujihandcpp SDK (latest release including pre-release)
+                  LATEST_RELEASE=$(curl -s https://api.github.com/repos/wuji-technology/wujihandpy/releases | \
+                    jq -r '[.[] | select(.assets[].name | contains("wujihandcpp"))] | .[0]')
+                  VERSION=$(echo "$LATEST_RELEASE" | jq -r '.tag_name')
+                  DEB_URL=$(echo "$LATEST_RELEASE" | jq -r '.assets[] | select(.name | endswith("-amd64.deb")) | .browser_download_url')
+                  echo "Installing wujihandcpp $VERSION"
+                  wget -q "$DEB_URL"
+                  dpkg -i --force-overwrite wujihandcpp-*.deb || true
                   apt-get install -f -y
 
                   # Install ROS dependencies

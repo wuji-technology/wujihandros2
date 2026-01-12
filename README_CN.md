@@ -6,10 +6,16 @@ WujiHand 灵巧手 ROS2 驱动包，提供高频关节状态发布（1000Hz）�
 
 ## 系统要求
 
-| 组件 | 最低版本 | 说明 |
-|:-----|:--------|:-----|
-| wujihandcpp SDK | 1.4.0 | C++ SDK |
-| 固件版本 | 1.1.0 | 支持 TPDO 主动上报 |
+| 组件 | 最低版本 |
+|:-----|:--------|
+| wujihandcpp | 1.5.0 |
+| 固件版本 | 1.2.0 |
+
+```bash
+# 安装 wujihandcpp SDK
+wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.5.0/wujihandcpp-1.5.0-amd64.deb
+sudo apt install ./wujihandcpp-1.5.0-amd64.deb
+```
 
 ## 构建状态
 
@@ -32,10 +38,6 @@ sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-rviz2 ros-humble-sensor-msgs ros-humble-std-msgs \
     ros-humble-xacro ros-humble-foxglove-bridge \
     python3-colcon-common-extensions python3-rosdep
-
-# 安装 wujihandcpp SDK
-wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 ```
 
 </details>
@@ -50,10 +52,6 @@ sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-rviz2 ros-kilted-sensor-msgs ros-kilted-std-msgs \
     ros-kilted-xacro ros-kilted-foxglove-bridge \
     python3-colcon-common-extensions python3-rosdep
-
-# 安装 wujihandcpp SDK
-wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 ```
 
 </details>
@@ -87,10 +85,6 @@ sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-sensor-msgs ros-humble-std-msgs
 
-# 安装 wujihandcpp SDK
-wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo apt install ./wujihandcpp-1.4.0-amd64.deb
-
 # 安装驱动（从 releases 页面下载）
 wget https://github.com/wuji-technology/wujihandros2/releases/download/v0.1.0/ros-humble-wujihand_0.1.0_amd64.deb
 sudo apt install ./ros-humble-wujihand_0.1.0_amd64.deb
@@ -106,10 +100,6 @@ sudo apt install ./ros-humble-wujihand_0.1.0_amd64.deb
 sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-sensor-msgs ros-kilted-std-msgs
-
-# 安装 wujihandcpp SDK
-wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.4.0/wujihandcpp-1.4.0-amd64.deb
-sudo apt install ./wujihandcpp-1.4.0-amd64.deb
 
 # 安装驱动（从 releases 页面下载）
 wget https://github.com/wuji-technology/wujihandros2/releases/download/v0.1.0/ros-kilted-wujihand_0.1.0_amd64.deb
