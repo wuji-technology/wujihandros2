@@ -61,9 +61,9 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
   diagnostics_pub_ =
       this->create_publisher<wujihand_msgs::msg::HandDiagnostics>("hand_diagnostics", 10);
 
-  // Create subscriber for joint commands (using standard JointState)
+  // Create subscriber for joint commands (using SensorDataQoS for high-frequency data)
   cmd_sub_ = this->create_subscription<sensor_msgs::msg::JointState>(
-      "joint_commands", 10,
+      "joint_commands", rclcpp::SensorDataQoS(),
       std::bind(&WujiHandDriverNode::command_callback, this, std::placeholders::_1));
 
   // Create services
@@ -80,6 +80,7 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
   // This allows multiple hands to have unique joint names (e.g., hand_0/finger1_joint1)
   joint_state_msg_.name.reserve(NUM_JOINTS);
   joint_state_msg_.position.resize(NUM_JOINTS, 0.0);
+  joint_state_msg_.effort.resize(NUM_JOINTS, 0.0);
   for (size_t i = 0; i < NUM_JOINTS; ++i) {
     joint_state_msg_.name.push_back(joint_prefix_ + JOINT_NAMES[i]);
   }
@@ -195,7 +196,7 @@ void WujiHandDriverNode::command_callback(const sensor_msgs::msg::JointState::Sh
 
   // Build position array from JointState message
   // Support both named joints and position-only arrays
-  double positions[NUM_FINGERS][JOINTS_PER_FINGER];
+  double positions[NUM_FINGERS][JOINTS_PER_FINGER] = {};
 
   if (!msg->name.empty()) {
     // Named joints - match by name (with or without prefix)
@@ -233,9 +234,10 @@ void WujiHandDriverNode::publish_state() {
 
   auto now = this->now();
 
-  // Get actual positions from realtime controller
+  // Get actual positions and efforts from realtime controller
   // SDK 1.4.0+: TPDO proactively reports actual positions from hardware
   const auto& positions = controller_->get_joint_actual_position();
+  const auto& efforts = controller_->get_joint_actual_effort();
 
   // Build and publish JointState message
   joint_state_msg_.header.stamp = now;
@@ -243,6 +245,7 @@ void WujiHandDriverNode::publish_state() {
     for (size_t j = 0; j < JOINTS_PER_FINGER; ++j) {
       size_t idx = to_flat_index(f, j);
       joint_state_msg_.position[idx] = positions[f][j].load();
+      joint_state_msg_.effort[idx] = efforts[f][j].load();
     }
   }
 
@@ -281,6 +284,7 @@ void WujiHandDriverNode::publish_diagnostics() {
             msg.joint_temperatures[idx] = joint.read<wujihandcpp::data::joint::Temperature>();
             msg.error_codes[idx] = joint.read<wujihandcpp::data::joint::ErrorCode>();
             msg.enabled[idx] = (msg.error_codes[idx] == 0);
+            msg.effort_limits[idx] = joint.read<wujihandcpp::data::joint::EffortLimit>();
           }
         }
       }

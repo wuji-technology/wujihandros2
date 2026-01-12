@@ -56,12 +56,30 @@ ros2 topic pub /hand_0/joint_commands sensor_msgs/msg/JointState \
 
 ### /{hand_name}/joint_states (发布)
 
-当前关节位置状态。
+当前关节状态反馈。
 
-**消息类型**: `sensor_msgs/msg/JointState`  
+**消息类型**: `sensor_msgs/msg/JointState`
 **发布频率**: 1000 Hz（可通过 `publish_rate` 参数配置）
 
 **关节名格式**: `{hand_name}/finger{1-5}_joint{1-4}`
+
+**字段说明**:
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `position` | `float64[20]` | 关节位置（弧度） |
+| `velocity` | `float64[20]` | 未使用 |
+| `effort` | `float64[20]` | 关节 effort（安培） |
+
+> **Effort 字段说明**
+>
+> Effort 是电流空间的执行器作用量，经过滤波处理后输出。它不是实际测量的电流值，应将其理解为相对驱动强度。
+>
+> 典型应用场景：
+> - 碰撞检测：effort 突增表示关节受阻
+> - 负载监控：可通过 `effort / effort_limit` 计算当前输出百分比
+>
+> 默认 effort_limit 为 1.5A，最大 3.5A。
 
 ### /{hand_name}/hand_diagnostics (发布)
 
@@ -79,6 +97,7 @@ float32 input_voltage           # 输入电压 (V)
 float32[20] joint_temperatures  # 关节温度 (°C)
 uint32[20] error_codes          # 错误码
 bool[20] enabled                # 启用状态
+float32[20] effort_limits       # Effort 限制设置 (A)
 ```
 
 ### /{hand_name}/robot_description (发布)
