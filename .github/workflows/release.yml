@@ -34,8 +34,9 @@ jobs:
                   apt-get install -y wget dpkg-dev jq
 
                   # Install wujihandcpp SDK (latest release including pre-release)
+                  # Filter control characters to avoid jq parse errors
                   LATEST_RELEASE=$(curl -s https://api.github.com/repos/wuji-technology/wujihandpy/releases | \
-                    jq -r '[.[] | select(.assets[].name | contains("wujihandcpp"))] | .[0]')
+                    tr -d '\000-\037' | jq -r '[.[] | select(.assets[]?.name | contains("wujihandcpp"))] | .[0]')
                   VERSION=$(echo "$LATEST_RELEASE" | jq -r '.tag_name')
                   DEB_URL=$(echo "$LATEST_RELEASE" | jq -r '.assets[] | select(.name | endswith("-amd64.deb")) | .browser_download_url')
                   echo "Installing wujihandcpp $VERSION"
