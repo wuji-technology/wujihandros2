@@ -2,15 +2,20 @@
 set -e
 
 # WujiHand ROS2 Debian Package Builder
-# Usage: ./build_deb.sh [ROS_DISTRO]
-# Example: ./build_deb.sh kilted
+# Usage: ./build_deb.sh [ROS_DISTRO] [VERSION]
+# Example: ./build_deb.sh kilted 0.2.0-rc0
 
 ROS_DISTRO=${1:-kilted}
-VERSION="0.1.0"
+VERSION=${2:-0.1.0}
+
+# Convert version to Debian format (replace - with ~ for prerelease)
+# e.g., 0.2.0-rc0 -> 0.2.0~rc0 (in Debian, ~ sorts before anything)
+DEB_VERSION=$(echo "${VERSION}" | sed 's/-/~/g')
+
 ARCH=$(dpkg --print-architecture)
 PACKAGE_NAME="ros-${ROS_DISTRO}-wujihand"
 
-echo "Building ${PACKAGE_NAME} ${VERSION} for ${ARCH}..."
+echo "Building ${PACKAGE_NAME} ${DEB_VERSION} for ${ARCH}..."
 
 # Check ROS installation
 if [ ! -f "/opt/ros/${ROS_DISTRO}/setup.bash" ]; then
@@ -28,7 +33,7 @@ mkdir -p "${BUILD_DIR}"
 
 # Clean previous debian builds
 rm -rf debian
-rm -f ${PACKAGE_NAME}*.deb
+rm -f "${PACKAGE_NAME}"*.deb
 
 # Create package directory structure
 INSTALL_DIR="${BUILD_DIR}/install"
@@ -42,7 +47,7 @@ colcon build \
     --merge-install
 
 # Create DEBIAN control directory
-PACKAGE_DIR="debian/${PACKAGE_NAME}_${VERSION}-1_${ARCH}"
+PACKAGE_DIR="debian/${PACKAGE_NAME}_${DEB_VERSION}-1_${ARCH}"
 mkdir -p "${PACKAGE_DIR}/DEBIAN"
 mkdir -p "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}"
 
@@ -66,7 +71,7 @@ rm -f "${PACKAGE_DIR}/opt/ros/${ROS_DISTRO}/_local_setup_util_ps1.py"
 # Generate control file
 cat > "${PACKAGE_DIR}/DEBIAN/control" << EOF
 Package: ${PACKAGE_NAME}
-Version: ${VERSION}-1
+Version: ${DEB_VERSION}-1
 Section: misc
 Priority: optional
 Architecture: ${ARCH}
@@ -81,8 +86,8 @@ EOF
 echo "Building deb package..."
 dpkg-deb --build "${PACKAGE_DIR}"
 
-# Move to project root directory
-DEB_FILENAME="${PACKAGE_NAME}_${VERSION}_${ARCH}.deb"
+# Move to project root directory (filename matches control Version field)
+DEB_FILENAME="${PACKAGE_NAME}_${DEB_VERSION}-1_${ARCH}.deb"
 mv "${PACKAGE_DIR}.deb" "${DEB_FILENAME}"
 
 # Clean up build directory
