@@ -86,6 +86,6 @@ jobs:
                   files: artifacts/**/*.deb
                   generate_release_notes: true
                   draft: false
-                  prerelease: false
+                  prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-alpha') || contains(github.ref, '-beta') }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
