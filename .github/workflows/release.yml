@@ -7,7 +7,7 @@ on:
     workflow_dispatch:
         inputs:
             version:
-                description: "Version to release (e.g., 0.1.0)"
+                description: "Version to release (e.g., 0.1.0 or 0.2.0-rc0)"
                 required: true
 
 jobs:
@@ -27,6 +27,18 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
+
+            - name: Extract version
+              id: version
+              run: |
+                  if [ -n "${{ github.event.inputs.version }}" ]; then
+                    VERSION="${{ github.event.inputs.version }}"
+                  else
+                    # Remove 'v' prefix from tag name
+                    VERSION="${GITHUB_REF_NAME#v}"
+                  fi
+                  echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+                  echo "Building version: ${VERSION}"
 
             - name: Install dependencies
               run: |
@@ -58,7 +70,7 @@ jobs:
             - name: Build deb package
               run: |
                   chmod +x build_deb.sh
-                  ./build_deb.sh ${{ matrix.ros_distro }}
+                  ./build_deb.sh ${{ matrix.ros_distro }} ${{ steps.version.outputs.version }}
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
@@ -86,6 +98,6 @@ jobs:
                   files: artifacts/**/*.deb
                   generate_release_notes: true
                   draft: false
-                  prerelease: false
+                  prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-alpha') || contains(github.ref, '-beta') }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
