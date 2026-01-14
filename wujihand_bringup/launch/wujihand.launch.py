@@ -1,13 +1,35 @@
 import os
+import sys
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, TimerAction
 from launch.conditions import IfCondition
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
+
+# Add launch directory to path for local imports
+sys.path.insert(0, os.path.dirname(__file__))
+from common import spawn_robot_state_publisher
+
+
+def spawn_rviz(context):
+    """Spawn RViz node with proper namespace."""
+    hand_name = LaunchConfiguration("hand_name").perform(context)
+    wuji_hand_description_dir = get_package_share_directory("wuji_hand_description")
+    rviz_config = os.path.join(wuji_hand_description_dir, "rviz", "robot_display.rviz")
+
+    return [
+        Node(
+            package="rviz2",
+            executable="rviz2",
+            name="rviz2",
+            namespace=hand_name,
+            arguments=["-d", rviz_config],
+            output="screen",
+        )
+    ]
 
 
 def generate_launch_description():
@@ -45,7 +67,7 @@ def generate_launch_description():
         description="Whether to launch RViz for visualization",
     )
 
-    # Build joint_prefix as "hand_name/" to match XACRO-generated URDF
+    # Build joint_prefix as "hand_name/" to match URDF joint names
     joint_prefix = PythonExpression(["'", LaunchConfiguration("hand_name"), "/'"])
 
     # Force serial_number to string type (workaround for ROS2 Kilted type inference)
@@ -71,12 +93,16 @@ def generate_launch_description():
         emulate_tty=True,
     )
 
-    # Conditionally include visualization launch
-    wuji_hand_description_dir = get_package_share_directory("wuji_hand_description")
-    display_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(wuji_hand_description_dir, "launch", "display.launch.py")
-        ),
+    # Auto-detect handedness and spawn robot_state_publisher after driver starts
+    auto_detect_action = TimerAction(
+        period=2.0,  # Wait 2 seconds for driver to fully initialize
+        actions=[OpaqueFunction(function=spawn_robot_state_publisher)],
+    )
+
+    # Conditionally spawn RViz (only RViz, not the full display.launch.py)
+    rviz_action = TimerAction(
+        period=0.5,
+        actions=[OpaqueFunction(function=spawn_rviz)],
         condition=IfCondition(LaunchConfiguration("rviz")),
     )
 
@@ -89,6 +115,7 @@ def generate_launch_description():
             diagnostics_rate_arg,
             rviz_arg,
             wujihand_driver_node,
-            display_launch,
+            auto_detect_action,
+            rviz_action,
         ]
     )
