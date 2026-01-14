@@ -36,7 +36,6 @@ sudo apt install ./wujihandcpp-1.5.0-amd64.deb
 sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-rviz2 ros-humble-sensor-msgs ros-humble-std-msgs \
-    ros-humble-xacro ros-humble-foxglove-bridge \
     python3-colcon-common-extensions python3-rosdep
 ```
 
@@ -50,7 +49,6 @@ sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
 sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-rviz2 ros-kilted-sensor-msgs ros-kilted-std-msgs \
-    ros-kilted-xacro ros-kilted-foxglove-bridge \
     python3-colcon-common-extensions python3-rosdep
 ```
 
@@ -153,7 +151,7 @@ ros2 run wujihand_bringup wave_demo.py
 
 | 参数 | 默认值 | 说明 |
 |:-----|:-------|:-----|
-| `hand_name` | `hand_0` | 手的名称，用作 namespace 和 TF 前缀 |
+| `hand_name` | `hand_0` | 手的名称，用作 namespace |
 | `serial_number` | `""` | 设备序列号（空则自动检测） |
 | `publish_rate` | `1000.0` | 关节状态发布频率 (Hz) |
 | `filter_cutoff_freq` | `10.0` | 低通滤波截止频率 (Hz) |
@@ -190,24 +188,23 @@ ros2 launch wujihand_bringup wujihand.launch.py \
 /left_hand/joint_commands
 /left_hand/hand_diagnostics
 /left_hand/robot_description
+/left_hand/tf
+/left_hand/tf_static
 
 /right_hand/joint_states
 /right_hand/joint_commands
 /right_hand/hand_diagnostics
 /right_hand/robot_description
+/right_hand/tf
+/right_hand/tf_static
 ```
 
-TF 坐标系（带前缀）：
+TF 坐标系（不带前缀，RViz Fixed Frame 使用 "palm_link"）：
 ```
-left_hand/palm_link
-left_hand/finger1_link1
-...
-right_hand/palm_link
-right_hand/finger1_link1
+palm_link
+finger1_link1
 ...
 ```
-
-> **提示**: Foxglove launch 同时支持 [Foxglove Studio](https://foxglove.dev/) 和 [Lichtblick](https://github.com/Lichtblick-Suite/lichtblick)，连接地址为 `ws://localhost:8765`
 
 ## 基础使用
 

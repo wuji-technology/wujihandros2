@@ -28,10 +28,8 @@ ROS2 driver package for Wuji Hand dexterous hand. Provides 1000Hz joint state pu
 ├── wujihand_bringup/
 │   ├── launch/
 │   └── scripts/
-├── wujihand_description/
-│   ├── meshes/
-│   ├── rviz/
-│   └── urdf/
+├── external/
+│   └── wuji-hand-description/    # git submodule
 ├── wujihand_driver/
 │   ├── include/
 │   └── src/
@@ -47,7 +45,7 @@ ROS2 driver package for Wuji Hand dexterous hand. Provides 1000Hz joint state pu
 | Directory | Description |
 |-----------|-------------|
 | `wujihand_bringup/` | Launch files and demo scripts for starting the driver |
-| `wujihand_description/` | URDF models, mesh files, and RViz configuration |
+| `external/wuji-hand-description/` | URDF models, mesh files, and RViz configuration (submodule) |
 | `wujihand_driver/` | Core ROS2 driver node for hardware communication |
 | `wujihand_msgs/` | Custom ROS2 message and service definitions |
 | `docs/` | API reference and documentation |
@@ -79,7 +77,7 @@ sudo apt install ./wujihandcpp-1.5.0-amd64.deb
 sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-rviz2 ros-humble-sensor-msgs ros-humble-std-msgs \
-    ros-humble-xacro python3-colcon-common-extensions python3-rosdep
+    python3-colcon-common-extensions python3-rosdep
 ```
 
 </details>
@@ -92,7 +90,7 @@ sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
 sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-rviz2 ros-kilted-sensor-msgs ros-kilted-std-msgs \
-    ros-kilted-xacro python3-colcon-common-extensions python3-rosdep
+    python3-colcon-common-extensions python3-rosdep
 ```
 
 </details>
@@ -185,7 +183,7 @@ ros2 run wujihand_bringup wave_demo.py
 
 | Parameter | Default | Description |
 |:----------|:--------|:------------|
-| `hand_name` | `hand_0` | Namespace and TF prefix |
+| `hand_name` | `hand_0` | Namespace for topics and services |
 | `serial_number` | `""` | Device serial number (empty for auto-detect) |
 | `publish_rate` | `1000.0` | Joint state publish rate (Hz) |
 | `filter_cutoff_freq` | `10.0` | Low-pass filter cutoff frequency (Hz) |
@@ -223,21 +221,22 @@ Topic structure:
 /left_hand/joint_commands
 /left_hand/hand_diagnostics
 /left_hand/robot_description
+/left_hand/tf
+/left_hand/tf_static
 
 /right_hand/joint_states
 /right_hand/joint_commands
 /right_hand/hand_diagnostics
 /right_hand/robot_description
+/right_hand/tf
+/right_hand/tf_static
 ```
 
-TF frames (with prefix):
+TF frames (no prefix, use RViz fixed frame "palm_link"):
 
 ```
-left_hand/palm_link
-left_hand/finger1_link1
-...
-right_hand/palm_link
-right_hand/finger1_link1
+palm_link
+finger1_link1
 ...
 ```
 
