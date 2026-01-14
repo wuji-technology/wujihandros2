@@ -9,11 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `rviz` and `foxglove` parameters for `wujihand.launch.py` for visualization control
+- `hand_type` parameter for manual hand type override
+- `wuji-hand-description` git submodule for unified URDF source
 - Populate `effort` field in `joint_states` topic with real-time effort data
 - Add `effort_limits` field to `HandDiagnostics` message for monitoring effort limit settings
 
+### Changed
+
+- Consolidate URDF to external `wuji-hand-description` package
+- Remove xacro dependency, use pre-generated URDF files
+- Merge `display.left.py` and `display.right.py` into `display.launch.py`
+
+### Removed
+
+- `joint_prefix` parameter - joint names no longer have prefix
+- Internal `wujihand_description` package
+- `wujihand_rviz.launch.py` and `wujihand_foxglove.launch.py`
+
 ### Fixed
 
+- robot_state_publisher TF - joint names now match URDF without prefix
+- RViz config uses relative topic path for namespace compatibility
 - Use SensorDataQoS for joint_commands subscription to support high-frequency control
 - Improve wave_demo.py with dedicated thread for consistent 100Hz publishing rate
 - Upgrade wujihandcpp SDK to v1.5.0
