@@ -19,8 +19,8 @@ _logger = logging.get_logger(__name__)
 def spawn_robot_state_publisher(context):
     """Spawn robot_state_publisher after detecting handedness from driver.
 
-    This function polls the driver node for the handedness parameter,
-    then creates a robot_state_publisher with the appropriate URDF.
+    This function first checks if hand_type is explicitly provided via launch argument.
+    If not, it polls the driver node for the handedness parameter.
 
     Args:
         context: Launch context
@@ -32,48 +32,56 @@ def spawn_robot_state_publisher(context):
     driver_node_name = f"/{hand_name}/wujihand_driver"
     wuji_hand_description_dir = get_package_share_directory("wuji_hand_description")
 
-    _logger.info(f"Attempting to detect handedness from {driver_node_name}")
+    # Check if hand_type is explicitly provided via launch argument
+    hand_type_arg = LaunchConfiguration("hand_type").perform(context)
 
-    # Use ROS 2 Python API to get parameter (more reliable than subprocess)
     hand_type = None
-    try:
-        if not rclpy.ok():
-            rclpy.init()
-        temp_node = RclpyNode("_handedness_detector_temp")
+    if hand_type_arg and hand_type_arg.lower() in ["left", "right"]:
+        hand_type = hand_type_arg.lower()
+        _logger.info(f"Using explicitly provided hand_type: {hand_type}")
+    else:
+        _logger.info(f"Attempting to detect handedness from {driver_node_name}")
 
-        # Poll for handedness parameter (retry up to 30 times with 0.5s interval)
-        for attempt in range(30):
-            try:
-                # Get parameter client for the driver node
-                from rcl_interfaces.srv import GetParameters
+        # Use ROS 2 Python API to get parameter (more reliable than subprocess)
+        try:
+            if not rclpy.ok():
+                rclpy.init()
+            temp_node = RclpyNode("_handedness_detector_temp")
 
-                client = temp_node.create_client(
-                    GetParameters, f"{driver_node_name}/get_parameters"
-                )
-                if client.wait_for_service(timeout_sec=1.0):
-                    request = GetParameters.Request()
-                    request.names = ["handedness"]
-                    future = client.call_async(request)
-                    rclpy.spin_until_future_complete(temp_node, future, timeout_sec=2.0)
-                    if future.result() is not None:
-                        values = future.result().values
-                        if values and values[0].string_value:
-                            hand_type = values[0].string_value.lower()
-                            _logger.info(f"Detected handedness: {hand_type}")
-                            break
-                temp_node.destroy_client(client)
-            except Exception as e:
-                _logger.debug(f"Attempt {attempt + 1}: {e}")
-            time.sleep(0.5)
+            # Poll for handedness parameter (retry up to 30 times with 0.5s interval)
+            for attempt in range(30):
+                try:
+                    # Get parameter client for the driver node
+                    from rcl_interfaces.srv import GetParameters
 
-        temp_node.destroy_node()
-    except Exception as e:
-        _logger.error(f"Error detecting handedness: {e}")
+                    client = temp_node.create_client(
+                        GetParameters, f"{driver_node_name}/get_parameters"
+                    )
+                    if client.wait_for_service(timeout_sec=1.0):
+                        request = GetParameters.Request()
+                        request.names = ["handedness"]
+                        future = client.call_async(request)
+                        rclpy.spin_until_future_complete(temp_node, future, timeout_sec=2.0)
+                        if future.result() is not None:
+                            values = future.result().values
+                            if values and values[0].string_value:
+                                hand_type = values[0].string_value.lower()
+                                _logger.info(f"Detected handedness: {hand_type}")
+                                break
+                    temp_node.destroy_client(client)
+                except Exception as e:
+                    _logger.debug(f"Attempt {attempt + 1}: {e}")
+                time.sleep(0.5)
+
+            temp_node.destroy_node()
+        except Exception as e:
+            _logger.error(f"Error detecting handedness: {e}")
 
     if hand_type is None or hand_type not in ["left", "right"]:
         _logger.error(
             f"Could not detect handedness from {driver_node_name} after 15 seconds. "
-            "Please ensure the driver node is running and the device is connected."
+            "Please ensure the driver node is running and the device is connected, "
+            "or specify hand_type:=left or hand_type:=right explicitly."
         )
         return []
 

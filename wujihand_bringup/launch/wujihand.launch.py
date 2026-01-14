@@ -61,6 +61,12 @@ def generate_launch_description():
         description="Diagnostics publish rate in Hz",
     )
 
+    hand_type_arg = DeclareLaunchArgument(
+        "hand_type",
+        default_value="",
+        description="Hand type: 'left' or 'right'. Empty for auto-detect from device.",
+    )
+
     rviz_arg = DeclareLaunchArgument(
         "rviz",
         default_value="false",
@@ -129,6 +135,7 @@ def generate_launch_description():
             publish_rate_arg,
             filter_cutoff_freq_arg,
             diagnostics_rate_arg,
+            hand_type_arg,
             rviz_arg,
             foxglove_arg,
             wujihand_driver_node,
