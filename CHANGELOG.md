@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-01-16
+
 ### Added
 
 - `rviz` and `foxglove` parameters for `wujihand.launch.py` for visualization control
@@ -20,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consolidate URDF to external `wuji-hand-description` package
 - Remove xacro dependency, use pre-generated URDF files
 - Merge `display.left.py` and `display.right.py` into `display.launch.py`
+- Update submodule branch from master to main
 
 ### Removed
 
@@ -36,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade wujihandcpp SDK to v1.5.0
 - Fix RViz display and parameter issues
 - Force serial_number to string type for ROS2 Kilted compatibility
+- Submodule URL update for branch compatibility
 
 ## [0.1.0] - 2025-12-19
 
@@ -49,5 +53,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Common utility module (spawn_robot_state_publisher)
 - CI build status badge in README
 
-[Unreleased]: https://github.com/wuji-technology/wujihandros2/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/wuji-technology/wujihandros2/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/wuji-technology/wujihandros2/releases/tag/v1.0.0
 [0.1.0]: https://github.com/wuji-technology/wujihandros2/releases/tag/v0.1.0
