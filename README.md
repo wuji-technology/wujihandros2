@@ -61,8 +61,8 @@ ROS2 driver package for Wuji Hand dexterous hand. Provides 1000Hz joint state pu
 
 ```bash
 # Install wujihandcpp SDK
-wget https://github.com/wuji-technology/wujihandpy/releases/download/v1.5.0/wujihandcpp-1.5.0-amd64.deb
-sudo apt install ./wujihandcpp-1.5.0-amd64.deb
+wget https://github.com/wuji-technology/wujihandpy/releases/download/v${SDK_VERSION}/wujihandcpp-${SDK_VERSION}-amd64.deb
+sudo apt install ./wujihandcpp-${SDK_VERSION}-amd64.deb
 ```
 
 ### Installation
@@ -100,10 +100,13 @@ sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
 ```bash
 git clone https://github.com/wuji-technology/wujihandros2.git
 cd wujihandros2
+git submodule update --init --recursive  # Pull URDF model submodule
 source /opt/ros/humble/setup.bash  # or kilted
 colcon build
 source install/setup.bash
 ```
+
+> **Important**: You must run `git submodule update --init --recursive` before building. The `external/wuji-hand-description/` directory contains the URDF model required for compilation.
 
 #### Option 2: Deb Package
 
@@ -117,8 +120,8 @@ sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-sensor-msgs ros-humble-std-msgs
 
 # Install driver
-wget https://github.com/wuji-technology/wujihandros2/releases/download/v0.1.0/ros-humble-wujihand_0.1.0_amd64.deb
-sudo apt install ./ros-humble-wujihand_0.1.0_amd64.deb
+wget https://github.com/wuji-technology/wujihandros2/releases/download/v${VERSION}/ros-humble-wujihand_${VERSION}_amd64.deb
+sudo apt install ./ros-humble-wujihand_${VERSION}_amd64.deb
 ```
 
 </details>
@@ -133,8 +136,8 @@ sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-sensor-msgs ros-kilted-std-msgs
 
 # Install driver
-wget https://github.com/wuji-technology/wujihandros2/releases/download/v0.1.0/ros-kilted-wujihand_0.1.0_amd64.deb
-sudo apt install ./ros-kilted-wujihand_0.1.0_amd64.deb
+wget https://github.com/wuji-technology/wujihandros2/releases/download/v${VERSION}/ros-kilted-wujihand_${VERSION}_amd64.deb
+sudo apt install ./ros-kilted-wujihand_${VERSION}_amd64.deb
 ```
 
 </details>
