@@ -117,6 +117,9 @@ jobs:
 
             - name: Build deb package
               run: |
+                  # Fix git dubious ownership error in CI
+                  git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
                   chmod +x build_deb.sh
                   ./build_deb.sh ${{ matrix.ros_distro }}
 
