@@ -11,14 +11,21 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 # Add launch directory to path for local imports
 sys.path.insert(0, os.path.dirname(__file__))
-from common import spawn_robot_state_publisher
+from common import spawn_robot_state_publisher, detect_handedness
 
 
 def spawn_rviz(context):
-    """Spawn RViz node with proper namespace."""
+    """Spawn RViz node with proper namespace and handedness-specific config."""
     hand_name = LaunchConfiguration("hand_name").perform(context)
     wuji_hand_description_dir = get_package_share_directory("wuji_hand_description")
-    rviz_config = os.path.join(wuji_hand_description_dir, "rviz", "robot_display.rviz")
+
+    # Detect handedness from driver node
+    hand_type = detect_handedness(hand_name)
+    if hand_type is None:
+        # Fallback to left.rviz if detection fails
+        hand_type = "left"
+
+    rviz_config = os.path.join(wuji_hand_description_dir, "rviz", f"{hand_type}.rviz")
 
     return [
         Node(
@@ -101,9 +108,10 @@ def generate_launch_description():
         actions=[OpaqueFunction(function=spawn_robot_state_publisher)],
     )
 
-    # Conditionally spawn RViz (only RViz, not the full display.launch.py)
+    # Conditionally spawn RViz after handedness detection completes
+    # Wait 2.5s (after robot_state_publisher spawns at 2.0s)
     rviz_action = TimerAction(
-        period=0.5,
+        period=2.5,
         actions=[OpaqueFunction(function=spawn_rviz)],
         condition=IfCondition(LaunchConfiguration("rviz")),
     )
