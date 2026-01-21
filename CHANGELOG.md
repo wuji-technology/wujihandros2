@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-01-21
+
+### Changed
+
+- Driver publishes joint names with handedness prefix (e.g., `right_finger1_joint1`) to match URDF
+- RViz startup delayed to 2.5s and dynamically selects config based on detected handedness
+
+### Fixed
+
+- TF tree now properly published by robot_state_publisher (joint names match URDF)
+- Joint commands support both prefixed and non-prefixed names for backward compatibility
+
 ## [1.0.0] - 2026-01-16
 
 ### Added
@@ -53,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Common utility module (spawn_robot_state_publisher)
 - CI build status badge in README
 
-[Unreleased]: https://github.com/wuji-technology/wujihandros2/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/wuji-technology/wujihandros2/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/wuji-technology/wujihandros2/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/wuji-technology/wujihandros2/releases/tag/v1.0.0
 [0.1.0]: https://github.com/wuji-technology/wujihandros2/releases/tag/v0.1.0
