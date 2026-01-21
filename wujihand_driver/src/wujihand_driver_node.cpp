@@ -73,12 +73,12 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
       "reset_error", std::bind(&WujiHandDriverNode::reset_error_callback, this,
                                std::placeholders::_1, std::placeholders::_2));
 
-  // Initialize pre-allocated JointState message
+  // Initialize pre-allocated JointState message with handedness prefix
   joint_state_msg_.name.reserve(NUM_JOINTS);
   joint_state_msg_.position.resize(NUM_JOINTS, 0.0);
   joint_state_msg_.effort.resize(NUM_JOINTS, 0.0);
   for (size_t i = 0; i < NUM_JOINTS; ++i) {
-    joint_state_msg_.name.push_back(JOINT_NAMES[i]);
+    joint_state_msg_.name.push_back(handedness_ + "_" + JOINT_NAMES[i]);
   }
 
   // Create state publish timer (high frequency)
@@ -195,10 +195,12 @@ void WujiHandDriverNode::command_callback(const sensor_msgs::msg::JointState::Sh
   double positions[NUM_FINGERS][JOINTS_PER_FINGER] = {};
 
   if (!msg->name.empty()) {
-    // Named joints - match by name
+    // Named joints - match by name (support both with and without handedness prefix)
+    std::string prefix = handedness_ + "_";
     for (size_t i = 0; i < msg->name.size() && i < msg->position.size(); ++i) {
       for (size_t j = 0; j < NUM_JOINTS; ++j) {
-        if (msg->name[i] == JOINT_NAMES[j]) {
+        // Match either "finger1_joint1" or "right_finger1_joint1"
+        if (msg->name[i] == JOINT_NAMES[j] || msg->name[i] == prefix + JOINT_NAMES[j]) {
           size_t f = j / JOINTS_PER_FINGER;
           size_t jj = j % JOINTS_PER_FINGER;
           positions[f][jj] = msg->position[i];
