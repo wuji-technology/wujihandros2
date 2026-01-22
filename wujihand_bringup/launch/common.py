@@ -16,35 +16,29 @@ from rclpy.node import Node as RclpyNode
 _logger = logging.get_logger(__name__)
 
 
-def spawn_robot_state_publisher(context):
-    """Spawn robot_state_publisher after detecting handedness from driver.
-
-    This function polls the driver node for the handedness parameter,
-    then creates a robot_state_publisher with the appropriate URDF.
+def detect_handedness(hand_name, timeout_sec=15):
+    """Detect handedness from driver node.
 
     Args:
-        context: Launch context
+        hand_name: Hand name (namespace)
+        timeout_sec: Timeout in seconds (default 15s)
 
     Returns:
-        List containing robot_state_publisher Node, or empty list on failure
+        "left" or "right" if detected, None otherwise
     """
-    hand_name = LaunchConfiguration("hand_name").perform(context)
     driver_node_name = f"/{hand_name}/wujihand_driver"
-    wuji_hand_description_dir = get_package_share_directory("wuji_hand_description")
-
     _logger.info(f"Attempting to detect handedness from {driver_node_name}")
 
-    # Use ROS 2 Python API to get parameter (more reliable than subprocess)
     hand_type = None
     try:
         if not rclpy.ok():
             rclpy.init()
         temp_node = RclpyNode("_handedness_detector_temp")
 
-        # Poll for handedness parameter (retry up to 30 times with 0.5s interval)
-        for attempt in range(30):
+        # Poll for handedness parameter
+        max_attempts = int(timeout_sec / 0.5)
+        for attempt in range(max_attempts):
             try:
-                # Get parameter client for the driver node
                 from rcl_interfaces.srv import GetParameters
 
                 client = temp_node.create_client(
@@ -72,7 +66,32 @@ def spawn_robot_state_publisher(context):
 
     if hand_type is None or hand_type not in ["left", "right"]:
         _logger.error(
-            f"Could not detect handedness from {driver_node_name} after 15 seconds. "
+            f"Could not detect handedness from {driver_node_name} after {timeout_sec} seconds."
+        )
+        return None
+
+    return hand_type
+
+
+def spawn_robot_state_publisher(context):
+    """Spawn robot_state_publisher after detecting handedness from driver.
+
+    This function polls the driver node for the handedness parameter,
+    then creates a robot_state_publisher with the appropriate URDF.
+
+    Args:
+        context: Launch context
+
+    Returns:
+        List containing robot_state_publisher Node, or empty list on failure
+    """
+    hand_name = LaunchConfiguration("hand_name").perform(context)
+    wuji_hand_description_dir = get_package_share_directory("wuji_hand_description")
+
+    # Detect handedness from driver node
+    hand_type = detect_handedness(hand_name)
+    if hand_type is None:
+        _logger.error(
             "Please ensure the driver node is running and the device is connected."
         )
         return []
