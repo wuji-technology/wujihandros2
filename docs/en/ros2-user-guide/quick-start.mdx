@@ -5,8 +5,9 @@ title: Quick Start
 ## Launch the Driver
 
 ```bash
-# (If built from source) Source ROS2 environment, replace ${distro} with your ROS2 distribution
+# Source ROS2 environment, replace ${distro} with your ROS2 distribution
 source /opt/ros/${distro}/setup.bash
+# If built from source, overlay the workspace (Deb package users can skip)
 source install/setup.bash
 
 # Launch the driver
@@ -27,6 +28,7 @@ Open a new terminal and check the joint states:
 ```bash
 # Source ROS2 environment, replace ${distro} with your ROS2 distribution
 source /opt/ros/${distro}/setup.bash
+# If built from source, overlay the workspace (Deb package users can skip)
 source install/setup.bash
 
 ros2 topic echo /hand_0/joint_states --once
