@@ -4,7 +4,7 @@
 
 ROS2 driver package for Wuji Hand dexterous hand. Provides 1000Hz joint state publishing, real-time control interface, multi-hand setup, and RViz visualization.
 
-**Get started with [Quick Start](#quick-start). For detailed documentation, please refer to [ROS2 Tutorial](https://docs.wuji.tech/docs/en/wuji-hand/latest/ros2-user-guide/introduction) on Wuji Docs Center.**
+**Get started with [Quick Start](#quick-start). For detailed documentation, please refer to [ROS2 Tutorial](https://docs.wuji.tech/docs/en/wuji-hand/latest/ros2-user-guide/index) on Wuji Docs Center.**
 
 | ROS2 Version | Ubuntu | Build Status | Deb Package |
 |:------------:|:------:|:------------:|:-----------:|
