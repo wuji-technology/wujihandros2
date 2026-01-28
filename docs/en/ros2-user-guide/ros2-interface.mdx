@@ -6,7 +6,7 @@ title: ROS2 Interface
 
 ### HandDiagnostics Message
 
-`wujihand_msgs/msg/HandDiagnostics`: Hardware diagnostics, published at 10Hz.
+`wujihand_msgs/msg/HandDiagnostics`: Hardware diagnostics, published at 10Hz by default (see `diagnostics_rate`).
 
 ```text
 std_msgs/Header header
@@ -21,7 +21,7 @@ float32[20] effort_limits       # Effort limit settings (A)
 
 ### JointState Message
 
-`sensor_msgs/msg/JointState`: Joint states, published at 1000Hz.
+`sensor_msgs/msg/JointState`: Joint states, published at 1000Hz by default (see `publish_rate`).
 
 | Field | Type | Description |
 |:------|:-----|:------------|
@@ -125,10 +125,10 @@ ros2 topic pub /hand_0/joint_commands sensor_msgs/msg/JointState \
 ### Read Joint States
 
 ```bash
-# Read joint states once (published at 1000Hz)
+# Read joint states once (published at 1000Hz by default)
 ros2 topic echo /hand_0/joint_states --once
 
-# Read diagnostics (published at 10Hz)
+# Read diagnostics (published at 10Hz by default)
 ros2 topic echo /hand_0/hand_diagnostics --once
 ```
 

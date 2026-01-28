@@ -8,7 +8,8 @@ title: 快速开始
 # 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
 source /opt/ros/${distro}/setup.bash
 # 如使用源码编译，请叠加工作空间（Deb 包安装可跳过）
-source install/setup.bash
+# 将 ${WORKSPACE} 替换为实际工作空间路径，如 ~/wujihandros2
+source ${WORKSPACE}/install/setup.bash
 
 # 启动驱动
 ros2 launch wujihand_bringup wujihand.launch.py
@@ -29,7 +30,8 @@ ros2 launch wujihand_bringup wujihand.launch.py
 # 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
 source /opt/ros/${distro}/setup.bash
 # 如使用源码编译，请叠加工作空间（Deb 包安装可跳过）
-source install/setup.bash
+# 将 ${WORKSPACE} 替换为实际工作空间路径，如 ~/wujihandros2
+source ${WORKSPACE}/install/setup.bash
 
 ros2 topic echo /hand_0/joint_states --once
 ```

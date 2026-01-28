@@ -6,7 +6,7 @@ title: ROS2 接口
 
 ### HandDiagnostics 消息
 
-`wujihand_msgs/msg/HandDiagnostics`：硬件诊断信息，10Hz 发布。
+`wujihand_msgs/msg/HandDiagnostics`：硬件诊断信息，默认 10Hz 发布（可通过 `diagnostics_rate` 配置）。
 
 ```text
 std_msgs/Header header
@@ -21,7 +21,7 @@ float32[20] effort_limits       # Effort 限制设置 (A)
 
 ### JointState 消息
 
-`sensor_msgs/msg/JointState`：关节状态，1000Hz 发布。
+`sensor_msgs/msg/JointState`：关节状态，默认 1000Hz 发布（可通过 `publish_rate` 配置）。
 
 | 字段 | 类型 | 说明 |
 |:-----|:-----|:-----|
@@ -125,10 +125,10 @@ ros2 topic pub /hand_0/joint_commands sensor_msgs/msg/JointState \
 ### 读取关节状态
 
 ```bash
-# 读取一次关节状态（1000Hz 发布）
+# 读取一次关节状态（默认 1000Hz 发布）
 ros2 topic echo /hand_0/joint_states --once
 
-# 读取诊断信息（10Hz 发布）
+# 读取诊断信息（默认 10Hz 发布）
 ros2 topic echo /hand_0/hand_diagnostics --once
 ```
 
