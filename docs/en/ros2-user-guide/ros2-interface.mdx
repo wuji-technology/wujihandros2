@@ -217,6 +217,8 @@ if __name__ == '__main__':
 ```bash
 # Load ROS2 environment, replace ${distro} with your installed ROS2 distribution
 source /opt/ros/${distro}/setup.bash
+# Navigate to driver workspace and run the following commands to source it (skip if installed via Deb)
+cd <workspace>
 source install/setup.bash
 ros2 launch wujihand_bringup wujihand.launch.py
 ```
@@ -341,12 +343,16 @@ install(TARGETS wujihand_controller DESTINATION lib/${PROJECT_NAME})
 ```bash
 # Load ROS2 environment, replace ${distro} with your installed ROS2 distribution
 source /opt/ros/${distro}/setup.bash
+# Navigate to driver workspace and run the following commands to source it (skip if installed via Deb)
+cd <workspace>
 source install/setup.bash
 ros2 launch wujihand_bringup wujihand.launch.py
 ```
 
 5. Build and run in terminal 2:
 ```bash
+# Load ROS2 environment, replace ${distro} with your installed ROS2 distribution
+source /opt/ros/${distro}/setup.bash
 cd ~/test
 colcon build --packages-select test_wujihand
 source ~/test/install/setup.bash

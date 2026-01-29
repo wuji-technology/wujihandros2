@@ -217,6 +217,8 @@ if __name__ == '__main__':
 ```bash
 # 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
 source /opt/ros/${distro}/setup.bash
+# 进入驱动工作区后，执行以下命令加载环境（Deb 安装可跳过此步）
+cd <workspace>
 source install/setup.bash
 ros2 launch wujihand_bringup wujihand.launch.py
 ```
@@ -341,12 +343,16 @@ install(TARGETS wujihand_controller DESTINATION lib/${PROJECT_NAME})
 ```bash
 # 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
 source /opt/ros/${distro}/setup.bash
+# 进入驱动工作区后，执行以下命令加载环境（Deb 安装可跳过此步）
+cd <workspace>
 source install/setup.bash
 ros2 launch wujihand_bringup wujihand.launch.py
 ```
 
 5. 在终端 2 编译并运行：
 ```bash
+# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
+source /opt/ros/${distro}/setup.bash
 cd ~/test
 colcon build --packages-select test_wujihand
 source ~/test/install/setup.bash
