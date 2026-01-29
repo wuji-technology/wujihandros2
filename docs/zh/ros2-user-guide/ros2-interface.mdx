@@ -6,7 +6,7 @@ title: ROS2 接口
 
 ### HandDiagnostics 消息
 
-`wujihand_msgs/msg/HandDiagnostics`：硬件诊断信息，10Hz 发布。
+`wujihand_msgs/msg/HandDiagnostics`：硬件诊断信息，默认 10Hz 发布（可通过 `diagnostics_rate` 配置）。
 
 ```text
 std_msgs/Header header
@@ -21,7 +21,7 @@ float32[20] effort_limits       # Effort 限制设置 (A)
 
 ### JointState 消息
 
-`sensor_msgs/msg/JointState`：关节状态，1000Hz 发布。
+`sensor_msgs/msg/JointState`：关节状态，默认 1000Hz 发布（可通过 `publish_rate` 配置）。
 
 | 字段 | 类型 | 说明 |
 |:-----|:-----|:-----|
@@ -125,10 +125,10 @@ ros2 topic pub /hand_0/joint_commands sensor_msgs/msg/JointState \
 ### 读取关节状态
 
 ```bash
-# 读取一次关节状态（1000Hz 发布）
+# 读取一次关节状态（默认 1000Hz 发布）
 ros2 topic echo /hand_0/joint_states --once
 
-# 读取诊断信息（10Hz 发布）
+# 读取诊断信息（默认 10Hz 发布）
 ros2 topic echo /hand_0/hand_diagnostics --once
 ```
 
@@ -143,6 +143,7 @@ ros2 topic echo /hand_0/hand_diagnostics --once
 ```python
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import JointState
 
 class WujiHandController(Node):
@@ -151,12 +152,13 @@ class WujiHandController(Node):
     def __init__(self, hand_name='hand_0'):
         super().__init__('wujihand_controller')
         self.hand_name = hand_name
+        self.count = 0  # 消息计数器，用于节流打印
 
         # 创建发布者：向 joint_commands 话题发送关节位置命令
         self.cmd_pub = self.create_publisher(
             JointState,
             f'/{hand_name}/joint_commands',
-            10  # 队列深度
+            qos_profile_sensor_data
         )
 
         # 创建订阅者：从 joint_states 话题接收关节状态（1000Hz）
@@ -164,7 +166,7 @@ class WujiHandController(Node):
             JointState,
             f'/{hand_name}/joint_states',
             self.state_callback,
-            10  # 队列深度
+            qos_profile_sensor_data
         )
 
     def state_callback(self, msg):
@@ -173,8 +175,10 @@ class WujiHandController(Node):
         msg.position: 20 个关节的当前位置（弧度）
         msg.effort: 20 个关节的当前 effort（安培）
         """
-        # 打印拇指的 4 个关节位置（索引 0-3）
-        self.get_logger().info(f'Position: {msg.position[:4]}')
+        self.count += 1
+        if self.count % 100 == 0:  # 每 100 次打印一次（约 10Hz）
+            # 打印拇指的 4 个关节位置（索引 0-3）
+            self.get_logger().info(f'Position: {msg.position[:4]}')
 
     def send_positions(self, positions):
         """
@@ -205,6 +209,37 @@ if __name__ == '__main__':
     main()
 ```
 
+**运行步骤**
+
+1. 将以上代码保存为 `wujihand_controller.py`
+
+2. 在终端 1 启动驱动：
+```bash
+# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
+source /opt/ros/${distro}/setup.bash
+# 进入驱动工作区后，执行以下命令加载环境（Deb 安装可跳过此步）
+cd <workspace>
+source install/setup.bash
+ros2 launch wujihand_bringup wujihand.launch.py
+```
+
+3. 在终端 2 运行示例代码：
+```bash
+# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
+source /opt/ros/${distro}/setup.bash
+python3 wujihand_controller.py
+```
+
+**预期输出**
+
+运行后灵巧手执行归零动作，终端持续打印关节位置（约 10Hz），按 `Ctrl+C` 退出：
+
+```text
+[INFO] [1769589384.755943411] [wujihand_controller]: Position: array('d', [0.048882766883356236, 0.007923863595842663, 0.03073836071041754, 0.03718776672849719])
+[INFO] [1769589384.855927131] [wujihand_controller]: Position: array('d', [0.048882766883356236, 0.007923863595842663, 0.03073836071041754, 0.03718776672849719])
+...
+```
+
 ### C++
 
 ```cpp
@@ -218,15 +253,18 @@ if __name__ == '__main__':
 class WujiHandController : public rclcpp::Node {
 public:
     WujiHandController(const std::string& hand_name = "hand_0")
-        : Node("wujihand_controller"), hand_name_(hand_name)
+        : Node("wujihand_controller"), hand_name_(hand_name), count_(0)
     {
+        // QoS 配置：使用 SensorDataQoS 匹配驱动
+        auto qos = rclcpp::SensorDataQoS();
+
         // 创建发布者：向 joint_commands 话题发送关节位置命令
         cmd_pub_ = this->create_publisher<sensor_msgs::msg::JointState>(
-            "/" + hand_name_ + "/joint_commands", 10);
+            "/" + hand_name_ + "/joint_commands", qos);
 
         // 创建订阅者：从 joint_states 话题接收关节状态（1000Hz）
         state_sub_ = this->create_subscription<sensor_msgs::msg::JointState>(
-            "/" + hand_name_ + "/joint_states", 10,
+            "/" + hand_name_ + "/joint_states", qos,
             std::bind(&WujiHandController::state_callback, this, std::placeholders::_1));
     }
 
@@ -247,10 +285,15 @@ private:
      * msg->effort: 20 个关节的当前 effort（安培）
      */
     void state_callback(const sensor_msgs::msg::JointState::SharedPtr msg) {
-        RCLCPP_INFO(this->get_logger(), "Received joint states");
+        count_++;
+        if (count_ % 100 == 0) {  // 每 100 次打印一次（约 10Hz）
+            RCLCPP_INFO(this->get_logger(), "Position: [%.3f, %.3f, %.3f, %.3f]",
+                msg->position[0], msg->position[1], msg->position[2], msg->position[3]);
+        }
     }
 
     std::string hand_name_;
+    int count_;  // 消息计数器，用于节流打印
     rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr cmd_pub_;
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr state_sub_;
 };
@@ -264,6 +307,7 @@ int main(int argc, char** argv) {
 
     // 发送所有关节归零命令（20 个关节全部设为 0 弧度）
     node->send_positions(std::vector<double>(20, 0.0));
+    RCLCPP_INFO(node->get_logger(), "Sent zero position command");
 
     // 进入事件循环，持续接收关节状态
     rclcpp::spin(node);
@@ -272,4 +316,56 @@ int main(int argc, char** argv) {
     rclcpp::shutdown();
     return 0;
 }
+```
+
+**运行步骤**
+
+C++ 示例需要创建 ROS2 包来编译。
+
+1. 创建测试包：
+```bash
+cd ~/test
+# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
+source /opt/ros/${distro}/setup.bash
+ros2 pkg create --build-type ament_cmake test_wujihand --dependencies rclcpp sensor_msgs
+```
+
+2. 将以上代码保存为 `~/test/test_wujihand/src/wujihand_controller.cpp`
+
+3. 在 `~/test/test_wujihand/CMakeLists.txt` 末尾添加：
+```cmake
+add_executable(wujihand_controller src/wujihand_controller.cpp)
+ament_target_dependencies(wujihand_controller rclcpp sensor_msgs)
+install(TARGETS wujihand_controller DESTINATION lib/${PROJECT_NAME})
+```
+
+4. 在终端 1 启动驱动：
+```bash
+# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
+source /opt/ros/${distro}/setup.bash
+# 进入驱动工作区后，执行以下命令加载环境（Deb 安装可跳过此步）
+cd <workspace>
+source install/setup.bash
+ros2 launch wujihand_bringup wujihand.launch.py
+```
+
+5. 在终端 2 编译并运行：
+```bash
+# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
+source /opt/ros/${distro}/setup.bash
+cd ~/test
+colcon build --packages-select test_wujihand
+source ~/test/install/setup.bash
+ros2 run test_wujihand wujihand_controller
+```
+
+**预期输出**
+
+运行后灵巧手执行归零动作，终端持续打印关节位置（约 10Hz），按 `Ctrl+C` 退出：
+
+```text
+[INFO] [1769591460.127643591] [wujihand_controller]: Sent zero position command
+[INFO] [1769591460.591707131] [wujihand_controller]: Position: [0.043, 0.022, 0.034, 0.035]
+[INFO] [1769591460.691719595] [wujihand_controller]: Position: [0.044, 0.012, 0.035, 0.034]
+...
 ```

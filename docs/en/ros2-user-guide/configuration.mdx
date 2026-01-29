@@ -33,7 +33,8 @@ If opening a new terminal, you need to source the ROS2 environment again
 # Source ROS2 environment, replace ${distro} with your ROS2 distribution
 source /opt/ros/${distro}/setup.bash
 # If built from source, overlay the workspace (Deb package users can skip)
-source install/setup.bash
+# Replace ${WORKSPACE} with your workspace path, e.g., ~/wujihandros2
+source ${WORKSPACE}/install/setup.bash
 ```
 
 ```bash
