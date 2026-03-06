@@ -47,6 +47,24 @@ ros2 launch wujihand_bringup wujihand.launch.py \
     hand_name:=right_hand serial_number:=DEF456
 ```
 
+### Run Multi-hand Demos
+
+When running demo scripts in a multi-hand environment, specify the target hand with `--ros-args -p hand_name:=<name>`:
+
+```bash
+# Run wave demo on the left hand
+ros2 run wujihand_bringup wave_demo.py --ros-args -p hand_name:=left_hand
+
+# Run wave demo on the right hand
+ros2 run wujihand_bringup wave_demo.py --ros-args -p hand_name:=right_hand
+```
+
+<Callout type="info">
+The `hand_name` must match the name specified when launching the driver.
+</Callout>
+
+### Topic Namespaces
+
 After launch, each hand has its own topic namespace:
 
 ```text

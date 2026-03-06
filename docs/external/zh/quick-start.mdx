@@ -43,6 +43,10 @@ ros2 topic echo /hand_0/joint_states --once
 ros2 run wujihand_bringup wave_demo.py
 ```
 
+<Callout type="info">
+连接多只灵巧手时，需通过 `--ros-args -p hand_name:=<名称>` 指定目标手。详见[多手配置](./configuration#多手配置)。
+</Callout>
+
 ## 启动 RViz 可视化
 
 ```bash

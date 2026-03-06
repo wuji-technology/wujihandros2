@@ -47,6 +47,24 @@ ros2 launch wujihand_bringup wujihand.launch.py \
     hand_name:=right_hand serial_number:=DEF456
 ```
 
+### 运行多手演示
+
+多手环境下运行演示脚本时，通过 `--ros-args -p hand_name:=<名称>` 指定目标手：
+
+```bash
+# 对左手运行波浪演示
+ros2 run wujihand_bringup wave_demo.py --ros-args -p hand_name:=left_hand
+
+# 对右手运行波浪演示
+ros2 run wujihand_bringup wave_demo.py --ros-args -p hand_name:=right_hand
+```
+
+<Callout type="info">
+`hand_name` 需与启动驱动时指定的名称一致。
+</Callout>
+
+### 话题命名空间
+
 启动后，每只手会拥有独立的话题命名空间：
 
 ```text
