@@ -42,9 +42,9 @@ Please ensure your system meets the [System Requirements](#system-requirements) 
 Before installing the ROS2 driver, you need to install the Wuji Hand SDK:
 
 ```bash
-# Replace ${SDK_VERSION} with the actual version number, e.g., 1.5.0
-wget https://github.com/wuji-technology/wujihandpy/releases/download/v${SDK_VERSION}/wujihandcpp-${SDK_VERSION}-amd64.deb
-sudo apt install ./wujihandcpp-${SDK_VERSION}-amd64.deb
+# Replace <version> with the actual version number, e.g., 1.5.0
+wget https://github.com/wuji-technology/wujihandpy/releases/download/v<version>/wujihandcpp-<version>-amd64.deb
+sudo apt install ./wujihandcpp-<version>-amd64.deb
 ```
 
 ### Install ROS2 Driver
@@ -87,8 +87,8 @@ cd wujihandros2
 # Fetch URDF model submodule (required)
 git submodule update --init --recursive
 
-# Source ROS2 environment, replace ${distro} with your installed ROS2 distribution
-source /opt/ros/${distro}/setup.bash
+# Source ROS2 environment, replace <distro> with your installed ROS2 distribution
+source /opt/ros/<distro>/setup.bash
 
 # Build
 colcon build
@@ -111,9 +111,9 @@ sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-sensor-msgs ros-humble-std-msgs
 
-# Download and install from GitHub Releases (replace ${VERSION} with actual version)
-wget https://github.com/wuji-technology/wujihandros2/releases/download/v${VERSION}/ros-humble-wujihand_${VERSION}_amd64.deb
-sudo apt install ./ros-humble-wujihand_${VERSION}_amd64.deb
+# Download and install from GitHub Releases (replace <version> with actual version)
+wget https://github.com/wuji-technology/wujihandros2/releases/download/v<version>/ros-humble-wujihand_<version>_amd64.deb
+sudo apt install ./ros-humble-wujihand_<version>_amd64.deb
 ```
 
 **Ubuntu 24.04 (ROS2 Kilted)**
@@ -124,7 +124,7 @@ sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-sensor-msgs ros-kilted-std-msgs
 
-# Download and install from GitHub Releases (replace ${VERSION} with actual version)
-wget https://github.com/wuji-technology/wujihandros2/releases/download/v${VERSION}/ros-kilted-wujihand_${VERSION}_amd64.deb
-sudo apt install ./ros-kilted-wujihand_${VERSION}_amd64.deb
+# Download and install from GitHub Releases (replace <version> with actual version)
+wget https://github.com/wuji-technology/wujihandros2/releases/download/v<version>/ros-kilted-wujihand_<version>_amd64.deb
+sudo apt install ./ros-kilted-wujihand_<version>_amd64.deb
 ```

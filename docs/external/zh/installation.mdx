@@ -42,9 +42,9 @@ title: 安装指南
 在安装 ROS2 驱动之前，需要先安装 Wuji Hand SDK：
 
 ```bash
-# 替换 ${SDK_VERSION} 为实际版本号，如 1.5.0
-wget https://github.com/wuji-technology/wujihandpy/releases/download/v${SDK_VERSION}/wujihandcpp-${SDK_VERSION}-amd64.deb
-sudo apt install ./wujihandcpp-${SDK_VERSION}-amd64.deb
+# 替换 <version> 为实际版本号，如 1.5.0
+wget https://github.com/wuji-technology/wujihandpy/releases/download/v<version>/wujihandcpp-<version>-amd64.deb
+sudo apt install ./wujihandcpp-<version>-amd64.deb
 ```
 
 ### 安装 ROS2 驱动
@@ -87,8 +87,8 @@ cd wujihandros2
 # 拉取 URDF 模型子模块（必须）
 git submodule update --init --recursive
 
-# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
-source /opt/ros/${distro}/setup.bash
+# 加载 ROS2 环境，替换 <distro> 为实际安装的 ROS2 发行版
+source /opt/ros/<distro>/setup.bash
 
 # 编译
 colcon build
@@ -111,9 +111,9 @@ sudo apt update
 sudo apt install -y ros-humble-ros-base ros-humble-robot-state-publisher \
     ros-humble-sensor-msgs ros-humble-std-msgs
 
-# 从 GitHub Releases 下载并安装（替换 ${VERSION} 为实际版本号）
-wget https://github.com/wuji-technology/wujihandros2/releases/download/v${VERSION}/ros-humble-wujihand_${VERSION}_amd64.deb
-sudo apt install ./ros-humble-wujihand_${VERSION}_amd64.deb
+# 从 GitHub Releases 下载并安装（替换 <version> 为实际版本号）
+wget https://github.com/wuji-technology/wujihandros2/releases/download/v<version>/ros-humble-wujihand_<version>_amd64.deb
+sudo apt install ./ros-humble-wujihand_<version>_amd64.deb
 ```
 
 **Ubuntu 24.04 (ROS2 Kilted)**
@@ -124,7 +124,7 @@ sudo apt update
 sudo apt install -y ros-kilted-ros-base ros-kilted-robot-state-publisher \
     ros-kilted-sensor-msgs ros-kilted-std-msgs
 
-# 从 GitHub Releases 下载并安装（替换 ${VERSION} 为实际版本号）
-wget https://github.com/wuji-technology/wujihandros2/releases/download/v${VERSION}/ros-kilted-wujihand_${VERSION}_amd64.deb
-sudo apt install ./ros-kilted-wujihand_${VERSION}_amd64.deb
+# 从 GitHub Releases 下载并安装（替换 <version> 为实际版本号）
+wget https://github.com/wuji-technology/wujihandros2/releases/download/v<version>/ros-kilted-wujihand_<version>_amd64.deb
+sudo apt install ./ros-kilted-wujihand_<version>_amd64.deb
 ```

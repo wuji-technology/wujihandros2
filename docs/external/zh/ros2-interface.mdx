@@ -215,8 +215,8 @@ if __name__ == '__main__':
 
 2. 在终端 1 启动驱动：
 ```bash
-# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
-source /opt/ros/${distro}/setup.bash
+# 加载 ROS2 环境，替换 <distro> 为实际安装的 ROS2 发行版
+source /opt/ros/<distro>/setup.bash
 # 进入驱动工作区后，执行以下命令加载环境（Deb 安装可跳过此步）
 cd <workspace>
 source install/setup.bash
@@ -225,8 +225,8 @@ ros2 launch wujihand_bringup wujihand.launch.py
 
 3. 在终端 2 运行示例代码：
 ```bash
-# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
-source /opt/ros/${distro}/setup.bash
+# 加载 ROS2 环境，替换 <distro> 为实际安装的 ROS2 发行版
+source /opt/ros/<distro>/setup.bash
 python3 wujihand_controller.py
 ```
 
@@ -325,8 +325,8 @@ C++ 示例需要创建 ROS2 包来编译。
 1. 创建测试包：
 ```bash
 cd ~/test
-# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
-source /opt/ros/${distro}/setup.bash
+# 加载 ROS2 环境，替换 <distro> 为实际安装的 ROS2 发行版
+source /opt/ros/<distro>/setup.bash
 ros2 pkg create --build-type ament_cmake test_wujihand --dependencies rclcpp sensor_msgs
 ```
 
@@ -341,8 +341,8 @@ install(TARGETS wujihand_controller DESTINATION lib/${PROJECT_NAME})
 
 4. 在终端 1 启动驱动：
 ```bash
-# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
-source /opt/ros/${distro}/setup.bash
+# 加载 ROS2 环境，替换 <distro> 为实际安装的 ROS2 发行版
+source /opt/ros/<distro>/setup.bash
 # 进入驱动工作区后，执行以下命令加载环境（Deb 安装可跳过此步）
 cd <workspace>
 source install/setup.bash
@@ -351,8 +351,8 @@ ros2 launch wujihand_bringup wujihand.launch.py
 
 5. 在终端 2 编译并运行：
 ```bash
-# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
-source /opt/ros/${distro}/setup.bash
+# 加载 ROS2 环境，替换 <distro> 为实际安装的 ROS2 发行版
+source /opt/ros/<distro>/setup.bash
 cd ~/test
 colcon build --packages-select test_wujihand
 source ~/test/install/setup.bash

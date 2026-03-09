@@ -215,8 +215,8 @@ if __name__ == '__main__':
 
 2. Start the driver in terminal 1:
 ```bash
-# Load ROS2 environment, replace ${distro} with your installed ROS2 distribution
-source /opt/ros/${distro}/setup.bash
+# Load ROS2 environment, replace <distro> with your installed ROS2 distribution
+source /opt/ros/<distro>/setup.bash
 # Navigate to driver workspace and run the following commands to source it (skip if installed via Deb)
 cd <workspace>
 source install/setup.bash
@@ -225,8 +225,8 @@ ros2 launch wujihand_bringup wujihand.launch.py
 
 3. Run the example code in terminal 2:
 ```bash
-# Load ROS2 environment, replace ${distro} with your installed ROS2 distribution
-source /opt/ros/${distro}/setup.bash
+# Load ROS2 environment, replace <distro> with your installed ROS2 distribution
+source /opt/ros/<distro>/setup.bash
 python3 wujihand_controller.py
 ```
 
@@ -325,8 +325,8 @@ C++ examples require creating a ROS2 package to compile.
 1. Create a test package:
 ```bash
 cd ~/test
-# Load ROS2 environment, replace ${distro} with your installed ROS2 distribution
-source /opt/ros/${distro}/setup.bash
+# Load ROS2 environment, replace <distro> with your installed ROS2 distribution
+source /opt/ros/<distro>/setup.bash
 ros2 pkg create --build-type ament_cmake test_wujihand --dependencies rclcpp sensor_msgs
 ```
 
@@ -341,8 +341,8 @@ install(TARGETS wujihand_controller DESTINATION lib/${PROJECT_NAME})
 
 4. Start the driver in terminal 1:
 ```bash
-# Load ROS2 environment, replace ${distro} with your installed ROS2 distribution
-source /opt/ros/${distro}/setup.bash
+# Load ROS2 environment, replace <distro> with your installed ROS2 distribution
+source /opt/ros/<distro>/setup.bash
 # Navigate to driver workspace and run the following commands to source it (skip if installed via Deb)
 cd <workspace>
 source install/setup.bash
@@ -351,8 +351,8 @@ ros2 launch wujihand_bringup wujihand.launch.py
 
 5. Build and run in terminal 2:
 ```bash
-# Load ROS2 environment, replace ${distro} with your installed ROS2 distribution
-source /opt/ros/${distro}/setup.bash
+# Load ROS2 environment, replace <distro> with your installed ROS2 distribution
+source /opt/ros/<distro>/setup.bash
 cd ~/test
 colcon build --packages-select test_wujihand
 source ~/test/install/setup.bash

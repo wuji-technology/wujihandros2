@@ -5,11 +5,11 @@ title: Quick Start
 ## Launch the Driver
 
 ```bash
-# Source ROS2 environment, replace ${distro} with your ROS2 distribution
-source /opt/ros/${distro}/setup.bash
+# Source ROS2 environment, replace <distro> with your ROS2 distribution
+source /opt/ros/<distro>/setup.bash
 # If built from source, overlay the workspace (Deb package users can skip)
-# Replace ${WORKSPACE} with your workspace path, e.g., ~/wujihandros2
-source ${WORKSPACE}/install/setup.bash
+# Replace <workspace> with your workspace path, e.g., ~/wujihandros2
+source <workspace>/install/setup.bash
 
 # Launch the driver
 ros2 launch wujihand_bringup wujihand.launch.py
@@ -27,11 +27,11 @@ On successful launch, you will see the following output:
 Open a new terminal and check the joint states:
 
 ```bash
-# Source ROS2 environment, replace ${distro} with your ROS2 distribution
-source /opt/ros/${distro}/setup.bash
+# Source ROS2 environment, replace <distro> with your ROS2 distribution
+source /opt/ros/<distro>/setup.bash
 # If built from source, overlay the workspace (Deb package users can skip)
-# Replace ${WORKSPACE} with your workspace path, e.g., ~/wujihandros2
-source ${WORKSPACE}/install/setup.bash
+# Replace <workspace> with your workspace path, e.g., ~/wujihandros2
+source <workspace>/install/setup.bash
 
 ros2 topic echo /hand_0/joint_states --once
 ```

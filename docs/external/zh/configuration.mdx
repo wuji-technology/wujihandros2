@@ -30,11 +30,11 @@ title: 启动与配置
 
 如果打开新终端，需要重新加载 ROS2 环境
 ```bash
-# 加载 ROS2 环境，替换 ${distro} 为实际安装的 ROS2 发行版
-source /opt/ros/${distro}/setup.bash
+# 加载 ROS2 环境，替换 <distro> 为实际安装的 ROS2 发行版
+source /opt/ros/<distro>/setup.bash
 # 如使用源码编译，请叠加工作空间（Deb 包安装可跳过）
-# 将 ${WORKSPACE} 替换为实际工作空间路径，如 ~/wujihandros2
-source ${WORKSPACE}/install/setup.bash
+# 将 <workspace> 替换为实际工作空间路径，如 ~/wujihandros2
+source <workspace>/install/setup.bash
 ```
 
 ```bash
