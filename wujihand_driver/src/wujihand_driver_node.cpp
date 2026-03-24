@@ -15,9 +15,112 @@
 #include "wujihand_driver/wujihand_driver_node.hpp"
 
 #include <chrono>
+#include <cstdlib>
+#include <filesystem>
 #include <functional>
+#include <fcntl.h>
+#include <sys/time.h>
+#include <time.h>
+#include <unistd.h>
+
+#include "builtin_interfaces/msg/time.hpp"
 
 namespace wujihand_driver {
+
+namespace {
+
+class PHCStampSource {
+ public:
+  builtin_interfaces::msg::Time now_msg() {
+    const auto stamp_ns = now_ns();
+    builtin_interfaces::msg::Time msg;
+    msg.sec = static_cast<int32_t>(stamp_ns / 1000000000LL);
+    msg.nanosec = static_cast<uint32_t>(stamp_ns % 1000000000LL);
+    return msg;
+  }
+
+ private:
+  static constexpr clockid_t kClockFd = 3;
+
+  static clockid_t clockid_from_fd(int fd) {
+    return static_cast<clockid_t>(((~fd) << 3) | kClockFd);
+  }
+
+  static std::string resolve_iface() {
+    if (const char* iface = std::getenv("WUJI_PTP_IFACE"); iface && *iface) {
+      return iface;
+    }
+    return {};
+  }
+
+  static std::string resolve_phc_path() {
+    if (const char* direct = std::getenv("WUJI_PHC_DEVICE"); direct && *direct) {
+      return direct;
+    }
+
+    const auto iface = resolve_iface();
+    if (!iface.empty()) {
+      const std::filesystem::path sys_path = std::filesystem::path("/sys/class/net") / iface / "device";
+      if (std::filesystem::exists(sys_path)) {
+        for (const auto& entry : std::filesystem::directory_iterator(sys_path)) {
+          const auto name = entry.path().filename().string();
+          if (name.rfind("ptp", 0) == 0) {
+            return "/dev/" + name;
+          }
+        }
+      }
+    }
+
+    for (int idx = 0; idx < 8; ++idx) {
+      const std::string candidate = "/dev/ptp" + std::to_string(idx);
+      if (::access(candidate.c_str(), R_OK) == 0) {
+        return candidate;
+      }
+    }
+    return {};
+  }
+
+  void ensure_ready() {
+    if (clockid_ready_) {
+      return;
+    }
+
+    const auto phc_path = resolve_phc_path();
+    if (!phc_path.empty()) {
+      const int fd = ::open(phc_path.c_str(), O_RDONLY | O_CLOEXEC);
+      if (fd >= 0) {
+        fd_ = fd;
+        clockid_ = clockid_from_fd(fd);
+        clockid_ready_ = true;
+        return;
+      }
+    }
+
+    clockid_ = CLOCK_TAI;
+    clockid_ready_ = true;
+  }
+
+  int64_t now_ns() {
+    ensure_ready();
+
+    timespec ts{};
+    if (::clock_gettime(clockid_, &ts) != 0) {
+      ::clock_gettime(CLOCK_REALTIME, &ts);
+    }
+    return static_cast<int64_t>(ts.tv_sec) * 1000000000LL + static_cast<int64_t>(ts.tv_nsec);
+  }
+
+  int fd_{-1};
+  clockid_t clockid_{CLOCK_REALTIME};
+  bool clockid_ready_{false};
+};
+
+PHCStampSource& phc_stamp_source() {
+  static PHCStampSource source;
+  return source;
+}
+
+}  // namespace
 
 const std::array<std::string, WujiHandDriverNode::NUM_JOINTS> WujiHandDriverNode::JOINT_NAMES = {
     "finger1_joint1", "finger1_joint2", "finger1_joint3", "finger1_joint4", "finger2_joint1",
@@ -226,7 +329,7 @@ void WujiHandDriverNode::publish_state() {
     return;
   }
 
-  auto now = this->now();
+  auto now = phc_stamp_source().now_msg();
 
   // Get actual positions and efforts from realtime controller
   // SDK 1.4.0+: TPDO proactively reports actual positions from hardware
@@ -262,7 +365,7 @@ void WujiHandDriverNode::publish_diagnostics() {
   std::thread([this]() {
     try {
       wujihand_msgs::msg::HandDiagnostics msg;
-      msg.header.stamp = this->now();
+      msg.header.stamp = phc_stamp_source().now_msg();
       msg.handedness = handedness_;
 
       // Use mutex to ensure thread-safe hardware access
