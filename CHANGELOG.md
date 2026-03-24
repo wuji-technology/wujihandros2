@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-03-24
+
 ## [1.0.1] - 2026-01-21
 
 ### Changed
@@ -65,7 +67,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Common utility module (spawn_robot_state_publisher)
 - CI build status badge in README
 
-[Unreleased]: https://github.com/wuji-technology/wujihandros2/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/wuji-technology/wujihandros2/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/wuji-technology/wujihandros2/compare/v1.0.1...v2.0.0
 [1.0.1]: https://github.com/wuji-technology/wujihandros2/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/wuji-technology/wujihandros2/releases/tag/v1.0.0
 [0.1.0]: https://github.com/wuji-technology/wujihandros2/releases/tag/v0.1.0
