@@ -100,15 +100,15 @@ ros2 run wujihand_bringup wave_demo.py --ros-args -p hand_name:=right_hand
 
 ### 关节名格式
 
-[话题控制](./ros2-interface#话题控制)使用完整关节名：`{hand_name}/finger{1-5}_joint{1-4}`
+[话题控制](./ros2-interface#话题控制)使用完整关节名：`{handedness}_finger{1-5}_joint{1-4}`
 
-| 索引 | 关节名 (hand_name=hand_0) | 手指 |
+| 索引 | 关节名 (handedness=right) | 手指 |
 |:-----|:--------------------------|:-----|
-| 0-3 | hand_0/finger1_joint1~4 | 拇指 |
-| 4-7 | hand_0/finger2_joint1~4 | 食指 |
-| 8-11 | hand_0/finger3_joint1~4 | 中指 |
-| 12-15 | hand_0/finger4_joint1~4 | 无名指 |
-| 16-19 | hand_0/finger5_joint1~4 | 小指 |
+| 0-3 | right_finger1_joint1~4 | 拇指 |
+| 4-7 | right_finger2_joint1~4 | 食指 |
+| 8-11 | right_finger3_joint1~4 | 中指 |
+| 12-15 | right_finger4_joint1~4 | 无名指 |
+| 16-19 | right_finger5_joint1~4 | 小指 |
 
 ### 索引计算
 
