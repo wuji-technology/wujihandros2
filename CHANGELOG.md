@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Tactile sensor driver node (`tactile_driver_node`) with 120 Hz raw data + 30 Hz heatmap image publishing
+- `TactileFrame.msg` message type for 24x32 pressure matrix data
+- Launch file `tactile.launch.py` with static TF and configurable parameters (serial_number, image_rate, pressure_max, frame_id)
+- JET colormap heatmap visualization for rviz
+
 ## [1.0.1] - 2026-01-21
 
 ### Changed

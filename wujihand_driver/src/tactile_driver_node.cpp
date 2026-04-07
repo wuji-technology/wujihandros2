@@ -22,6 +22,10 @@ TactileDriverNode::TactileDriverNode()
         RCLCPP_WARN(this->get_logger(), "pressure_max must be positive, using default 2135");
         pressure_max_ = 2135;
     }
+    if (image_rate_ <= 0.0) {
+        RCLCPP_WARN(this->get_logger(), "image_rate must be positive, using default 30.0");
+        image_rate_ = 30.0;
+    }
     frame_id_ = this->get_parameter("frame_id").as_string();
 
     // Compute how many raw frames to skip between image publishes.

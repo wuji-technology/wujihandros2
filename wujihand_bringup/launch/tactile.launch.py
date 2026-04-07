@@ -49,7 +49,7 @@ def generate_launch_description():
             emulate_tty=True,
         ),
 
-        # --- Static TF: tactile_sensor_link → palm_link ---
+        # --- Static TF: palm_link → tactile_sensor_link ---
         # Default identity transform. Update with actual calibration offsets
         # once the sensor is mounted on the hand.
         Node(
