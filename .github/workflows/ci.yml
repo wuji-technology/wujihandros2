@@ -33,14 +33,13 @@ jobs:
 
                   # Install wujihandcpp SDK from source (includes tactile headers)
                   git clone --depth 1 https://github.com/wuji-technology/wujihandpy.git /tmp/wujihandpy
-                  cd /tmp/wujihandpy
-                  cmake --preset linux -DCMAKE_BUILD_TYPE=Release 2>/dev/null || \
-                    cmake -B build -DCMAKE_BUILD_TYPE=Release
-                  cmake --build build -j$(nproc) --target wujihandcpp
+                  cd /tmp/wujihandpy/wujihandcpp
+                  cmake -B build -DCMAKE_BUILD_TYPE=Release
+                  cmake --build build -j$(nproc)
                   # Install headers and library system-wide
-                  cp -r wujihandcpp/include/wujihandcpp /usr/include/
-                  cp build/wujihandcpp/libwujihandcpp.a /usr/lib/
-                  # Build spdlog (bundled dependency)
+                  cp -r include/wujihandcpp /usr/include/
+                  cp build/libwujihandcpp.a /usr/lib/
+                  # Install spdlog (bundled or system)
                   if [ -f build/_deps/spdlog-build/libspdlog.a ]; then
                     cp build/_deps/spdlog-build/libspdlog.a /usr/lib/
                     cp -r build/_deps/spdlog-src/include/spdlog /usr/include/
@@ -97,12 +96,11 @@ jobs:
 
                   # Install wujihandcpp SDK from source (includes tactile headers)
                   git clone --depth 1 https://github.com/wuji-technology/wujihandpy.git /tmp/wujihandpy
-                  cd /tmp/wujihandpy
-                  cmake --preset linux -DCMAKE_BUILD_TYPE=Release 2>/dev/null || \
-                    cmake -B build -DCMAKE_BUILD_TYPE=Release
-                  cmake --build build -j$(nproc) --target wujihandcpp
-                  cp -r wujihandcpp/include/wujihandcpp /usr/include/
-                  cp build/wujihandcpp/libwujihandcpp.a /usr/lib/
+                  cd /tmp/wujihandpy/wujihandcpp
+                  cmake -B build -DCMAKE_BUILD_TYPE=Release
+                  cmake --build build -j$(nproc)
+                  cp -r include/wujihandcpp /usr/include/
+                  cp build/libwujihandcpp.a /usr/lib/
                   if [ -f build/_deps/spdlog-build/libspdlog.a ]; then
                     cp build/_deps/spdlog-build/libspdlog.a /usr/lib/
                     cp -r build/_deps/spdlog-src/include/spdlog /usr/include/
