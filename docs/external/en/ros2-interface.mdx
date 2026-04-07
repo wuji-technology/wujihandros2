@@ -119,7 +119,7 @@ ros2 topic pub /hand_0/joint_commands sensor_msgs/msg/JointState \
 ```bash
 # Control only two joints of the index finger
 ros2 topic pub /hand_0/joint_commands sensor_msgs/msg/JointState \
-  "{name: ['hand_0/finger2_joint2', 'hand_0/finger2_joint3'], position: [1.0, 1.0]}" --once
+  "{name: ['right_finger2_joint2', 'right_finger2_joint3'], position: [1.0, 1.0]}" --once
 ```
 
 ### Read Joint States
