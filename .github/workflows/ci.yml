@@ -29,24 +29,23 @@ jobs:
             - name: Install dependencies
               run: |
                   apt-get update
-                  apt-get install -y wget git cmake g++ libusb-1.0-0-dev
+                  apt-get install -y wget
 
-                  # Install wujihandcpp SDK from source (includes tactile headers)
-                  git clone --depth 1 https://github.com/wuji-technology/wujihandpy.git /tmp/wujihandpy
-                  cd /tmp/wujihandpy/wujihandcpp
-                  cmake -B build -DCMAKE_BUILD_TYPE=Release
-                  cmake --build build -j$(nproc)
-                  # Install headers and library system-wide
-                  cp -r include/wujihandcpp /usr/include/
-                  cp build/libwujihandcpp.a /usr/lib/
-                  # Install spdlog (bundled or system)
-                  if [ -f build/_deps/spdlog-build/libspdlog.a ]; then
-                    cp build/_deps/spdlog-build/libspdlog.a /usr/lib/
-                    cp -r build/_deps/spdlog-src/include/spdlog /usr/include/
-                  else
-                    apt-get install -y libspdlog-dev
+                  # Install wujihandcpp SDK (latest release including pre-release)
+                  # Use grep to extract URL directly, avoiding jq parse issues with control chars
+                  DEB_URL=$(curl -sH "Accept: application/vnd.github+json" \
+                    https://api.github.com/repos/wuji-technology/wujihandpy/releases | \
+                    grep -oP '"browser_download_url":\s*"\K[^"]*wujihandcpp[^"]*-amd64\.deb' | head -1)
+
+                  if [ -z "$DEB_URL" ]; then
+                    echo "Error: Failed to get wujihandcpp deb URL from GitHub releases"
+                    exit 1
                   fi
-                  cd -
+
+                  echo "Installing wujihandcpp from: $DEB_URL"
+                  wget -q "$DEB_URL" || { echo "Error: Failed to download $DEB_URL"; exit 1; }
+                  dpkg -i --force-overwrite wujihandcpp-*.deb || true
+                  apt-get install -f -y
 
                   # Install ROS dependencies
                   apt-get install -y \
@@ -92,22 +91,23 @@ jobs:
             - name: Install dependencies
               run: |
                   apt-get update
-                  apt-get install -y wget dpkg-dev git cmake g++ libusb-1.0-0-dev
+                  apt-get install -y wget dpkg-dev
 
-                  # Install wujihandcpp SDK from source (includes tactile headers)
-                  git clone --depth 1 https://github.com/wuji-technology/wujihandpy.git /tmp/wujihandpy
-                  cd /tmp/wujihandpy/wujihandcpp
-                  cmake -B build -DCMAKE_BUILD_TYPE=Release
-                  cmake --build build -j$(nproc)
-                  cp -r include/wujihandcpp /usr/include/
-                  cp build/libwujihandcpp.a /usr/lib/
-                  if [ -f build/_deps/spdlog-build/libspdlog.a ]; then
-                    cp build/_deps/spdlog-build/libspdlog.a /usr/lib/
-                    cp -r build/_deps/spdlog-src/include/spdlog /usr/include/
-                  else
-                    apt-get install -y libspdlog-dev
+                  # Install wujihandcpp SDK (latest release including pre-release)
+                  # Use grep to extract URL directly, avoiding jq parse issues with control chars
+                  DEB_URL=$(curl -sH "Accept: application/vnd.github+json" \
+                    https://api.github.com/repos/wuji-technology/wujihandpy/releases | \
+                    grep -oP '"browser_download_url":\s*"\K[^"]*wujihandcpp[^"]*-amd64\.deb' | head -1)
+
+                  if [ -z "$DEB_URL" ]; then
+                    echo "Error: Failed to get wujihandcpp deb URL from GitHub releases"
+                    exit 1
                   fi
-                  cd -
+
+                  echo "Installing wujihandcpp from: $DEB_URL"
+                  wget -q "$DEB_URL" || { echo "Error: Failed to download $DEB_URL"; exit 1; }
+                  dpkg -i --force-overwrite wujihandcpp-*.deb || true
+                  apt-get install -f -y
 
                   # Install ROS dependencies
                   apt-get install -y \

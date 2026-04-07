@@ -73,24 +73,31 @@ target_link_libraries(wujihand_driver_node
   Threads::Threads
 )
 
-# --- tactile_driver_node (tactile sensor) ---
-add_executable(tactile_driver_node
-  src/tactile_driver_node.cpp
-  src/tactile_main.cpp
-)
+# --- tactile_driver_node (tactile sensor, requires wujihandcpp with tactile support) ---
+set(TACTILE_TARGETS "")
+if(EXISTS "${WUJIHANDCPP_INCLUDE_DIR}/wujihandcpp/device/tactile_board.hpp")
+    message(STATUS "Tactile headers found, building tactile_driver_node")
+    add_executable(tactile_driver_node
+      src/tactile_driver_node.cpp
+      src/tactile_main.cpp
+    )
 
-target_include_directories(tactile_driver_node PUBLIC ${COMMON_INCLUDE_DIRS})
-ament_target_dependencies(tactile_driver_node ${COMMON_AMENT_DEPS})
+    target_include_directories(tactile_driver_node PUBLIC ${COMMON_INCLUDE_DIRS})
+    ament_target_dependencies(tactile_driver_node ${COMMON_AMENT_DEPS})
 
-target_link_libraries(tactile_driver_node
-  ${WUJIHANDCPP_LIBRARY}
-  ${WUJIHANDCPP_SPDLOG_LIBRARY}
-  usb-1.0
-  Threads::Threads
-)
+    target_link_libraries(tactile_driver_node
+      ${WUJIHANDCPP_LIBRARY}
+      ${WUJIHANDCPP_SPDLOG_LIBRARY}
+      usb-1.0
+      Threads::Threads
+    )
+    set(TACTILE_TARGETS tactile_driver_node)
+else()
+    message(STATUS "Tactile headers not found, skipping tactile_driver_node")
+endif()
 
 # Install
-install(TARGETS wujihand_driver_node tactile_driver_node
+install(TARGETS wujihand_driver_node ${TACTILE_TARGETS}
   DESTINATION lib/${PROJECT_NAME}
 )
 
