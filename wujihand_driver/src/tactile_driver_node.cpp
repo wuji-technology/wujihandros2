@@ -57,8 +57,9 @@ TactileDriverNode::TactileDriverNode()
 }
 
 TactileDriverNode::~TactileDriverNode() {
-    // Must stop streaming before publishers are destroyed.
-    // Otherwise the reader thread could call publish() on a dead publisher.
+    // stop_streaming() is synchronous: it sets stop_requested, then joins the
+    // reader thread. After join() returns, no more on_frame() callbacks can fire,
+    // so it is safe to destroy publishers after this call.
     if (board_) {
         board_->stop_streaming();
     }
