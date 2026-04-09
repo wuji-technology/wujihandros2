@@ -369,3 +369,101 @@ The hand moves to zero position. Terminal continuously prints joint positions (~
 [INFO] [1769591460.691719595] [wujihand_controller]: Position: [0.044, 0.012, 0.035, 0.034]
 ...
 ```
+
+
+---
+
+## Tactile Sensing Glove
+
+The Tactile Sensing Glove is an optional tactile perception accessory for Wuji Hand. The ROS2 driver publishes tactile data through a dedicated node that runs alongside the dexterous hand driver.
+
+### Launch the Driver Node
+
+```bash
+ros2 launch wujihand_bringup tactile.launch.py
+```
+
+With custom parameters:
+
+```bash
+ros2 launch wujihand_bringup tactile.launch.py \
+    serial_number:="ABC123" \
+    image_rate:=60.0 \
+    pressure_max:=2135
+```
+
+### Launch Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `serial_number` | `""` (auto-discover) | USB device serial number filter |
+| `image_rate` | `30.0` | Heatmap publish rate (Hz) |
+| `pressure_max` | `2135` | Pressure normalization maximum |
+| `frame_id` | `"tactile_sensor_link"` | TF frame ID |
+
+### TactileFrame Message
+
+`wujihand_msgs/msg/TactileFrame`: Tactile frame data, published at 120Hz.
+
+```text
+std_msgs/Header header
+uint8 hand              # 0=left, 1=right
+uint16 sequence         # Frame counter, wraps at 65535
+uint32 device_timestamp # Milliseconds since device boot
+int16[768] pressure     # 24×32 pressure matrix (row-major, flattened)
+```
+
+**Pressure value semantics:**
+- Range: 0–2135
+- 2135 = no pressure (sensor open-circuit), 0 = maximum pressure
+- Lower values indicate higher pressure
+
+### Topic List
+
+| Topic | Type | Rate | QoS | Description |
+|-------|------|------|-----|-------------|
+| `tactile/raw` | `TactileFrame` | 120 Hz | SensorDataQoS | Raw tactile frame data |
+| `tactile/image` | `sensor_msgs/Image` | 30 Hz (default) | SensorDataQoS | RGB8 24×32 heatmap (JET colormap) |
+
+**Heatmap color mapping:**
+- Blue → low pressure / no contact
+- Red → high pressure / contact
+- Format: RGB8, 24 rows × 32 columns
+
+### TF Frame
+
+The driver publishes a static transform from `palm_link` → `tactile_sensor_link`, defaulting to an identity transform (zero offset). Adjust the `static_transform_publisher` parameters in the launch file to match your physical installation.
+
+### RViz Visualization
+
+1. Launch the tactile driver node
+2. Open RViz, add an **Image** display plugin
+3. Set the topic to `/tactile/image`
+4. View the real-time tactile heatmap
+
+{/* TODO: RViz tactile heatmap screenshot */}
+
+### Using with the Dexterous Hand Driver
+
+The tactile driver node runs independently of the dexterous hand driver. Topic namespaces are isolated, so there are no conflicts:
+
+```bash
+# Terminal 1: Launch dexterous hand driver
+ros2 launch wujihand_bringup wujihand.launch.py
+
+# Terminal 2: Launch tactile driver
+ros2 launch wujihand_bringup tactile.launch.py
+```
+
+### Command-line Tools
+
+```bash
+# Read one tactile frame
+ros2 topic echo /tactile/raw --once
+
+# Check tactile frame publish rate
+ros2 topic hz /tactile/raw
+
+# Check heatmap publish rate
+ros2 topic hz /tactile/image
+```
