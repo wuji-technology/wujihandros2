@@ -395,7 +395,7 @@ ros2 launch wujihand_bringup tactile.launch.py \
 ### Launch Parameters
 
 | Parameter | Default | Description |
-|-----------|---------|-------------|
+|:----------|:--------|:------------|
 | `serial_number` | `""` (auto-discover) | USB device serial number filter |
 | `image_rate` | `30.0` | Heatmap publish rate (Hz) |
 | `pressure_max` | `2135` | Pressure normalization maximum |
@@ -421,9 +421,9 @@ int16[768] pressure     # 24×32 pressure matrix (row-major, flattened)
 ### Topic List
 
 | Topic | Type | Rate | QoS | Description |
-|-------|------|------|-----|-------------|
-| `tactile/raw` | `TactileFrame` | 120 Hz | SensorDataQoS | Raw tactile frame data |
-| `tactile/image` | `sensor_msgs/Image` | 30 Hz (default) | SensorDataQoS | RGB8 24×32 heatmap (JET colormap) |
+|:------|:-----|:-----|:----|:------------|
+| `/tactile/raw` | `TactileFrame` | 120 Hz | SensorDataQoS | Raw tactile frame data |
+| `/tactile/image` | `sensor_msgs/Image` | 30 Hz (default) | SensorDataQoS | RGB8 24×32 heatmap (JET colormap) |
 
 **Heatmap color mapping:**
 - Blue → low pressure / no contact
