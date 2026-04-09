@@ -35,8 +35,11 @@ TactileDriverNode::TactileDriverNode()
     // Create publishers
     raw_pub_ = this->create_publisher<wujihand_msgs::msg::TactileFrame>(
         "tactile/raw", rclcpp::SensorDataQoS());
+    // Use default QoS (Reliable) for image so RViz2 can subscribe without
+    // QoS mismatch. The image is only 24x32 @ 30Hz (~7KB/s), so Reliable
+    // has no performance impact. Raw frames stay Best Effort (120Hz).
     image_pub_ = this->create_publisher<sensor_msgs::msg::Image>(
-        "tactile/image", rclcpp::SensorDataQoS());
+        "tactile/image", 10);
 
     // Connect to tactile board
     const char* sn = serial_number_.empty() ? nullptr : serial_number_.c_str();
