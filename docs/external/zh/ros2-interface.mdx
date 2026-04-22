@@ -422,8 +422,8 @@ int16[768] pressure     # 24×32 压力矩阵（行优先展平）
 
 | 话题 | 类型 | 频率 | QoS | 说明 |
 |:-----|:-----|:-----|:----|:-----|
-| `/tactile/raw` | `TactileFrame` | 120 Hz | SensorDataQoS | 原始触觉帧数据 |
-| `/tactile/image` | `sensor_msgs/Image` | 30 Hz（默认） | SensorDataQoS | RGB8 24×32 热力图（JET 色标） |
+| `/tactile/raw` | `TactileFrame` | 120 Hz | SensorDataQoS (Best Effort) | 原始触觉帧数据 |
+| `/tactile/image` | `sensor_msgs/Image` | 30 Hz（默认） | 默认 (Reliable) | RGB8 24×32 热力图（JET 色标），Reliable QoS 便于 RViz2 Image 插件订阅 |
 
 **热力图色彩映射：**
 - 蓝色 → 低压力 / 无接触

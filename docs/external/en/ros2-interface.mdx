@@ -422,8 +422,8 @@ int16[768] pressure     # 24×32 pressure matrix (row-major, flattened)
 
 | Topic | Type | Rate | QoS | Description |
 |:------|:-----|:-----|:----|:------------|
-| `/tactile/raw` | `TactileFrame` | 120 Hz | SensorDataQoS | Raw tactile frame data |
-| `/tactile/image` | `sensor_msgs/Image` | 30 Hz (default) | SensorDataQoS | RGB8 24×32 heatmap (JET colormap) |
+| `/tactile/raw` | `TactileFrame` | 120 Hz | SensorDataQoS (Best Effort) | Raw tactile frame data |
+| `/tactile/image` | `sensor_msgs/Image` | 30 Hz (default) | Default (Reliable) | RGB8 24×32 heatmap (JET colormap); Reliable QoS so the RViz2 Image plugin can subscribe |
 
 **Heatmap color mapping:**
 - Blue → low pressure / no contact
