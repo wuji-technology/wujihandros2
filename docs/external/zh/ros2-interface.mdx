@@ -369,3 +369,101 @@ ros2 run test_wujihand wujihand_controller
 [INFO] [1769591460.691719595] [wujihand_controller]: Position: [0.044, 0.012, 0.035, 0.034]
 ...
 ```
+
+
+---
+
+## 触觉感知手套
+
+触觉感知手套（Tactile Sensing Glove）是 Wuji Hand 的选配触觉感知配件。ROS2 驱动通过独立节点发布触觉数据，与灵巧手驱动节点并行运行。
+
+### 启动驱动节点
+
+```bash
+ros2 launch wujihand_bringup tactile.launch.py
+```
+
+自定义参数：
+
+```bash
+ros2 launch wujihand_bringup tactile.launch.py \
+    serial_number:="ABC123" \
+    image_rate:=60.0 \
+    pressure_max:=2135
+```
+
+### 启动参数
+
+| 参数 | 默认值 | 说明 |
+|:-----|:-------|:-----|
+| `serial_number` | `""`（自动发现） | USB 设备序列号过滤 |
+| `image_rate` | `30.0` | 热力图发布频率（Hz） |
+| `pressure_max` | `2135` | 压力归一化最大值 |
+| `frame_id` | `"tactile_sensor_link"` | TF 坐标帧 ID |
+
+### TactileFrame 消息
+
+`wujihand_msgs/msg/TactileFrame`：触觉帧数据，120 Hz 发布。
+
+```text
+std_msgs/Header header
+uint8 hand              # 0=左手, 1=右手
+uint16 sequence         # 帧计数器，0–65535 循环
+uint32 device_timestamp # 设备启动后毫秒数
+int16[768] pressure     # 24×32 压力矩阵（行优先展平）
+```
+
+**压力值语义：**
+- 范围：0–2135
+- 2135 = 无压力（传感器开路），0 = 最大压力
+- 值越小，压力越大
+
+### 话题列表
+
+| 话题 | 类型 | 频率 | QoS | 说明 |
+|:-----|:-----|:-----|:----|:-----|
+| `/tactile/raw` | `TactileFrame` | 120 Hz | SensorDataQoS (Best Effort) | 原始触觉帧数据 |
+| `/tactile/image` | `sensor_msgs/Image` | 30 Hz（默认） | 默认 (Reliable) | RGB8 24×32 热力图（JET 色标），Reliable QoS 便于 RViz2 Image 插件订阅 |
+
+**热力图色彩映射：**
+- 蓝色 → 低压力 / 无接触
+- 红色 → 高压力 / 接触
+- 格式：RGB8，24 行 × 32 列
+
+### TF 坐标帧
+
+驱动自动发布 `palm_link` → `tactile_sensor_link` 的静态变换，默认为单位变换（零偏移）。根据实际安装位置调整 launch 文件中的 `static_transform_publisher` 参数。
+
+### RViz 可视化
+
+1. 启动触觉驱动节点
+2. 打开 RViz，添加 **Image** 显示插件
+3. 将话题设置为 `/tactile/image`
+4. 实时查看触觉热力图
+
+{/* TODO: RViz 触觉热力图截图 */}
+
+### 与灵巧手驱动共同使用
+
+触觉驱动节点与灵巧手驱动节点独立运行，话题命名空间隔离，不冲突：
+
+```bash
+# 终端 1：启动灵巧手驱动
+ros2 launch wujihand_bringup wujihand.launch.py
+
+# 终端 2：启动触觉驱动
+ros2 launch wujihand_bringup tactile.launch.py
+```
+
+### 命令行工具
+
+```bash
+# 读取一帧触觉数据
+ros2 topic echo /tactile/raw --once
+
+# 查看触觉帧发布频率
+ros2 topic hz /tactile/raw
+
+# 查看热力图发布频率
+ros2 topic hz /tactile/image
+```
