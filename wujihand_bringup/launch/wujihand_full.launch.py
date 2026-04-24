@@ -20,12 +20,14 @@ Usage:
 import os
 import subprocess
 import sys
+import tempfile
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription, logging
 from launch.actions import (
     DeclareLaunchArgument,
     OpaqueFunction,
+    SetLaunchConfiguration,
     TimerAction,
 )
 from launch.conditions import IfCondition
@@ -100,7 +102,7 @@ def setup_full_launch(context):
     _logger.info(f"Launching with hand SN={hand_serials[0]}, "
                  f"tactile={'SN=' + tactile_serials[0] if tactile_serials else 'none'}")
 
-    nodes = []
+    nodes = [SetLaunchConfiguration("tactile_active", "false")]
 
     # --- Hand driver node ---
     nodes.append(Node(
@@ -120,6 +122,7 @@ def setup_full_launch(context):
 
     # --- Tactile driver node (under hand namespace) ---
     if tactile_enabled and tactile_serials:
+        nodes.append(SetLaunchConfiguration("tactile_active", "true"))
         nodes.append(Node(
             package="wujihand_driver",
             executable="tactile_driver_node",
@@ -134,16 +137,6 @@ def setup_full_launch(context):
             output="screen",
             emulate_tty=True,
         ))
-
-        # Static TF for tactile sensor
-        nodes.append(Node(
-            package="tf2_ros",
-            executable="static_transform_publisher",
-            name="tactile_tf",
-            namespace=hand_name,
-            arguments=["0", "0", "0", "0", "0", "0",
-                        "palm_link", "tactile_sensor_link"],
-        ))
     elif tactile_enabled:
         _logger.warning("Tactile enabled but no tactile board found. Skipping.")
 
@@ -154,6 +147,9 @@ def setup_viz_and_urdf(context):
     """Spawn robot_state_publisher and visualization after driver connects."""
     hand_name = LaunchConfiguration("hand_name").perform(context)
     viz = LaunchConfiguration("viz").perform(context)
+    tactile_active = (
+        LaunchConfiguration("tactile_active").perform(context).lower() == "true"
+    )
 
     nodes = []
 
@@ -183,6 +179,16 @@ def setup_viz_and_urdf(context):
         output="screen",
     ))
 
+    if tactile_active:
+        nodes.append(Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
+            name="tactile_tf",
+            namespace=hand_name,
+            arguments=["0", "0", "0", "0", "0", "0",
+                        f"{hand_type}_palm_link", "tactile_sensor_link"],
+        ))
+
     # Visualization
     use_rviz = viz == "rviz" or (viz == "auto" and os.environ.get("DISPLAY"))
     use_foxglove = viz == "foxglove" or (viz == "auto" and not os.environ.get("DISPLAY"))
@@ -191,6 +197,21 @@ def setup_viz_and_urdf(context):
         # Use tactile-enabled rviz config from wujihand_bringup (includes tactile Image panel)
         bringup_dir = get_package_share_directory("wujihand_bringup")
         rviz_config = os.path.join(bringup_dir, "rviz", f"{hand_type}_tactile.rviz")
+        try:
+            with open(rviz_config, "r") as f:
+                rviz_text = f.read()
+            hand_namespace = hand_name.strip("/")
+            rviz_text = rviz_text.replace("/hand_0/", f"/{hand_namespace}/")
+            with tempfile.NamedTemporaryFile(
+                mode="w",
+                prefix=f"wujihand_{hand_namespace.replace('/', '_') or 'hand'}_",
+                suffix=".rviz",
+                delete=False,
+            ) as f:
+                f.write(rviz_text)
+                rviz_config = f.name
+        except OSError as e:
+            _logger.error(f"Failed to rewrite RViz config: {e}")
         nodes.append(Node(
             package="rviz2",
             executable="rviz2",
