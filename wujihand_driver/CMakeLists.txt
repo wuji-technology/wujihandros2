@@ -43,24 +43,28 @@ find_package(Threads REQUIRED)
 message(STATUS "Found wujihandcpp: ${WUJIHANDCPP_LIBRARY}")
 message(STATUS "Found wujihandcpp include: ${WUJIHANDCPP_INCLUDE_DIR}")
 
-# Build executable
-add_executable(wujihand_driver_node
-  src/wujihand_driver_node.cpp
-  src/main.cpp
-)
-
-target_include_directories(wujihand_driver_node PUBLIC
+# Common include directories and dependencies
+set(COMMON_INCLUDE_DIRS
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
   ${WUJIHANDCPP_INCLUDE_DIR}
 )
 
-ament_target_dependencies(wujihand_driver_node
+set(COMMON_AMENT_DEPS
   rclcpp
   std_msgs
   sensor_msgs
   wujihand_msgs
 )
+
+# --- wujihand_driver_node (joint control) ---
+add_executable(wujihand_driver_node
+  src/wujihand_driver_node.cpp
+  src/main.cpp
+)
+
+target_include_directories(wujihand_driver_node PUBLIC ${COMMON_INCLUDE_DIRS})
+ament_target_dependencies(wujihand_driver_node ${COMMON_AMENT_DEPS})
 
 target_link_libraries(wujihand_driver_node
   ${WUJIHANDCPP_LIBRARY}
@@ -69,8 +73,24 @@ target_link_libraries(wujihand_driver_node
   Threads::Threads
 )
 
+# --- tactile_driver_node (tactile sensor) ---
+add_executable(tactile_driver_node
+  src/tactile_driver_node.cpp
+  src/tactile_main.cpp
+)
+
+target_include_directories(tactile_driver_node PUBLIC ${COMMON_INCLUDE_DIRS})
+ament_target_dependencies(tactile_driver_node ${COMMON_AMENT_DEPS})
+
+target_link_libraries(tactile_driver_node
+  ${WUJIHANDCPP_LIBRARY}
+  ${WUJIHANDCPP_SPDLOG_LIBRARY}
+  usb-1.0
+  Threads::Threads
+)
+
 # Install
-install(TARGETS wujihand_driver_node
+install(TARGETS wujihand_driver_node tactile_driver_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
