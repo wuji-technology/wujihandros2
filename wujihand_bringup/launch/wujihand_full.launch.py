@@ -131,7 +131,9 @@ def setup_full_launch(context):
             parameters=[{
                 "serial_number": tactile_serials[0],
                 "image_rate": float(LaunchConfiguration("image_rate").perform(context)),
-                "pressure_max": int(LaunchConfiguration("pressure_max").perform(context)),
+                "sample_rate_hz": int(LaunchConfiguration("sample_rate_hz").perform(context)),
+                "streaming_at_startup":
+                    LaunchConfiguration("streaming_at_startup").perform(context).lower() == "true",
                 "frame_id": "tactile_sensor_link",
             }],
             output="screen",
@@ -252,8 +254,10 @@ def generate_launch_description():
         DeclareLaunchArgument("diagnostics_rate", default_value="10.0"),
         DeclareLaunchArgument("image_rate", default_value="30.0",
                               description="Tactile heatmap publish rate (Hz)"),
-        DeclareLaunchArgument("pressure_max", default_value="2135",
-                              description="Tactile pressure normalization max"),
+        DeclareLaunchArgument("sample_rate_hz", default_value="120",
+                              description="Tactile data-frame rate (1..120, applied at startup)"),
+        DeclareLaunchArgument("streaming_at_startup", default_value="true",
+                              description="Whether to enable tactile streaming when the driver starts"),
 
         # --- Phase 1: Discover devices and spawn driver nodes ---
         OpaqueFunction(function=setup_full_launch),

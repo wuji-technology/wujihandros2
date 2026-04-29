@@ -12,8 +12,13 @@ find_package(std_msgs REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/HandDiagnostics.msg"
   "msg/TactileFrame.msg"
+  "msg/TactileDiagnostics.msg"
+  "msg/TactileDeviceInfo.msg"
   "srv/SetEnabled.srv"
   "srv/ResetError.srv"
+  "srv/SetTactileStreaming.srv"
+  "srv/SetTactileSampleRate.srv"
+  "srv/ResetTactileCounters.srv"
   DEPENDENCIES std_msgs
 )
 

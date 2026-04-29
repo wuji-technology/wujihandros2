@@ -21,9 +21,14 @@ def generate_launch_description():
             description="Heatmap image publish rate (Hz)",
         ),
         DeclareLaunchArgument(
-            "pressure_max",
-            default_value="2135",
-            description="Pressure normalization max value (ADC open-circuit)",
+            "sample_rate_hz",
+            default_value="120",
+            description="Tactile data-frame rate (1..120, applied at startup)",
+        ),
+        DeclareLaunchArgument(
+            "streaming_at_startup",
+            default_value="true",
+            description="Whether to enable tactile streaming when the driver starts",
         ),
         DeclareLaunchArgument(
             "frame_id",
@@ -41,8 +46,10 @@ def generate_launch_description():
                     LaunchConfiguration("serial_number"), value_type=str),
                 "image_rate": ParameterValue(
                     LaunchConfiguration("image_rate"), value_type=float),
-                "pressure_max": ParameterValue(
-                    LaunchConfiguration("pressure_max"), value_type=int),
+                "sample_rate_hz": ParameterValue(
+                    LaunchConfiguration("sample_rate_hz"), value_type=int),
+                "streaming_at_startup": ParameterValue(
+                    LaunchConfiguration("streaming_at_startup"), value_type=bool),
                 "frame_id": LaunchConfiguration("frame_id"),
             }],
             output="screen",

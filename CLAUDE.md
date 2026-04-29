@@ -70,11 +70,20 @@ git submodule update --init --recursive
 ```
 /hand_0/joint_states              # sensor_msgs/JointState (1000Hz)
 /hand_0/joint_commands            # 关节控制
-/hand_0/diagnostics               # 诊断信息 (10Hz)
-/hand_0/tactile/raw               # TactileFrame (120Hz, Best Effort)
-/hand_0/tactile/image             # sensor_msgs/Image (30Hz, Reliable)
+/hand_0/diagnostics               # 灵巧手诊断信息 (10Hz)
+/hand_0/tactile/raw               # TactileFrame (sample_rate_hz, default 120Hz, Best Effort)
+/hand_0/tactile/image             # sensor_msgs/Image (image_rate, default 30Hz, Reliable)
+/hand_0/tactile/diagnostics       # TactileDiagnostics (10Hz)
 /hand_0/robot_description         # URDF
 /tf, /tf_static                   # TF 树
+```
+
+## 触觉服务（spec §3.3 + §3.4）
+
+```
+/hand_0/set_tactile_streaming     # SetTactileStreaming (bool enable)
+/hand_0/set_tactile_sample_rate   # SetTactileSampleRate (uint16, 1..120)
+/hand_0/reset_tactile_counters    # ResetTactileCounters
 ```
 
 ## 踩坑记录

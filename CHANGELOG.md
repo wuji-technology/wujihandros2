@@ -7,12 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Tactile stack rewired for the new firmware wire protocol**
+  (`wh110-firmware/docs/tactile-wire-protocol.md`):
+  - `TactileFrame.msg` now carries `float32[768] pressure` in `[0.0, 1.0]`
+    (was `int16[768]` with inverted polarity); `NaN` marks invalid cells.
+    Field renamed `device_timestamp` → `device_timestamp_ms` for unit clarity.
+  - `tactile_driver_node` parameters changed: dropped `pressure_max`, added
+    `sample_rate_hz` (1..120, default 120) and `streaming_at_startup`
+    (default true). Heatmap colormap and NaN handling rewritten accordingly.
+  - Driver logs serial / hw_revision / fw_version / git short sha at startup
+    via the new `GET_DEVICE_INFO` + `GET_FW_BUILD` commands.
+  - New topic `~/tactile/diagnostics` (`TactileDiagnostics`, 10 Hz).
+  - New services: `~/set_tactile_streaming` (`SetTactileStreaming`),
+    `~/set_tactile_sample_rate` (`SetTactileSampleRate`),
+    `~/reset_tactile_counters` (`ResetTactileCounters`).
+  - Disconnect now reported via the SDK's `set_disconnect_callback` (was
+    a fragile zero-init-frame heuristic that broke once `0.0` became a
+    valid pressure value).
+  - `tactile.launch.py` and `wujihand_full.launch.py` updated to the new
+    parameter set.
+
 ### Added
 
-- Tactile sensor driver node (`tactile_driver_node`) with 120 Hz raw data + 30 Hz heatmap image publishing
-- `TactileFrame.msg` message type for 24x32 pressure matrix data
-- Launch file `tactile.launch.py` with static TF and configurable parameters (serial_number, image_rate, pressure_max, frame_id)
-- JET colormap heatmap visualization for rviz
+- `TactileDiagnostics.msg`, `TactileDeviceInfo.msg`.
+- `SetTactileStreaming.srv`, `SetTactileSampleRate.srv`,
+  `ResetTactileCounters.srv`.
 
 ## [1.0.1] - 2026-01-21
 
