@@ -5,7 +5,7 @@
 namespace wujihand_driver {
 
 /// 256-entry JET colormap LUT (RGB).
-/// Index 0 = dark blue (low pressure / high value), 255 = dark red (high pressure / low value).
+/// Index 0 = dark blue (low pressure), 255 = dark red (high pressure).
 /// Generated from the standard Matplotlib JET colormap.
 // clang-format off
 inline constexpr uint8_t JET_LUT[256][3] = {

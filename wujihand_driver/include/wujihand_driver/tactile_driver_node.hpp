@@ -50,28 +50,27 @@ private:
     // Timer driving the diagnostics topic.
     rclcpp::TimerBase::SharedPtr diag_timer_;
 
-    // Parameters (immutable after construction).
-    std::string serial_number_;
+    // Parameters that survive past construction (the rest are consumed in
+    // the constructor and live only as locals).
     double image_rate_;
-    bool streaming_at_startup_;
     std::string frame_id_;
 
-    // Mutable runtime state shared between the SDK streaming thread
-    // (on_frame) and ROS service callbacks (set_sample_rate). Both fields
-    // are atomic to avoid a data race when the rate is changed mid-stream.
-    std::atomic<int> sample_rate_hz_{120};
+    // Image-publish skip ratio. Read by on_frame on the SDK streaming
+    // thread; written by the set_sample_rate service callback on a
+    // different thread → atomic.
     std::atomic<int> image_skip_{1};
-    std::atomic<uint32_t> frame_counter_{0};
 
-    // Diagnostics-poll backoff. consecutive_failures counts how many
-    // consecutive diag attempts threw (incremented at most once per tick,
-    // in the catch handler). backoff_tick is a separate phase counter that
-    // is incremented exactly once per skipped tick once we are over the
-    // failure threshold — keeping the two distinct avoids the
-    // double-increment bug where a single failure would advance the backoff
-    // phase by 2 (one in the pre-skip branch, one in the catch).
-    std::atomic<int> diag_consecutive_failures_{0};
-    std::atomic<int> diag_backoff_tick_{0};
+    // Frame counter for image downsampling. Only touched by on_frame on
+    // the single SDK streaming consumer thread.
+    uint32_t frame_counter_{0};
+
+    // Diagnostics-poll backoff. publish_diagnostics is the only writer/
+    // reader and runs on its own MutuallyExclusive callback group, so
+    // these are single-threaded. The two counters are kept distinct
+    // (failures vs. backoff phase) so a single failure cannot double-
+    // increment the phase.
+    int diag_consecutive_failures_{0};
+    int diag_backoff_tick_{0};
 };
 
 }  // namespace wujihand_driver

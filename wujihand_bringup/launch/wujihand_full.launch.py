@@ -18,7 +18,6 @@ Usage:
 """
 
 import os
-import subprocess
 import sys
 import tempfile
 
@@ -83,7 +82,6 @@ def discover_usb_devices():
 def setup_full_launch(context):
     """OpaqueFunction: discover devices and spawn all nodes."""
     hand_name = LaunchConfiguration("hand_name").perform(context)
-    viz = LaunchConfiguration("viz").perform(context)
     tactile_enabled = LaunchConfiguration("tactile").perform(context).lower() == "true"
 
     # Manual overrides

@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `TactileDiagnostics.msg`, `TactileDeviceInfo.msg`.
+- `TactileDiagnostics.msg`.
 - `SetTactileStreaming.srv`, `SetTactileSampleRate.srv`,
   `ResetTactileCounters.srv`.
 

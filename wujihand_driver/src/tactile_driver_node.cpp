@@ -25,11 +25,11 @@ TactileDriverNode::TactileDriverNode()
     this->declare_parameter("streaming_at_startup", true);
     this->declare_parameter("frame_id", "tactile_sensor_link");
 
-    serial_number_       = this->get_parameter("serial_number").as_string();
-    image_rate_          = this->get_parameter("image_rate").as_double();
-    int initial_rate     = this->get_parameter("sample_rate_hz").as_int();
-    streaming_at_startup_ = this->get_parameter("streaming_at_startup").as_bool();
-    frame_id_            = this->get_parameter("frame_id").as_string();
+    const std::string serial_number = this->get_parameter("serial_number").as_string();
+    image_rate_                      = this->get_parameter("image_rate").as_double();
+    int initial_rate                 = this->get_parameter("sample_rate_hz").as_int();
+    const bool streaming_at_startup  = this->get_parameter("streaming_at_startup").as_bool();
+    frame_id_                        = this->get_parameter("frame_id").as_string();
 
     if (initial_rate < 1 || initial_rate > 120) {
         RCLCPP_WARN(this->get_logger(),
@@ -40,9 +40,8 @@ TactileDriverNode::TactileDriverNode()
         RCLCPP_WARN(this->get_logger(), "image_rate must be positive, using default 30.0");
         image_rate_ = 30.0;
     }
-    sample_rate_hz_.store(initial_rate, std::memory_order_relaxed);
 
-    // Compute image-publish skip ratio against the *streaming* rate.
+    // Image-publish skip ratio against the *streaming* rate.
     image_skip_.store(
         std::max(1, static_cast<int>(std::round(
             static_cast<double>(initial_rate) / image_rate_))),
@@ -59,14 +58,13 @@ TactileDriverNode::TactileDriverNode()
         "tactile/diagnostics", 10);
 
     // -- Connect --
-    const char* sn = serial_number_.empty() ? nullptr : serial_number_.c_str();
+    const char* sn = serial_number.empty() ? nullptr : serial_number.c_str();
     board_ = std::make_unique<wujihandcpp::TactileBoard>(sn);
     if (!board_->connect()) {
         RCLCPP_FATAL(this->get_logger(), "Failed to connect to tactile board");
         throw std::runtime_error("Tactile board connection failed");
     }
 
-    // Identity log line — analogue of GET_DEVICE_INFO + GET_FW_BUILD.
     auto info  = board_->get_device_info();
     auto build = board_->get_fw_build();
     RCLCPP_INFO(this->get_logger(),
@@ -78,10 +76,8 @@ TactileDriverNode::TactileDriverNode()
                 info.fw_version[2], info.fw_version[3],
                 build.git_short_sha.c_str());
 
-    // Apply startup config.
-    board_->set_sample_rate_hz(
-        static_cast<uint16_t>(sample_rate_hz_.load(std::memory_order_relaxed)));
-    board_->set_streaming(streaming_at_startup_);
+    board_->set_sample_rate_hz(static_cast<uint16_t>(initial_rate));
+    board_->set_streaming(streaming_at_startup);
 
     board_->set_disconnect_callback([this]() {
         RCLCPP_ERROR(this->get_logger(), "Tactile USB disconnected");
@@ -122,11 +118,9 @@ TactileDriverNode::TactileDriverNode()
                std::shared_ptr<wujihand_msgs::srv::SetTactileSampleRate::Response> resp) {
             try {
                 board_->set_sample_rate_hz(req->sample_rate_hz);
-                int new_rate = static_cast<int>(req->sample_rate_hz);
-                sample_rate_hz_.store(new_rate, std::memory_order_relaxed);
                 image_skip_.store(
                     std::max(1, static_cast<int>(std::round(
-                        static_cast<double>(new_rate) / image_rate_))),
+                        static_cast<double>(req->sample_rate_hz) / image_rate_))),
                     std::memory_order_relaxed);
                 resp->success = true;
             } catch (const std::exception& e) {
@@ -164,24 +158,19 @@ TactileDriverNode::TactileDriverNode()
 
     RCLCPP_INFO(this->get_logger(),
                 "Tactile streaming started at %d Hz (image @ ~%.1f Hz)",
-                sample_rate_hz_.load(std::memory_order_relaxed), image_rate_);
+                initial_rate, image_rate_);
 }
 
 TactileDriverNode::~TactileDriverNode() {
     if (board_) {
-        // stop_streaming joins the demuxer's reader thread; after it returns
-        // no on_frame() callbacks can fire so publishers are safe to destroy.
+        // stop_streaming joins the SDK's streaming consumer thread; after
+        // it returns no on_frame() callbacks can fire so publishers are
+        // safe to destroy.
         board_->stop_streaming();
     }
 }
 
 void TactileDriverNode::on_frame(const wujihandcpp::TactileFrame& frame) {
-    if (!frame.crc_valid) {
-        // Should never reach the consumer (demuxer drops bad-CRC frames),
-        // but keep this as a defensive guard.
-        return;
-    }
-
     auto now = this->get_clock()->now();
 
     // --- Raw TactileFrame (every frame) ---
@@ -198,9 +187,10 @@ void TactileDriverNode::on_frame(const wujihandcpp::TactileFrame& frame) {
     raw_pub_->publish(raw_msg);
 
     // --- Image (downsampled to ~image_rate Hz) ---
-    uint32_t count = frame_counter_.fetch_add(1, std::memory_order_relaxed);
-    int skip = image_skip_.load(std::memory_order_relaxed);
-    if (skip < 1) skip = 1;  // defensive
+    // on_frame runs single-threaded on the SDK streaming consumer; counter
+    // does not need to be atomic.
+    const uint32_t count = frame_counter_++;
+    const int skip = image_skip_.load(std::memory_order_relaxed);
     if (count % static_cast<uint32_t>(skip) != 0) return;
 
     auto img_msg = sensor_msgs::msg::Image();
@@ -235,30 +225,25 @@ void TactileDriverNode::on_frame(const wujihandcpp::TactileFrame& frame) {
 void TactileDriverNode::publish_diagnostics() {
     if (!board_) return;
 
-    // Backoff: after N consecutive failures (e.g. device stuck or
-    // disconnected), throttle to ~1 Hz so we do not hammer the SDK with a
-    // 2 s blocking command every 100 ms.
+    // Diagnostics is best-effort. After 3 consecutive command failures
+    // (device stuck/unplugged), throttle to ~1 Hz so we are not issuing a
+    // 2 s blocking SDK call every 100 ms. The diag timer is in its own
+    // MutuallyExclusive callback group, so this whole function is
+    // single-threaded and the counters need not be atomic.
     constexpr int FAILURE_THRESHOLD = 3;
     constexpr int BACKOFF_PERIOD = 10;  // proceed once every 10 ticks (~1 Hz)
-    int failures = diag_consecutive_failures_.load(std::memory_order_relaxed);
-    if (failures >= FAILURE_THRESHOLD) {
-        int tick = diag_backoff_tick_.fetch_add(1, std::memory_order_relaxed);
-        if (tick % BACKOFF_PERIOD != 0) return;
+    if (diag_consecutive_failures_ >= FAILURE_THRESHOLD) {
+        if (diag_backoff_tick_++ % BACKOFF_PERIOD != 0) return;
     }
 
     try {
-        // try_get_diagnostics yields to user-issued service calls instead
-        // of queueing behind them on the SDK's per-channel command mutex.
-        // Lock-contention returns false: do nothing this tick (NOT counted
-        // as a failure — the SDK is healthy, we just chose not to compete).
-        //
-        // Asymmetric guarantee: this prevents the diagnostics tick from
-        // queueing BEHIND a service that already holds the SDK serializer.
-        // The reverse case — diag wins the lock first, a service arrives
-        // milliseconds later — still makes the service wait for diag's
-        // command (worst case ~SDK command timeout). Accepted tradeoff:
-        // services are user-issued and rare; the diag command is a single
-        // round trip, so this asymmetry rarely surfaces in practice.
+        // try_get_diagnostics yields to a service that already holds the
+        // SDK command serializer. Lock contention → false → silently skip
+        // (NOT counted as a failure; the SDK is healthy, we just chose
+        // not to compete). The reverse direction is asymmetric: if diag
+        // wins the lock first, a service arriving milliseconds later
+        // still waits for the diag command. Accepted tradeoff — services
+        // are rare and the diag command is one round trip.
         wujihandcpp::TactileDiagnostics d;
         if (!board_->try_get_diagnostics(d)) return;
 
@@ -271,12 +256,10 @@ void TactileDriverNode::publish_diagnostics() {
         msg.dropout_count   = d.dropout_count;
         msg.usb_reset_count = d.usb_reset_count;
         diag_pub_->publish(msg);
-        diag_consecutive_failures_.store(0, std::memory_order_relaxed);
-        diag_backoff_tick_.store(0, std::memory_order_relaxed);
+        diag_consecutive_failures_ = 0;
+        diag_backoff_tick_ = 0;
     } catch (const std::exception& e) {
-        // Single source of truth for the failure counter — the pre-skip
-        // branch above only advances diag_backoff_tick_, never failures.
-        diag_consecutive_failures_.fetch_add(1, std::memory_order_relaxed);
+        ++diag_consecutive_failures_;
         RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 5000,
                              "get_diagnostics failed: %s", e.what());
     }
