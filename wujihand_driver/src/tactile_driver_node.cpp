@@ -251,6 +251,14 @@ void TactileDriverNode::publish_diagnostics() {
         // of queueing behind them on the SDK's per-channel command mutex.
         // Lock-contention returns false: do nothing this tick (NOT counted
         // as a failure — the SDK is healthy, we just chose not to compete).
+        //
+        // Asymmetric guarantee: this prevents the diagnostics tick from
+        // queueing BEHIND a service that already holds the SDK serializer.
+        // The reverse case — diag wins the lock first, a service arrives
+        // milliseconds later — still makes the service wait for diag's
+        // command (worst case ~SDK command timeout). Accepted tradeoff:
+        // services are user-issued and rare; the diag command is a single
+        // round trip, so this asymmetry rarely surfaces in practice.
         wujihandcpp::TactileDiagnostics d;
         if (!board_->try_get_diagnostics(d)) return;
 
