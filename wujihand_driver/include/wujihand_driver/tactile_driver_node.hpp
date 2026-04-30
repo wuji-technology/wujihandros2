@@ -33,6 +33,15 @@ private:
     rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr image_pub_;
     rclcpp::Publisher<wujihand_msgs::msg::TactileDiagnostics>::SharedPtr diag_pub_;
 
+    // Each long-running callback gets its own MutuallyExclusive group so
+    // they run in parallel under the MultiThreadedExecutor used in
+    // tactile_main.cpp. Without this, the 100 ms diagnostics timer
+    // (issuing a 2-second-timeout SDK command) would starve the services.
+    rclcpp::CallbackGroup::SharedPtr cb_group_diag_;
+    rclcpp::CallbackGroup::SharedPtr cb_group_streaming_;
+    rclcpp::CallbackGroup::SharedPtr cb_group_rate_;
+    rclcpp::CallbackGroup::SharedPtr cb_group_reset_;
+
     // Services (lifecycle / config knobs from spec §3.3 + §3.4)
     rclcpp::Service<wujihand_msgs::srv::SetTactileStreaming>::SharedPtr svc_streaming_;
     rclcpp::Service<wujihand_msgs::srv::SetTactileSampleRate>::SharedPtr svc_rate_;
@@ -41,16 +50,23 @@ private:
     // Timer driving the diagnostics topic.
     rclcpp::TimerBase::SharedPtr diag_timer_;
 
-    // Parameters
+    // Parameters (immutable after construction).
     std::string serial_number_;
     double image_rate_;
-    int sample_rate_hz_;
     bool streaming_at_startup_;
     std::string frame_id_;
 
-    // Image rate limiting
-    int image_skip_;        // publish image every N frames
+    // Mutable runtime state shared between the SDK streaming thread
+    // (on_frame) and ROS service callbacks (set_sample_rate). Both fields
+    // are atomic to avoid a data race when the rate is changed mid-stream.
+    std::atomic<int> sample_rate_hz_{120};
+    std::atomic<int> image_skip_{1};
     std::atomic<uint32_t> frame_counter_{0};
+
+    // Diagnostics-poll backoff. Counts consecutive failures so that we
+    // reduce poll rate (instead of hammering the SDK every 100 ms) when
+    // the device is unresponsive.
+    std::atomic<int> diag_consecutive_failures_{0};
 };
 
 }  // namespace wujihand_driver
