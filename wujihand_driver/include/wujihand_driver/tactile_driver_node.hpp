@@ -63,10 +63,15 @@ private:
     std::atomic<int> image_skip_{1};
     std::atomic<uint32_t> frame_counter_{0};
 
-    // Diagnostics-poll backoff. Counts consecutive failures so that we
-    // reduce poll rate (instead of hammering the SDK every 100 ms) when
-    // the device is unresponsive.
+    // Diagnostics-poll backoff. consecutive_failures counts how many
+    // consecutive diag attempts threw (incremented at most once per tick,
+    // in the catch handler). backoff_tick is a separate phase counter that
+    // is incremented exactly once per skipped tick once we are over the
+    // failure threshold — keeping the two distinct avoids the
+    // double-increment bug where a single failure would advance the backoff
+    // phase by 2 (one in the pre-skip branch, one in the catch).
     std::atomic<int> diag_consecutive_failures_{0};
+    std::atomic<int> diag_backoff_tick_{0};
 };
 
 }  // namespace wujihand_driver

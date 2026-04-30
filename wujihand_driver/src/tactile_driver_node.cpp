@@ -236,20 +236,24 @@ void TactileDriverNode::publish_diagnostics() {
     if (!board_) return;
 
     // Backoff: after N consecutive failures (e.g. device stuck or
-    // disconnected), skip most ticks so we do not hammer the SDK with a
+    // disconnected), throttle to ~1 Hz so we do not hammer the SDK with a
     // 2 s blocking command every 100 ms.
-    constexpr int FAILURE_THRESHOLD = 3;       // start backing off after 3 failures
-    constexpr int BACKOFF_SKIP_TICKS = 9;      // then poll every 10th tick (~1 Hz)
+    constexpr int FAILURE_THRESHOLD = 3;
+    constexpr int BACKOFF_PERIOD = 10;  // proceed once every 10 ticks (~1 Hz)
     int failures = diag_consecutive_failures_.load(std::memory_order_relaxed);
     if (failures >= FAILURE_THRESHOLD) {
-        // Run only every BACKOFF_SKIP_TICKS+1 ticks until a success resets us.
-        int phase = (failures - FAILURE_THRESHOLD) % (BACKOFF_SKIP_TICKS + 1);
-        diag_consecutive_failures_.store(failures + 1, std::memory_order_relaxed);
-        if (phase != 0) return;
+        int tick = diag_backoff_tick_.fetch_add(1, std::memory_order_relaxed);
+        if (tick % BACKOFF_PERIOD != 0) return;
     }
 
     try {
-        auto d = board_->get_diagnostics();
+        // try_get_diagnostics yields to user-issued service calls instead
+        // of queueing behind them on the SDK's per-channel command mutex.
+        // Lock-contention returns false: do nothing this tick (NOT counted
+        // as a failure — the SDK is healthy, we just chose not to compete).
+        wujihandcpp::TactileDiagnostics d;
+        if (!board_->try_get_diagnostics(d)) return;
+
         wujihand_msgs::msg::TactileDiagnostics msg;
         msg.header.stamp = this->get_clock()->now();
         msg.header.frame_id = frame_id_;
@@ -260,7 +264,10 @@ void TactileDriverNode::publish_diagnostics() {
         msg.usb_reset_count = d.usb_reset_count;
         diag_pub_->publish(msg);
         diag_consecutive_failures_.store(0, std::memory_order_relaxed);
+        diag_backoff_tick_.store(0, std::memory_order_relaxed);
     } catch (const std::exception& e) {
+        // Single source of truth for the failure counter — the pre-skip
+        // branch above only advances diag_backoff_tick_, never failures.
         diag_consecutive_failures_.fetch_add(1, std::memory_order_relaxed);
         RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 5000,
                              "get_diagnostics failed: %s", e.what());
