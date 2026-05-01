@@ -48,7 +48,7 @@ set(COMMON_AMENT_DEPS
 # --- wujihand_driver_node (joint control) ---
 add_executable(wujihand_driver_node
   src/wujihand_driver_node.cpp
-  src/main.cpp
+  src/wujihand_driver_main.cpp
 )
 
 target_include_directories(wujihand_driver_node PUBLIC ${COMMON_INCLUDE_DIRS})
