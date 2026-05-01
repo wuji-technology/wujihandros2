@@ -4,6 +4,25 @@ set -e
 # WujiHand ROS2 Debian Package Builder
 # Usage: ./build_deb.sh [ROS_DISTRO] [VERSION]
 # Example: ./build_deb.sh kilted 0.2.0-rc0
+#
+# Prerequisite: wujihandcpp must already be built and install-tree
+# accessible via CMAKE_PREFIX_PATH. The CI workflow handles this by
+# checking out the sibling SDK repo, running cmake --install into
+# /opt/wujihandcpp, and exporting CMAKE_PREFIX_PATH=/opt/wujihandcpp
+# before invoking this script.
+#
+# For manual runs:
+#   cd /path/to/wujihandpy/wujihandcpp
+#   cmake -B build && cmake --build build && cmake --install build --prefix /tmp/wcpp
+#   cd /path/to/wujihandros2
+#   CMAKE_PREFIX_PATH=/tmp/wcpp ./build_deb.sh humble
+
+if [ -z "${CMAKE_PREFIX_PATH:-}" ]; then
+    echo "Error: CMAKE_PREFIX_PATH is not set." >&2
+    echo "       Build wujihandcpp first and point CMAKE_PREFIX_PATH at its install prefix." >&2
+    echo "       See the comment block at the top of this script for details." >&2
+    exit 1
+fi
 
 ROS_DISTRO=${1:-kilted}
 VERSION=${2:-0.1.0}
@@ -43,12 +62,14 @@ git submodule update --init --recursive
 INSTALL_DIR="${BUILD_DIR}/install"
 mkdir -p "${INSTALL_DIR}"
 
-# Build with colcon using separate directories
+# Build with colcon using separate directories. Pass CMAKE_PREFIX_PATH
+# through so wujihand_driver's find_package(wujihandcpp) resolves.
 echo "Building packages with colcon..."
 colcon build \
     --build-base "${BUILD_DIR}/build" \
     --install-base "${INSTALL_DIR}" \
-    --merge-install
+    --merge-install \
+    --cmake-args -DCMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH}"
 
 # Create DEBIAN control directory
 PACKAGE_DIR="debian/${PACKAGE_NAME}_${DEB_VERSION}-1_${ARCH}"
@@ -79,7 +100,7 @@ Version: ${DEB_VERSION}-1
 Section: misc
 Priority: optional
 Architecture: ${ARCH}
-Depends: ros-${ROS_DISTRO}-ros-base, ros-${ROS_DISTRO}-sensor-msgs, ros-${ROS_DISTRO}-std-msgs, ros-${ROS_DISTRO}-robot-state-publisher, wujihandcpp (>= 1.4.0)
+Depends: ros-${ROS_DISTRO}-ros-base, ros-${ROS_DISTRO}-sensor-msgs, ros-${ROS_DISTRO}-std-msgs, ros-${ROS_DISTRO}-robot-state-publisher, ros-${ROS_DISTRO}-tf2-ros, libusb-1.0-0
 Maintainer: Wuji Technology <support@wuji.com>
 Description: WujiHand ROS2 Driver
  ROS2 driver package for WujiHand dexterous hand.

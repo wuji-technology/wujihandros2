@@ -18,6 +18,11 @@
   <exec_depend>rviz2</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
+  <!-- static_transform_publisher used by wujihand_full.launch.py for the
+       tactile_sensor_link parent TF. -->
+  <exec_depend>tf2_ros</exec_depend>
+  <!-- get_package_share_directory used by common.py and the launch files. -->
+  <exec_depend>ament_index_python</exec_depend>
   <exec_depend>foxglove_bridge</exec_depend>
   <exec_depend>ros2bag</exec_depend>
   <exec_depend>rosbag2_storage_mcap</exec_depend>
