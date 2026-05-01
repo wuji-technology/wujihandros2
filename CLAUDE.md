@@ -33,14 +33,16 @@ ros2 launch wujihand_bringup tactile.launch.py serial_number:=<SN>
 
 | 包名 | 用途 |
 |------|------|
-| wujihand_msgs | 自定义消息（TactileFrame 等） |
-| wujihand_driver | C++ 驱动节点（关节 + 触觉） |
+| wujihand_msgs | 关节相关自定义消息（HandDiagnostics + 服务） |
+| wujihand_driver | C++ 关节驱动节点 |
+| wujihand_tactile_msgs | 触觉相关自定义消息（TactileFrame, TactileDiagnostics + 3 服务） |
+| wujihand_tactile_driver | C++ 触觉驱动节点 |
 | wujihand_bringup | Launch 文件、RViz 配置、示例脚本 |
 | wuji_hand_description | URDF 模型、mesh（git submodule） |
 
 ## 构建依赖
 
-**wujihand_driver 依赖 wujihandcpp 库**，通过 `find_package(wujihandcpp CONFIG REQUIRED)` 解析。SDK 必须先 build 并 install 到一个 prefix，然后 colcon 通过 `CMAKE_PREFIX_PATH` 找到它：
+**wujihand_driver 与 wujihand_tactile_driver 都依赖 wujihandcpp 库**，通过 `find_package(wujihandcpp CONFIG REQUIRED)` 解析。SDK 必须先 build 并 install 到一个 prefix，然后 colcon 通过 `CMAKE_PREFIX_PATH` 找到它：
 
 ```bash
 # 1. 在 wujihandpy 仓里把 SDK install 到一个 prefix
@@ -84,9 +86,9 @@ git submodule update --init --recursive
 /hand_0/joint_states              # sensor_msgs/JointState (1000Hz)
 /hand_0/joint_commands            # 关节控制
 /hand_0/diagnostics               # 灵巧手诊断信息 (10Hz)
-/hand_0/tactile/raw               # TactileFrame (sample_rate_hz, default 120Hz, Best Effort)
+/hand_0/tactile/raw               # wujihand_tactile_msgs/TactileFrame (sample_rate_hz, default 120Hz, Best Effort)
 /hand_0/tactile/image             # sensor_msgs/Image (image_rate, default 30Hz, Reliable)
-/hand_0/tactile/diagnostics       # TactileDiagnostics (10Hz)
+/hand_0/tactile/diagnostics       # wujihand_tactile_msgs/TactileDiagnostics (10Hz)
 /hand_0/robot_description         # URDF
 /tf, /tf_static                   # TF 树
 ```
@@ -94,9 +96,9 @@ git submodule update --init --recursive
 ## 触觉服务（spec §3.3 + §3.4）
 
 ```
-/hand_0/tactile/set_streaming     # SetTactileStreaming (bool enable)
-/hand_0/tactile/set_sample_rate   # SetTactileSampleRate (uint16, 1..120)
-/hand_0/tactile/reset_counters    # ResetTactileCounters
+/hand_0/tactile/set_streaming     # wujihand_tactile_msgs/SetTactileStreaming (bool enable)
+/hand_0/tactile/set_sample_rate   # wujihand_tactile_msgs/SetTactileSampleRate (uint16, 1..120)
+/hand_0/tactile/reset_counters    # wujihand_tactile_msgs/ResetTactileCounters
 ```
 
 ## 踩坑记录
@@ -121,7 +123,7 @@ git submodule update --init --recursive
 
 **现象：** `ros2 launch wujihand_bringup ... : package not found`。
 
-**教训：** 首次 `colcon build` 可能只编译了 wujihand_driver 和 wujihand_msgs，bringup 被跳过。
+**教训：** 首次 `colcon build` 可能只编译了 wujihand_driver / wujihand_tactile_driver 等 C++ 包，纯 launch 包 bringup 被跳过。
 
 **解决：** `colcon build --packages-select wujihand_bringup --symlink-install` 单独编译。
 
