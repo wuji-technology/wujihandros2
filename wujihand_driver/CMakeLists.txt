@@ -63,7 +63,7 @@ target_link_libraries(wujihand_driver_node
 # --- tactile_driver_node (tactile sensor) ---
 add_executable(tactile_driver_node
   src/tactile_driver_node.cpp
-  src/tactile_main.cpp
+  src/tactile_driver_main.cpp
 )
 
 target_include_directories(tactile_driver_node PUBLIC ${COMMON_INCLUDE_DIRS})
