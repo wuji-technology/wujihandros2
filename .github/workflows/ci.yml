@@ -6,6 +6,11 @@ on:
     pull_request:
         branches: [master, main]
     workflow_dispatch:
+        inputs:
+            wujihandpy_ref:
+                description: 'wujihandpy git ref to build SDK from'
+                required: false
+                default: ''
 
 jobs:
     build:
@@ -23,50 +28,95 @@ jobs:
             image: ros:${{ matrix.ros_distro }}-ros-base
 
         steps:
-            - name: Checkout
+            - name: Checkout wujihandros2
               uses: actions/checkout@v4
+              with:
+                  path: wujihandros2
 
-            - name: Install dependencies
+            - name: Resolve wujihandpy ref
+              id: sdk-ref
+              shell: bash
+              run: |
+                  # PR builds need the matching SDK PR branch (the round-8
+                  # namespace rename hasn't landed on SDK main yet). Push,
+                  # tag, and dispatch builds default to released SDK on
+                  # main. Drop the pull_request branch once the SDK PR
+                  # merges.
+                  INPUT="${{ github.event.inputs.wujihandpy_ref }}"
+                  if [ -n "$INPUT" ]; then
+                    REF="$INPUT"
+                  elif [ "${{ github.event_name }}" = "pull_request" ]; then
+                    REF="feat/tactile-ros2"
+                  else
+                    REF="main"
+                  fi
+                  echo "ref=${REF}" >> "$GITHUB_OUTPUT"
+                  echo "Using wujihandpy ref: ${REF}"
+
+            - name: Checkout wujihandpy SDK
+              uses: actions/checkout@v4
+              with:
+                  repository: wuji-technology/wujihandpy
+                  ref: ${{ steps.sdk-ref.outputs.ref }}
+                  path: wujihandpy
+                  submodules: false
+
+            - name: Install build deps
+              shell: bash
               run: |
                   apt-get update
-                  apt-get install -y wget
-
-                  # Install wujihandcpp SDK (latest release including pre-release)
-                  # Use grep to extract URL directly, avoiding jq parse issues with control chars
-                  DEB_URL=$(curl -sH "Accept: application/vnd.github+json" \
-                    https://api.github.com/repos/wuji-technology/wujihandpy/releases | \
-                    grep -oP '"browser_download_url":\s*"\K[^"]*wujihandcpp[^"]*-amd64\.deb' | head -1)
-
-                  if [ -z "$DEB_URL" ]; then
-                    echo "Error: Failed to get wujihandcpp deb URL from GitHub releases"
-                    exit 1
-                  fi
-
-                  echo "Installing wujihandcpp from: $DEB_URL"
-                  wget -q "$DEB_URL" || { echo "Error: Failed to download $DEB_URL"; exit 1; }
-                  dpkg -i --force-overwrite wujihandcpp-*.deb || true
-                  apt-get install -f -y
-
-                  # Install ROS dependencies
+                  # GCC 13 for C++20 <format>; libusb-1.0 for the SDK transport.
+                  # Ubuntu 22.04 default GCC is 11 which lacks <format>; 24.04 is 13.
                   apt-get install -y \
-                    ros-${{ matrix.ros_distro }}-sensor-msgs \
-                    ros-${{ matrix.ros_distro }}-std-msgs \
-                    ros-${{ matrix.ros_distro }}-robot-state-publisher \
-                    ros-${{ matrix.ros_distro }}-xacro
+                      build-essential cmake ninja-build pkg-config \
+                      gcc-13 g++-13 \
+                      libusb-1.0-0-dev \
+                      git
+                  # ROS deps for the workspace itself.
+                  apt-get install -y \
+                      ros-${{ matrix.ros_distro }}-sensor-msgs \
+                      ros-${{ matrix.ros_distro }}-std-msgs \
+                      ros-${{ matrix.ros_distro }}-robot-state-publisher \
+                      ros-${{ matrix.ros_distro }}-tf2-ros \
+                      ros-${{ matrix.ros_distro }}-xacro
 
-            - name: Build
-              run: |
-                  source /opt/ros/${{ matrix.ros_distro }}/setup.bash
-                  colcon build --symlink-install
+            - name: Build + install wujihandcpp from source
               shell: bash
+              env:
+                  CC: gcc-13
+                  CXX: g++-13
+              run: |
+                  cd wujihandpy/wujihandcpp
+                  cmake -B build-ci -G Ninja \
+                      -DCMAKE_BUILD_TYPE=Release \
+                      -DBUILD_STATIC_WUJIHANDCPP=ON \
+                      -DWUJIHANDCPP_INSTALL=ON \
+                      -DCMAKE_INSTALL_PREFIX=/opt/wujihandcpp
+                  cmake --build build-ci -j"$(nproc)"
+                  cmake --install build-ci
 
-            - name: Test
+            - name: Build wujihandros2
+              shell: bash
+              env:
+                  CC: gcc-13
+                  CXX: g++-13
               run: |
                   source /opt/ros/${{ matrix.ros_distro }}/setup.bash
+                  cd wujihandros2
+                  colcon build --symlink-install \
+                      --cmake-args -DCMAKE_PREFIX_PATH=/opt/wujihandcpp
+
+            - name: Test wujihandros2
+              shell: bash
+              env:
+                  CC: gcc-13
+                  CXX: g++-13
+              run: |
+                  source /opt/ros/${{ matrix.ros_distro }}/setup.bash
+                  cd wujihandros2
                   source install/setup.bash
                   colcon test
                   colcon test-result --verbose
-              shell: bash
               continue-on-error: true
 
     build-deb:
@@ -85,40 +135,70 @@ jobs:
             image: ros:${{ matrix.ros_distro }}-ros-base
 
         steps:
-            - name: Checkout
+            - name: Checkout wujihandros2
               uses: actions/checkout@v4
+              with:
+                  path: wujihandros2
 
-            - name: Install dependencies
+            - name: Resolve wujihandpy ref
+              id: sdk-ref
+              shell: bash
+              run: |
+                  # build-deb only runs on push to main/master and ships
+                  # artifacts; default to released SDK on main.
+                  REF="${{ github.event.inputs.wujihandpy_ref }}"
+                  REF="${REF:-main}"
+                  echo "ref=${REF}" >> "$GITHUB_OUTPUT"
+
+            - name: Checkout wujihandpy SDK
+              uses: actions/checkout@v4
+              with:
+                  repository: wuji-technology/wujihandpy
+                  ref: ${{ steps.sdk-ref.outputs.ref }}
+                  path: wujihandpy
+                  submodules: false
+
+            - name: Install build deps
+              shell: bash
               run: |
                   apt-get update
-                  apt-get install -y wget dpkg-dev
-
-                  # Install wujihandcpp SDK (latest release including pre-release)
-                  # Use grep to extract URL directly, avoiding jq parse issues with control chars
-                  DEB_URL=$(curl -sH "Accept: application/vnd.github+json" \
-                    https://api.github.com/repos/wuji-technology/wujihandpy/releases | \
-                    grep -oP '"browser_download_url":\s*"\K[^"]*wujihandcpp[^"]*-amd64\.deb' | head -1)
-
-                  if [ -z "$DEB_URL" ]; then
-                    echo "Error: Failed to get wujihandcpp deb URL from GitHub releases"
-                    exit 1
-                  fi
-
-                  echo "Installing wujihandcpp from: $DEB_URL"
-                  wget -q "$DEB_URL" || { echo "Error: Failed to download $DEB_URL"; exit 1; }
-                  dpkg -i --force-overwrite wujihandcpp-*.deb || true
-                  apt-get install -f -y
-
-                  # Install ROS dependencies
                   apt-get install -y \
-                    ros-${{ matrix.ros_distro }}-sensor-msgs \
-                    ros-${{ matrix.ros_distro }}-std-msgs \
-                    ros-${{ matrix.ros_distro }}-robot-state-publisher
+                      build-essential cmake ninja-build pkg-config \
+                      gcc-13 g++-13 \
+                      libusb-1.0-0-dev \
+                      git dpkg-dev
+                  apt-get install -y \
+                      ros-${{ matrix.ros_distro }}-sensor-msgs \
+                      ros-${{ matrix.ros_distro }}-std-msgs \
+                      ros-${{ matrix.ros_distro }}-robot-state-publisher \
+                      ros-${{ matrix.ros_distro }}-tf2-ros
+
+            - name: Build + install wujihandcpp from source
+              shell: bash
+              env:
+                  CC: gcc-13
+                  CXX: g++-13
+              run: |
+                  cd wujihandpy/wujihandcpp
+                  cmake -B build-ci -G Ninja \
+                      -DCMAKE_BUILD_TYPE=Release \
+                      -DBUILD_STATIC_WUJIHANDCPP=ON \
+                      -DWUJIHANDCPP_INSTALL=ON \
+                      -DCMAKE_INSTALL_PREFIX=/opt/wujihandcpp
+                  cmake --build build-ci -j"$(nproc)"
+                  cmake --install build-ci
 
             - name: Build deb package
+              shell: bash
+              env:
+                  CC: gcc-13
+                  CXX: g++-13
+                  CMAKE_PREFIX_PATH: /opt/wujihandcpp
               run: |
-                  # Fix git dubious ownership error in CI
-                  git config --global --add safe.directory "$GITHUB_WORKSPACE"
+                  cd wujihandros2
+                  # Fix git dubious ownership in CI containers.
+                  git config --global --add safe.directory "$PWD"
+                  git submodule update --init --recursive
 
                   chmod +x build_deb.sh
                   ./build_deb.sh ${{ matrix.ros_distro }}
@@ -127,7 +207,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: ros-${{ matrix.ros_distro }}-wujihand-deb
-                  path: ros-${{ matrix.ros_distro }}-wujihand_*.deb
+                  path: wujihandros2/ros-${{ matrix.ros_distro }}-wujihand_*.deb
                   retention-days: 30
 
     lint:

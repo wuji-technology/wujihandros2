@@ -13,11 +13,18 @@
   <exec_depend>rclpy</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>wujihand_driver</exec_depend>
+  <exec_depend>wujihand_tactile_driver</exec_depend>
   <exec_depend>wuji_hand_description</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>rviz2</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
+  <!-- static_transform_publisher used by tactile.launch.py. -->
+  <exec_depend>tf2_ros</exec_depend>
+  <!-- get_package_share_directory used by common.py and the launch files. -->
+  <exec_depend>ament_index_python</exec_depend>
+  <!-- rcl_interfaces.srv.GetParameters used by common.detect_handedness(). -->
+  <exec_depend>rcl_interfaces</exec_depend>
   <exec_depend>foxglove_bridge</exec_depend>
   <exec_depend>ros2bag</exec_depend>
   <exec_depend>rosbag2_storage_mcap</exec_depend>

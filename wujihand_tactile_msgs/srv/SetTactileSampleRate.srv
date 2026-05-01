@@ -1,0 +1,4 @@
+uint16 sample_rate_hz       # Must be in 1..120 (spec §3.4)
+---
+bool success
+string message
