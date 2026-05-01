@@ -9,6 +9,16 @@ on:
             version:
                 description: "Version to release (e.g., 0.1.0 or 0.2.0-rc0)"
                 required: true
+            wujihandpy_ref:
+                description: "wujihandpy git ref to build SDK from"
+                required: false
+                default: ""
+
+env:
+    # See ci.yml for the rationale; tracks the matching SDK ref while
+    # the round-8 cross-repo refactor is in flight. Reset to "main" once
+    # both PRs land.
+    DEFAULT_WUJIHANDPY_REF: feat/tactile-ros2
 
 jobs:
     build-debs:
@@ -25,11 +35,12 @@ jobs:
             image: ros:${{ matrix.ros_distro }}-ros-base
 
         steps:
-            - name: Checkout
+            - name: Checkout wujihandros2
               uses: actions/checkout@v4
               with:
                 fetch-depth: 0
                 submodules: recursive
+                path: wujihandros2
 
             - name: Extract version
               id: version
@@ -43,38 +54,61 @@ jobs:
                   echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
                   echo "Building version: ${VERSION}"
 
-            - name: Install dependencies
+            - name: Resolve wujihandpy ref
+              id: sdk-ref
+              shell: bash
+              run: |
+                  REF="${{ github.event.inputs.wujihandpy_ref }}"
+                  REF="${REF:-${DEFAULT_WUJIHANDPY_REF}}"
+                  echo "ref=${REF}" >> "$GITHUB_OUTPUT"
+
+            - name: Checkout wujihandpy SDK
+              uses: actions/checkout@v4
+              with:
+                  repository: wuji-technology/wujihandpy
+                  ref: ${{ steps.sdk-ref.outputs.ref }}
+                  path: wujihandpy
+                  submodules: false
+
+            - name: Install build deps
+              shell: bash
               run: |
                   apt-get update
-                  apt-get install -y wget dpkg-dev
-
-                  # Install wujihandcpp SDK (latest release including pre-release)
-                  # Use grep to extract URL directly, avoiding jq parse issues with control chars
-                  DEB_URL=$(curl -sH "Accept: application/vnd.github+json" \
-                    https://api.github.com/repos/wuji-technology/wujihandpy/releases | \
-                    grep -oP '"browser_download_url":\s*"\K[^"]*wujihandcpp[^"]*-amd64\.deb' | head -1)
-
-                  if [ -z "$DEB_URL" ]; then
-                    echo "Error: Failed to get wujihandcpp deb URL from GitHub releases"
-                    exit 1
-                  fi
-
-                  echo "Installing wujihandcpp from: $DEB_URL"
-                  wget -q "$DEB_URL" || { echo "Error: Failed to download $DEB_URL"; exit 1; }
-                  dpkg -i --force-overwrite wujihandcpp-*.deb || true
-                  apt-get install -f -y
-
-                  # Install ROS dependencies
                   apt-get install -y \
-                    ros-${{ matrix.ros_distro }}-sensor-msgs \
-                    ros-${{ matrix.ros_distro }}-std-msgs \
-                    ros-${{ matrix.ros_distro }}-robot-state-publisher
+                      build-essential cmake ninja-build pkg-config \
+                      gcc-13 g++-13 \
+                      libusb-1.0-0-dev \
+                      git dpkg-dev
+                  apt-get install -y \
+                      ros-${{ matrix.ros_distro }}-sensor-msgs \
+                      ros-${{ matrix.ros_distro }}-std-msgs \
+                      ros-${{ matrix.ros_distro }}-robot-state-publisher \
+                      ros-${{ matrix.ros_distro }}-tf2-ros
+
+            - name: Build + install wujihandcpp from source
+              shell: bash
+              env:
+                  CC: gcc-13
+                  CXX: g++-13
+              run: |
+                  cd wujihandpy/wujihandcpp
+                  cmake -B build-ci -G Ninja \
+                      -DCMAKE_BUILD_TYPE=Release \
+                      -DBUILD_STATIC_WUJIHANDCPP=ON \
+                      -DWUJIHANDCPP_INSTALL=ON \
+                      -DCMAKE_INSTALL_PREFIX=/opt/wujihandcpp
+                  cmake --build build-ci -j"$(nproc)"
+                  cmake --install build-ci
 
             - name: Build deb package
+              shell: bash
+              env:
+                  CC: gcc-13
+                  CXX: g++-13
+                  CMAKE_PREFIX_PATH: /opt/wujihandcpp
               run: |
-                  # Fix git dubious ownership error in CI
-                  git config --global --add safe.directory "$GITHUB_WORKSPACE"
-
+                  cd wujihandros2
+                  git config --global --add safe.directory "$PWD"
                   chmod +x build_deb.sh
                   ./build_deb.sh ${{ matrix.ros_distro }} ${{ steps.version.outputs.version }}
 
@@ -82,7 +116,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: ros-${{ matrix.ros_distro }}-wujihand-deb
-                  path: ros-${{ matrix.ros_distro }}-wujihand_*.deb
+                  path: wujihandros2/ros-${{ matrix.ros_distro }}-wujihand_*.deb
 
     release:
         needs: build-debs

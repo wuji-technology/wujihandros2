@@ -49,46 +49,43 @@ _logger = logging.get_logger("wujihand_full")
 
 def _compose_rviz_config(base_rviz_path, overlay_text_path,
                          hand_namespace, include_tactile):
-    """Build a temp .rviz file with optional tactile overlay injected.
+    """Return an RViz config path with optional tactile overlay injected.
 
-    Reads `base_rviz_path` (joint-only RViz config from
-    wuji_hand_description) as text. If `include_tactile`, reads the
-    overlay snippet at `overlay_text_path` (a YAML fragment for one
-    Image display) and injects it into the base config's Displays
-    list, right before the `Enabled: true` line that closes the list.
-    Substitutes `{IMAGE_TOPIC}` in the overlay with the namespaced
-    `/<namespace>/tactile/image` path. Then rewrites any literal
-    `/hand_0/` strings in the base config to the actual namespace
-    (RViz config files reference Topics by their fully-qualified path).
+    When `include_tactile` is False (or the overlay can't be inserted),
+    `base_rviz_path` is returned as-is — no tempfile churn for the
+    joint-only case.
 
-    Writes the result to a NamedTemporaryFile, registers an atexit
-    cleanup, and returns its path.
+    Otherwise the overlay snippet at `overlay_text_path` (a YAML
+    fragment for one Image display, with `{IMAGE_TOPIC}` placeholder)
+    is spliced into the base config's Displays list right before the
+    `\\n  Enabled: true\\n` anchor that closes the list, the result is
+    written to a NamedTemporaryFile, and an atexit cleanup is
+    registered.
     """
+    if not include_tactile:
+        return base_rviz_path
+
     with open(base_rviz_path, "r") as f:
         rviz_text = f.read()
+    with open(overlay_text_path, "r") as f:
+        overlay = f.read()
 
-    if include_tactile:
-        with open(overlay_text_path, "r") as f:
-            overlay = f.read()
-        topic = f"/{hand_namespace}/tactile/image" if hand_namespace else "/tactile/image"
-        overlay = overlay.replace("{IMAGE_TOPIC}", topic)
-        # Inject overlay just before the `Enabled: true` line that closes
-        # the Displays list. The base RViz config has exactly one
-        # `^  Enabled: true$` line at this indent (sibling of Displays:).
-        marker = "\n  Enabled: true\n"
-        idx = rviz_text.find(marker)
-        if idx == -1:
-            _logger.warning(
-                "tactile overlay anchor not found in base rviz; "
-                "skipping tactile panel injection"
-            )
-        else:
-            rviz_text = rviz_text[:idx + 1] + overlay + rviz_text[idx + 1:]
+    topic = f"/{hand_namespace}/tactile/image" if hand_namespace else "/tactile/image"
+    overlay = overlay.replace("{IMAGE_TOPIC}", topic)
 
-    # Rewrite legacy /hand_0/ topic prefixes in the base config to the
-    # caller's namespace. Idempotent if hand_namespace == "hand_0".
-    if hand_namespace and hand_namespace != "hand_0":
-        rviz_text = rviz_text.replace("/hand_0/", f"/{hand_namespace}/")
+    # The base RViz config has exactly one `^  Enabled: true$` line at
+    # this indent (sibling of Displays:). If the anchor isn't found,
+    # fall back to the unmodified base — better than writing a tempfile
+    # we never inject anything into.
+    marker = "\n  Enabled: true\n"
+    idx = rviz_text.find(marker)
+    if idx == -1:
+        _logger.warning(
+            "tactile overlay anchor not found in base rviz; "
+            "skipping tactile panel injection"
+        )
+        return base_rviz_path
+    rviz_text = rviz_text[:idx + 1] + overlay + rviz_text[idx + 1:]
 
     tmp = tempfile.NamedTemporaryFile(
         mode="w",
@@ -314,10 +311,13 @@ def generate_launch_description():
         DeclareLaunchArgument("streaming_at_startup", default_value="true",
                               description="Whether to enable tactile streaming when the driver starts"),
 
-        # --- Phase 1: Discover devices and include per-driver launches ---
+        # Discover USB devices and include the joint driver launch.
         OpaqueFunction(function=setup_drivers),
 
-        # --- Phase 2: After drivers connect (~3.5 s), spawn URDF + viz ---
+        # ~3.5 s later (after the joint driver is up so detect_handedness
+        # can succeed): spawn URDF, include the tactile driver launch
+        # with the correct per-handedness parent_frame, and bring up
+        # RViz/Foxglove if requested.
         TimerAction(
             period=3.5,
             actions=[OpaqueFunction(function=setup_viz_and_urdf)],
