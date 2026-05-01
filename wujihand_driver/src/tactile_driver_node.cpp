@@ -98,8 +98,9 @@ TactileDriverNode::TactileDriverNode()
         rclcpp::CallbackGroupType::MutuallyExclusive);
 
     // -- Services --
+    // All under the `tactile/` prefix to match the topic namespace.
     svc_streaming_ = this->create_service<wujihand_msgs::srv::SetTactileStreaming>(
-        "set_tactile_streaming",
+        "tactile/set_streaming",
         [this](const std::shared_ptr<wujihand_msgs::srv::SetTactileStreaming::Request> req,
                std::shared_ptr<wujihand_msgs::srv::SetTactileStreaming::Response> resp) {
             try {
@@ -113,7 +114,7 @@ TactileDriverNode::TactileDriverNode()
         rclcpp::ServicesQoS().get_rmw_qos_profile(), cb_group_streaming_);
 
     svc_rate_ = this->create_service<wujihand_msgs::srv::SetTactileSampleRate>(
-        "set_tactile_sample_rate",
+        "tactile/set_sample_rate",
         [this](const std::shared_ptr<wujihand_msgs::srv::SetTactileSampleRate::Request> req,
                std::shared_ptr<wujihand_msgs::srv::SetTactileSampleRate::Response> resp) {
             try {
@@ -131,14 +132,15 @@ TactileDriverNode::TactileDriverNode()
         rclcpp::ServicesQoS().get_rmw_qos_profile(), cb_group_rate_);
 
     svc_reset_ = this->create_service<wujihand_msgs::srv::ResetTactileCounters>(
-        "reset_tactile_counters",
+        "tactile/reset_counters",
         [this](const std::shared_ptr<wujihand_msgs::srv::ResetTactileCounters::Request>,
                std::shared_ptr<wujihand_msgs::srv::ResetTactileCounters::Response> resp) {
             try {
                 board_->reset_counters();
                 resp->success = true;
-            } catch (const std::exception&) {
+            } catch (const std::exception& e) {
                 resp->success = false;
+                resp->message = e.what();
             }
         },
         rclcpp::ServicesQoS().get_rmw_qos_profile(), cb_group_reset_);

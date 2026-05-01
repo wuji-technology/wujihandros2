@@ -20,9 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Driver logs serial / hw_revision / fw_version / git short sha at startup
     via the new `GET_DEVICE_INFO` + `GET_FW_BUILD` commands.
   - New topic `~/tactile/diagnostics` (`TactileDiagnostics`, 10 Hz).
-  - New services: `~/set_tactile_streaming` (`SetTactileStreaming`),
-    `~/set_tactile_sample_rate` (`SetTactileSampleRate`),
-    `~/reset_tactile_counters` (`ResetTactileCounters`).
+  - New services: `~/tactile/set_streaming` (`SetTactileStreaming`),
+    `~/tactile/set_sample_rate` (`SetTactileSampleRate`),
+    `~/tactile/reset_counters` (`ResetTactileCounters`).
   - Disconnect now reported via the SDK's `set_disconnect_callback` (was
     a fragile zero-init-frame heuristic that broke once `0.0` became a
     valid pressure value).

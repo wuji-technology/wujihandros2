@@ -81,9 +81,9 @@ git submodule update --init --recursive
 ## 触觉服务（spec §3.3 + §3.4）
 
 ```
-/hand_0/set_tactile_streaming     # SetTactileStreaming (bool enable)
-/hand_0/set_tactile_sample_rate   # SetTactileSampleRate (uint16, 1..120)
-/hand_0/reset_tactile_counters    # ResetTactileCounters
+/hand_0/tactile/set_streaming     # SetTactileStreaming (bool enable)
+/hand_0/tactile/set_sample_rate   # SetTactileSampleRate (uint16, 1..120)
+/hand_0/tactile/reset_counters    # ResetTactileCounters
 ```
 
 ## 踩坑记录
