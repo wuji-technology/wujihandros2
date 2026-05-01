@@ -22,6 +22,7 @@ Usage:
         hand_serial:=347838683433 tactile_serial:=12345678
 """
 
+import atexit
 import os
 import sys
 import tempfile
@@ -44,6 +45,61 @@ sys.path.insert(0, os.path.dirname(__file__))
 from common import detect_handedness, discover_usb_devices  # noqa: E402
 
 _logger = logging.get_logger("wujihand_full")
+
+
+def _compose_rviz_config(base_rviz_path, overlay_text_path,
+                         hand_namespace, include_tactile):
+    """Build a temp .rviz file with optional tactile overlay injected.
+
+    Reads `base_rviz_path` (joint-only RViz config from
+    wuji_hand_description) as text. If `include_tactile`, reads the
+    overlay snippet at `overlay_text_path` (a YAML fragment for one
+    Image display) and injects it into the base config's Displays
+    list, right before the `Enabled: true` line that closes the list.
+    Substitutes `{IMAGE_TOPIC}` in the overlay with the namespaced
+    `/<namespace>/tactile/image` path. Then rewrites any literal
+    `/hand_0/` strings in the base config to the actual namespace
+    (RViz config files reference Topics by their fully-qualified path).
+
+    Writes the result to a NamedTemporaryFile, registers an atexit
+    cleanup, and returns its path.
+    """
+    with open(base_rviz_path, "r") as f:
+        rviz_text = f.read()
+
+    if include_tactile:
+        with open(overlay_text_path, "r") as f:
+            overlay = f.read()
+        topic = f"/{hand_namespace}/tactile/image" if hand_namespace else "/tactile/image"
+        overlay = overlay.replace("{IMAGE_TOPIC}", topic)
+        # Inject overlay just before the `Enabled: true` line that closes
+        # the Displays list. The base RViz config has exactly one
+        # `^  Enabled: true$` line at this indent (sibling of Displays:).
+        marker = "\n  Enabled: true\n"
+        idx = rviz_text.find(marker)
+        if idx == -1:
+            _logger.warning(
+                "tactile overlay anchor not found in base rviz; "
+                "skipping tactile panel injection"
+            )
+        else:
+            rviz_text = rviz_text[:idx + 1] + overlay + rviz_text[idx + 1:]
+
+    # Rewrite legacy /hand_0/ topic prefixes in the base config to the
+    # caller's namespace. Idempotent if hand_namespace == "hand_0".
+    if hand_namespace and hand_namespace != "hand_0":
+        rviz_text = rviz_text.replace("/hand_0/", f"/{hand_namespace}/")
+
+    tmp = tempfile.NamedTemporaryFile(
+        mode="w",
+        prefix=f"wujihand_{hand_namespace.replace('/', '_') or 'hand'}_",
+        suffix=".rviz",
+        delete=False,
+    )
+    tmp.write(rviz_text)
+    tmp.close()
+    atexit.register(lambda p=tmp.name: os.path.exists(p) and os.unlink(p))
+    return tmp.name
 
 
 def _bringup_launch_dir():
@@ -199,28 +255,27 @@ def setup_viz_and_urdf(context):
     )
 
     if use_rviz:
-        # Tactile-aware RViz config from wujihand_bringup. Phase 8 will
-        # collapse these into a per-handedness base + tactile overlay
-        # composed at launch time.
+        # Compose: joint-only base from wuji_hand_description + optional
+        # tactile Image-display overlay from wujihand_bringup, written to
+        # a temp file. The temp file is unlinked at process exit via
+        # atexit (registered inside _compose_rviz_config).
         bringup_dir = get_package_share_directory("wujihand_bringup")
-        rviz_config = os.path.join(
-            bringup_dir, "rviz", f"{hand_type}_tactile.rviz"
+        base_rviz = os.path.join(
+            wuji_hand_description_dir, "rviz", f"{hand_type}.rviz"
+        )
+        overlay_text = os.path.join(
+            bringup_dir, "rviz", "tactile_overlay.txt"
         )
         try:
-            with open(rviz_config, "r") as f:
-                rviz_text = f.read()
-            hand_namespace = hand_name.strip("/")
-            rviz_text = rviz_text.replace("/hand_0/", f"/{hand_namespace}/")
-            with tempfile.NamedTemporaryFile(
-                mode="w",
-                prefix=f"wujihand_{hand_namespace.replace('/', '_') or 'hand'}_",
-                suffix=".rviz",
-                delete=False,
-            ) as f:
-                f.write(rviz_text)
-                rviz_config = f.name
+            rviz_config = _compose_rviz_config(
+                base_rviz_path=base_rviz,
+                overlay_text_path=overlay_text,
+                hand_namespace=hand_name.strip("/"),
+                include_tactile=tactile_active,
+            )
         except OSError as e:
-            _logger.error(f"Failed to rewrite RViz config: {e}")
+            _logger.error(f"Failed to compose RViz config: {e}")
+            rviz_config = base_rviz  # fall back to base joint-only config
         nodes.append(Node(
             package="rviz2",
             executable="rviz2",
