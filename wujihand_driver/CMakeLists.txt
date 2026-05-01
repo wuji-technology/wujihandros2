@@ -60,21 +60,8 @@ target_link_libraries(wujihand_driver_node
   wujihandcpp::wujihandcpp
 )
 
-# --- tactile_driver_node (tactile sensor) ---
-add_executable(tactile_driver_node
-  src/tactile_driver_node.cpp
-  src/tactile_driver_main.cpp
-)
-
-target_include_directories(tactile_driver_node PUBLIC ${COMMON_INCLUDE_DIRS})
-ament_target_dependencies(tactile_driver_node ${COMMON_AMENT_DEPS})
-
-target_link_libraries(tactile_driver_node
-  wujihandcpp::wujihandcpp
-)
-
 # Install
-install(TARGETS wujihand_driver_node tactile_driver_node
+install(TARGETS wujihand_driver_node
   DESTINATION lib/${PROJECT_NAME}
 )
 

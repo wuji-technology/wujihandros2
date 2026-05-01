@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef WUJIHAND_DRIVER__COLORMAP_HPP_
-#define WUJIHAND_DRIVER__COLORMAP_HPP_
+#ifndef WUJIHAND_TACTILE_DRIVER__COLORMAP_HPP_
+#define WUJIHAND_TACTILE_DRIVER__COLORMAP_HPP_
 
 #include <cstdint>
 
-namespace wujihand_driver {
+namespace wujihand_tactile_driver {
 
 /// 256-entry JET colormap LUT (RGB).
 /// Index 0 = dark blue (low pressure), 255 = dark red (high pressure).
@@ -59,6 +59,6 @@ inline constexpr uint8_t JET_LUT[256][3] = {
 };
 // clang-format on
 
-}  // namespace wujihand_driver
+}  // namespace wujihand_tactile_driver
 
-#endif  // WUJIHAND_DRIVER__COLORMAP_HPP_
+#endif  // WUJIHAND_TACTILE_DRIVER__COLORMAP_HPP_

@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "wujihand_driver/tactile_driver_node.hpp"
-#include "wujihand_driver/colormap.hpp"
+#include "wujihand_tactile_driver/tactile_driver_node.hpp"
+#include "wujihand_tactile_driver/colormap.hpp"
 
 #include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <cstring>
 
-namespace wujihand_driver {
+namespace wujihand_tactile_driver {
 
 namespace {
 // RGB triple used to render NaN ("invalid cell" sentinel) in the heatmap.
@@ -60,17 +60,17 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
       std::memory_order_relaxed);
 
   // -- Publishers --
-  raw_pub_ = this->create_publisher<wujihand_msgs::msg::TactileFrame>(
+  raw_pub_ = this->create_publisher<wujihand_tactile_msgs::msg::TactileFrame>(
       "tactile/raw", rclcpp::SensorDataQoS());
   // Image uses default Reliable QoS — RViz2 Humble ignores QoS overrides
   // for the Image display (see wujihandros2 CLAUDE.md pitfall #1).
   image_pub_ = this->create_publisher<sensor_msgs::msg::Image>("tactile/image", 10);
-  diag_pub_ = this->create_publisher<wujihand_msgs::msg::TactileDiagnostics>(
+  diag_pub_ = this->create_publisher<wujihand_tactile_msgs::msg::TactileDiagnostics>(
       "tactile/diagnostics", 10);
 
   // -- Connect --
   const char* sn = serial_number.empty() ? nullptr : serial_number.c_str();
-  board_ = std::make_unique<wujihandcpp::TactileBoard>(sn);
+  board_ = std::make_unique<wujihandcpp::tactile::Board>(sn);
   if (!board_->connect()) {
     RCLCPP_FATAL(this->get_logger(), "Failed to connect to tactile board");
     throw std::runtime_error("Tactile board connection failed");
@@ -106,10 +106,10 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
 
   // -- Services --
   // All under the `tactile/` prefix to match the topic namespace.
-  svc_streaming_ = this->create_service<wujihand_msgs::srv::SetTactileStreaming>(
+  svc_streaming_ = this->create_service<wujihand_tactile_msgs::srv::SetTactileStreaming>(
       "tactile/set_streaming",
-      [this](const std::shared_ptr<wujihand_msgs::srv::SetTactileStreaming::Request> req,
-             std::shared_ptr<wujihand_msgs::srv::SetTactileStreaming::Response> resp) {
+      [this](const std::shared_ptr<wujihand_tactile_msgs::srv::SetTactileStreaming::Request> req,
+             std::shared_ptr<wujihand_tactile_msgs::srv::SetTactileStreaming::Response> resp) {
         try {
           board_->set_streaming(req->enable);
           resp->success = true;
@@ -120,10 +120,10 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
       },
       rclcpp::ServicesQoS().get_rmw_qos_profile(), cb_group_streaming_);
 
-  svc_rate_ = this->create_service<wujihand_msgs::srv::SetTactileSampleRate>(
+  svc_rate_ = this->create_service<wujihand_tactile_msgs::srv::SetTactileSampleRate>(
       "tactile/set_sample_rate",
-      [this](const std::shared_ptr<wujihand_msgs::srv::SetTactileSampleRate::Request> req,
-             std::shared_ptr<wujihand_msgs::srv::SetTactileSampleRate::Response> resp) {
+      [this](const std::shared_ptr<wujihand_tactile_msgs::srv::SetTactileSampleRate::Request> req,
+             std::shared_ptr<wujihand_tactile_msgs::srv::SetTactileSampleRate::Response> resp) {
         try {
           board_->set_sample_rate_hz(req->sample_rate_hz);
           image_skip_.store(
@@ -138,10 +138,10 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
       },
       rclcpp::ServicesQoS().get_rmw_qos_profile(), cb_group_rate_);
 
-  svc_reset_ = this->create_service<wujihand_msgs::srv::ResetTactileCounters>(
+  svc_reset_ = this->create_service<wujihand_tactile_msgs::srv::ResetTactileCounters>(
       "tactile/reset_counters",
-      [this](const std::shared_ptr<wujihand_msgs::srv::ResetTactileCounters::Request>,
-             std::shared_ptr<wujihand_msgs::srv::ResetTactileCounters::Response> resp) {
+      [this](const std::shared_ptr<wujihand_tactile_msgs::srv::ResetTactileCounters::Request>,
+             std::shared_ptr<wujihand_tactile_msgs::srv::ResetTactileCounters::Response> resp) {
         try {
           board_->reset_counters();
           resp->success = true;
@@ -161,7 +161,7 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
 
   // -- Streaming consumer --
   board_->start_streaming(
-      [this](const wujihandcpp::TactileFrame& frame) { this->on_frame(frame); });
+      [this](const wujihandcpp::tactile::Frame& frame) { this->on_frame(frame); });
 
   RCLCPP_INFO(this->get_logger(),
               "Tactile streaming started at %d Hz (image @ ~%.1f Hz)",
@@ -177,11 +177,11 @@ TactileDriverNode::~TactileDriverNode() {
   }
 }
 
-void TactileDriverNode::on_frame(const wujihandcpp::TactileFrame& frame) {
+void TactileDriverNode::on_frame(const wujihandcpp::tactile::Frame& frame) {
   auto now = this->get_clock()->now();
 
   // --- Raw TactileFrame (every frame) ---
-  auto raw_msg = wujihand_msgs::msg::TactileFrame();
+  auto raw_msg = wujihand_tactile_msgs::msg::TactileFrame();
   raw_msg.header.stamp = now;
   raw_msg.header.frame_id = frame_id_;
   raw_msg.hand = static_cast<uint8_t>(frame.hand);
@@ -250,10 +250,10 @@ void TactileDriverNode::publish_diagnostics() {
     // wins the lock first, a service arriving milliseconds later
     // still waits for the diag command. Accepted tradeoff — services
     // are rare and the diag command is one round trip.
-    wujihandcpp::TactileDiagnostics d;
+    wujihandcpp::tactile::Diagnostics d;
     if (!board_->try_get_diagnostics(d)) return;
 
-    wujihand_msgs::msg::TactileDiagnostics msg;
+    wujihand_tactile_msgs::msg::TactileDiagnostics msg;
     msg.header.stamp = this->get_clock()->now();
     msg.header.frame_id = frame_id_;
     msg.uptime_ms = d.uptime_ms;
@@ -271,4 +271,4 @@ void TactileDriverNode::publish_diagnostics() {
   }
 }
 
-}  // namespace wujihand_driver
+}  // namespace wujihand_tactile_driver

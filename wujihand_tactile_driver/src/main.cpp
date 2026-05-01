@@ -13,12 +13,12 @@
 // limitations under the License.
 
 #include "rclcpp/rclcpp.hpp"
-#include "wujihand_driver/tactile_driver_node.hpp"
+#include "wujihand_tactile_driver/tactile_driver_node.hpp"
 
 int main(int argc, char* argv[]) {
   rclcpp::init(argc, argv);
   try {
-    auto node = std::make_shared<wujihand_driver::TactileDriverNode>();
+    auto node = std::make_shared<wujihand_tactile_driver::TactileDriverNode>();
     // Multi-threaded executor so the 100 ms diagnostics timer (which
     // issues a 2-second-timeout SDK command) cannot starve service
     // callbacks. The node assigns the timer and the three services to

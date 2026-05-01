@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef WUJIHAND_DRIVER__TACTILE_DRIVER_NODE_HPP_
-#define WUJIHAND_DRIVER__TACTILE_DRIVER_NODE_HPP_
+#ifndef WUJIHAND_TACTILE_DRIVER__TACTILE_DRIVER_NODE_HPP_
+#define WUJIHAND_TACTILE_DRIVER__TACTILE_DRIVER_NODE_HPP_
 
 #include <atomic>
 #include <memory>
@@ -23,13 +23,13 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
-#include "wujihand_msgs/msg/tactile_diagnostics.hpp"
-#include "wujihand_msgs/msg/tactile_frame.hpp"
-#include "wujihand_msgs/srv/reset_tactile_counters.hpp"
-#include "wujihand_msgs/srv/set_tactile_sample_rate.hpp"
-#include "wujihand_msgs/srv/set_tactile_streaming.hpp"
+#include "wujihand_tactile_msgs/msg/tactile_diagnostics.hpp"
+#include "wujihand_tactile_msgs/msg/tactile_frame.hpp"
+#include "wujihand_tactile_msgs/srv/reset_tactile_counters.hpp"
+#include "wujihand_tactile_msgs/srv/set_tactile_sample_rate.hpp"
+#include "wujihand_tactile_msgs/srv/set_tactile_streaming.hpp"
 
-namespace wujihand_driver {
+namespace wujihand_tactile_driver {
 
 class TactileDriverNode : public rclcpp::Node {
  public:
@@ -37,20 +37,20 @@ class TactileDriverNode : public rclcpp::Node {
   ~TactileDriverNode() override;
 
  private:
-  void on_frame(const wujihandcpp::TactileFrame& frame);
+  void on_frame(const wujihandcpp::tactile::Frame& frame);
   void publish_diagnostics();
 
   // Hardware
-  std::unique_ptr<wujihandcpp::TactileBoard> board_;
+  std::unique_ptr<wujihandcpp::tactile::Board> board_;
 
   // Publishers
-  rclcpp::Publisher<wujihand_msgs::msg::TactileFrame>::SharedPtr raw_pub_;
+  rclcpp::Publisher<wujihand_tactile_msgs::msg::TactileFrame>::SharedPtr raw_pub_;
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr image_pub_;
-  rclcpp::Publisher<wujihand_msgs::msg::TactileDiagnostics>::SharedPtr diag_pub_;
+  rclcpp::Publisher<wujihand_tactile_msgs::msg::TactileDiagnostics>::SharedPtr diag_pub_;
 
   // Each long-running callback gets its own MutuallyExclusive group so
   // they run in parallel under the MultiThreadedExecutor used in
-  // tactile_driver_main.cpp. Without this, the 100 ms diagnostics timer
+  // main.cpp. Without this, the 100 ms diagnostics timer
   // (issuing a 2-second-timeout SDK command) would starve the services.
   rclcpp::CallbackGroup::SharedPtr cb_group_diag_;
   rclcpp::CallbackGroup::SharedPtr cb_group_streaming_;
@@ -58,9 +58,9 @@ class TactileDriverNode : public rclcpp::Node {
   rclcpp::CallbackGroup::SharedPtr cb_group_reset_;
 
   // Services (lifecycle / config knobs from spec §3.3 + §3.4)
-  rclcpp::Service<wujihand_msgs::srv::SetTactileStreaming>::SharedPtr svc_streaming_;
-  rclcpp::Service<wujihand_msgs::srv::SetTactileSampleRate>::SharedPtr svc_rate_;
-  rclcpp::Service<wujihand_msgs::srv::ResetTactileCounters>::SharedPtr svc_reset_;
+  rclcpp::Service<wujihand_tactile_msgs::srv::SetTactileStreaming>::SharedPtr svc_streaming_;
+  rclcpp::Service<wujihand_tactile_msgs::srv::SetTactileSampleRate>::SharedPtr svc_rate_;
+  rclcpp::Service<wujihand_tactile_msgs::srv::ResetTactileCounters>::SharedPtr svc_reset_;
 
   // Timer driving the diagnostics topic.
   rclcpp::TimerBase::SharedPtr diag_timer_;
@@ -88,6 +88,6 @@ class TactileDriverNode : public rclcpp::Node {
   int diag_backoff_tick_{0};
 };
 
-}  // namespace wujihand_driver
+}  // namespace wujihand_tactile_driver
 
-#endif  // WUJIHAND_DRIVER__TACTILE_DRIVER_NODE_HPP_
+#endif  // WUJIHAND_TACTILE_DRIVER__TACTILE_DRIVER_NODE_HPP_
