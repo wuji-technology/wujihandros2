@@ -58,7 +58,20 @@ cd wujihandros2
 # If already cloned without --recurse-submodules, run:
 # git submodule update --init --recursive
 source /opt/ros/humble/setup.bash  # or kilted
-colcon build
+
+# Both wujihand_driver and wujihand_tactile_driver link against the
+# wujihandcpp SDK via find_package(wujihandcpp CONFIG REQUIRED). Build
+# and install it once into a prefix, then point colcon at that prefix:
+git clone https://github.com/wuji-technology/wujihandpy.git ../wujihandpy
+cmake -S ../wujihandpy/wujihandcpp -B ../wujihandpy/wujihandcpp/build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_STATIC_WUJIHANDCPP=ON \
+    -DWUJIHANDCPP_INSTALL=ON \
+    -DCMAKE_INSTALL_PREFIX=$PWD/../wujihandpy/install
+cmake --build ../wujihandpy/wujihandcpp/build -j"$(nproc)"
+cmake --install ../wujihandpy/wujihandcpp/build
+
+colcon build --cmake-args -DCMAKE_PREFIX_PATH=$PWD/../wujihandpy/install
 source install/setup.bash
 ```
 

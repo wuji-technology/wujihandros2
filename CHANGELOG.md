@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Tactile split into sibling ROS packages.** Tactile messages and
   the tactile driver node are no longer co-located with the joint
-  package. See `docs/refactor-plan.md` for the full move map.
+  package.
   - `wujihand_tactile_msgs/` (new package): `TactileFrame.msg`,
     `TactileDiagnostics.msg`, `SetTactileStreaming.srv`,
     `SetTactileSampleRate.srv`, `ResetTactileCounters.srv`.
@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     use `find_package(wujihand_tactile_msgs)`. Launch files referring
     to `Node(package="wujihand_driver", executable="tactile_driver_node")`
     must change `package` to `"wujihand_tactile_driver"`. No alias
-    layer (refactor-plan.md §6).
+    or shim layer is provided.
 
 - **Tactile stack rewired for the new firmware wire protocol**
   (`wh110-firmware/docs/tactile-wire-protocol.md`):
@@ -74,8 +74,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `wujihand_tactile_msgs` package (5 interfaces, see split notes
   above).
 - `wujihand_tactile_driver` package (1 binary, see split notes above).
-- `docs/refactor-plan.md` — round-8 structural refactor design doc;
-  authoritative sibling lives in `wujihandpy/docs/refactor-plan.md`.
 - `wujihand_bringup/rviz/tactile_overlay.txt` — RViz Image-display
   snippet injected by `wujihand_full.launch.py` when tactile is
   active.

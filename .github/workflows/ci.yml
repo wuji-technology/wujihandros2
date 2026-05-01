@@ -12,15 +12,6 @@ on:
                 required: false
                 default: ''
 
-env:
-    # SDK ref to build wujihandcpp from source. During the
-    # feat/tactile-ros2 cross-repo refactor (round-8) the SDK namespace
-    # rename means we cannot consume a released deb — those still carry
-    # the old wujihandcpp::Tactile* surface. Override here points at the
-    # matching SDK PR branch. Once both PRs land, set this back to "main"
-    # in a follow-up commit.
-    DEFAULT_WUJIHANDPY_REF: feat/tactile-ros2
-
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -46,8 +37,19 @@ jobs:
               id: sdk-ref
               shell: bash
               run: |
-                  REF="${{ github.event.inputs.wujihandpy_ref }}"
-                  REF="${REF:-${DEFAULT_WUJIHANDPY_REF}}"
+                  # PR builds need the matching SDK PR branch (the round-8
+                  # namespace rename hasn't landed on SDK main yet). Push,
+                  # tag, and dispatch builds default to released SDK on
+                  # main. Drop the pull_request branch once the SDK PR
+                  # merges.
+                  INPUT="${{ github.event.inputs.wujihandpy_ref }}"
+                  if [ -n "$INPUT" ]; then
+                    REF="$INPUT"
+                  elif [ "${{ github.event_name }}" = "pull_request" ]; then
+                    REF="feat/tactile-ros2"
+                  else
+                    REF="main"
+                  fi
                   echo "ref=${REF}" >> "$GITHUB_OUTPUT"
                   echo "Using wujihandpy ref: ${REF}"
 
@@ -142,8 +144,10 @@ jobs:
               id: sdk-ref
               shell: bash
               run: |
+                  # build-deb only runs on push to main/master and ships
+                  # artifacts; default to released SDK on main.
                   REF="${{ github.event.inputs.wujihandpy_ref }}"
-                  REF="${REF:-${DEFAULT_WUJIHANDPY_REF}}"
+                  REF="${REF:-main}"
                   echo "ref=${REF}" >> "$GITHUB_OUTPUT"
 
             - name: Checkout wujihandpy SDK

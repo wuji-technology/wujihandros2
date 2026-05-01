@@ -100,7 +100,7 @@ Version: ${DEB_VERSION}-1
 Section: misc
 Priority: optional
 Architecture: ${ARCH}
-Depends: ros-${ROS_DISTRO}-ros-base, ros-${ROS_DISTRO}-sensor-msgs, ros-${ROS_DISTRO}-std-msgs, ros-${ROS_DISTRO}-robot-state-publisher, ros-${ROS_DISTRO}-tf2-ros, libusb-1.0-0
+Depends: ros-${ROS_DISTRO}-ros-base, ros-${ROS_DISTRO}-sensor-msgs, ros-${ROS_DISTRO}-std-msgs, ros-${ROS_DISTRO}-robot-state-publisher, ros-${ROS_DISTRO}-tf2-ros, ros-${ROS_DISTRO}-rviz2, ros-${ROS_DISTRO}-foxglove-bridge, ros-${ROS_DISTRO}-ros2bag, ros-${ROS_DISTRO}-rosbag2-storage-mcap, libusb-1.0-0
 Maintainer: Wuji Technology <support@wuji.com>
 Description: WujiHand ROS2 Driver
  ROS2 driver package for WujiHand dexterous hand.
