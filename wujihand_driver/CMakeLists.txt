@@ -15,22 +15,15 @@ find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(wujihand_msgs REQUIRED)
 
-# wujihandcpp is consumed via its installed Config package. Two ways to point
-# CMake at it (local dev vs. system install):
+# wujihandcpp is consumed via its installed Config package. Build the
+# SDK and `cmake --install` it into a prefix, then point this build at
+# that prefix:
 #
-#   * Local dev — build the SDK once, then point CMAKE_PREFIX_PATH at the
-#     SDK build tree (no install step needed; the SDK exports a build-tree
-#     Targets file):
-#         cmake --build /path/to/wujihandpy/build
-#         colcon build --cmake-args \
-#             -DCMAKE_PREFIX_PATH=/path/to/wujihandpy/build/wujihandcpp
+#     cmake --install /path/to/wujihandpy/build --prefix /path/to/install
+#     colcon build --cmake-args -DCMAKE_PREFIX_PATH=/path/to/install
 #
-#   * System install — install the SDK into a standard prefix:
-#         cmake --install /path/to/wujihandpy/build --prefix /usr/local
-#         # then find_package picks it up automatically.
-#
-# wujihandcppConfig.cmake transitively pulls spdlog and Threads, so no
-# manual link of those is needed below.
+# wujihandcppConfig.cmake transitively pulls spdlog, Threads and
+# usb-1.0, so no manual link of those is needed below.
 find_package(wujihandcpp CONFIG REQUIRED)
 
 set(COMMON_INCLUDE_DIRS

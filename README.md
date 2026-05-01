@@ -16,13 +16,20 @@ ROS2 driver package for Wuji Hand dexterous hand. Provides 1000Hz joint state pu
 ```text
 ├── wujihand_bringup/
 │   ├── launch/
+│   ├── rviz/
 │   └── scripts/
 ├── external/
 │   └── wuji-hand-description/    # git submodule
-├── wujihand_driver/
+├── wujihand_driver/                # joint controller driver
 │   ├── include/
 │   └── src/
-├── wujihand_msgs/
+├── wujihand_msgs/                  # joint controller messages
+│   ├── msg/
+│   └── srv/
+├── wujihand_tactile_driver/        # tactile sensor driver
+│   ├── include/
+│   └── src/
+├── wujihand_tactile_msgs/          # tactile sensor messages
 │   ├── msg/
 │   └── srv/
 ├── docs/
@@ -33,10 +40,12 @@ ROS2 driver package for Wuji Hand dexterous hand. Provides 1000Hz joint state pu
 
 | Directory | Description |
 |-----------|-------------|
-| `wujihand_bringup/` | Launch files and demo scripts for starting the driver |
-| `external/wuji-hand-description/` | URDF models, mesh files, and RViz configuration (submodule) |
-| `wujihand_driver/` | Core ROS2 driver node for hardware communication |
-| `wujihand_msgs/` | Custom ROS2 message and service definitions |
+| `wujihand_bringup/` | Launch files, RViz config, and demo scripts |
+| `external/wuji-hand-description/` | URDF models, mesh files, and base RViz configuration (submodule) |
+| `wujihand_driver/` | Joint controller ROS 2 driver node |
+| `wujihand_msgs/` | Joint controller messages and services |
+| `wujihand_tactile_driver/` | Tactile sensor ROS 2 driver node |
+| `wujihand_tactile_msgs/` | Tactile sensor messages and services |
 | `docs/` | API reference and documentation |
 
 ## Quick Start

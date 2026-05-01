@@ -109,7 +109,13 @@ def _bringup_launch_dir():
 
 
 def setup_drivers(context):
-    """OpaqueFunction: discover devices and Include the per-driver launches."""
+    """OpaqueFunction: discover devices, launch the joint driver.
+
+    The tactile driver is included later, in setup_viz_and_urdf, because
+    its `parent_frame` arg needs the handedness (left/right), which is
+    only available after the joint driver is up and detect_handedness
+    succeeds.
+    """
     hand_name = LaunchConfiguration("hand_name").perform(context)
     tactile_enabled = (
         LaunchConfiguration("tactile").perform(context).lower() == "true"
@@ -131,11 +137,19 @@ def setup_drivers(context):
         f"tactile={'SN=' + tactile_serials[0] if tactile_serials else 'none'}"
     )
 
-    actions = [
-        # Default tactile_active to false; flipped to true below if we
-        # actually launch a tactile driver. setup_viz_and_urdf reads it
-        # to decide whether to include the tactile RViz panel.
-        SetLaunchConfiguration("tactile_active", "false"),
+    # Stash the discovered tactile serial (if any) so setup_viz_and_urdf
+    # can include tactile.launch.py with the correct parent_frame once
+    # handedness is known. tactile_active also drives the RViz overlay.
+    tactile_serial = tactile_serials[0] if (tactile_enabled and tactile_serials) else ""
+    tactile_active = "true" if tactile_serial else "false"
+    if tactile_enabled and not tactile_serials:
+        _logger.warning(
+            "Tactile enabled but no tactile board found. Skipping."
+        )
+
+    return [
+        SetLaunchConfiguration("tactile_active", tactile_active),
+        SetLaunchConfiguration("tactile_serial_resolved", tactile_serial),
         # Joint driver via the standalone wujihand.launch.py. Suppress
         # its own RViz/Foxglove because wujihand_full owns the composite
         # tactile-aware viz at the end.
@@ -158,56 +172,27 @@ def setup_drivers(context):
         ),
     ]
 
-    if tactile_enabled and tactile_serials:
-        actions.append(SetLaunchConfiguration("tactile_active", "true"))
-        # Tactile driver via the standalone tactile.launch.py. parent_frame
-        # gets bound to <handedness>_palm_link inside setup_viz_and_urdf —
-        # at this point we don't know handedness yet, so use a placeholder
-        # palm_link here and let the static_transform_publisher in
-        # setup_viz_and_urdf override the TF (see tactile_active branch).
-        #
-        # NOTE: tactile.launch.py's own static_transform_publisher will
-        # publish identity TF to "palm_link" which won't exist in the
-        # joint URDF tree. setup_viz_and_urdf re-publishes the same TF
-        # under the correct parent <handedness>_palm_link. The duplicate
-        # publisher to a non-existent frame is harmless (TF tools just
-        # warn).
-        actions.append(IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(_bringup_launch_dir(), "tactile.launch.py")
-            ),
-            launch_arguments={
-                "namespace": hand_name,
-                "serial_number": tactile_serials[0],
-                "image_rate":
-                    LaunchConfiguration("image_rate").perform(context),
-                "sample_rate_hz":
-                    LaunchConfiguration("sample_rate_hz").perform(context),
-                "streaming_at_startup":
-                    LaunchConfiguration("streaming_at_startup").perform(context),
-                # parent_frame intentionally LEFT at default (palm_link);
-                # setup_viz_and_urdf publishes the real per-handedness TF.
-            }.items(),
-        ))
-    elif tactile_enabled:
-        _logger.warning(
-            "Tactile enabled but no tactile board found. Skipping."
-        )
-
-    return actions
-
 
 def setup_viz_and_urdf(context):
-    """Spawn URDF + tactile-aware RViz/Foxglove after drivers are up."""
+    """Spawn URDF + tactile + tactile-aware RViz/Foxglove.
+
+    Runs after the joint driver has had time to come up (TimerAction
+    period below). Detects handedness from the joint driver, then
+    Includes tactile.launch.py with the correct per-handedness
+    parent_frame so the tactile TF is published exactly once and
+    anchors under the joint URDF tree.
+    """
     hand_name = LaunchConfiguration("hand_name").perform(context)
     viz = LaunchConfiguration("viz").perform(context)
     tactile_active = (
         LaunchConfiguration("tactile_active").perform(context).lower() == "true"
     )
+    tactile_serial = LaunchConfiguration("tactile_serial_resolved").perform(context)
 
-    nodes = []
+    actions = []
 
-    # Detect handedness once; reuse for URDF + RViz config selection.
+    # Detect handedness once; reuse for URDF, tactile parent_frame, and
+    # RViz config selection.
     hand_type = detect_handedness(hand_name) or "right"
     _logger.info(f"Using handedness: {hand_type}")
 
@@ -222,7 +207,7 @@ def setup_viz_and_urdf(context):
         _logger.error(f"Failed to read URDF: {e}")
         return []
 
-    nodes.append(Node(
+    actions.append(Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
@@ -234,18 +219,26 @@ def setup_viz_and_urdf(context):
         output="screen",
     ))
 
-    # Re-publish the tactile static TF with the correct per-handedness
-    # parent. tactile.launch.py also publishes one, parented to
-    # "palm_link" — that one anchors to a non-existent frame, so this one
-    # is what TF resolves against at runtime.
+    # Tactile driver via the standalone tactile.launch.py, parented to
+    # the actual joint-URDF palm link. Deferred to here (rather than
+    # setup_drivers at t=0) so handedness is known and parent_frame is
+    # bound correctly — no duplicate static-TF publisher needed.
     if tactile_active:
-        nodes.append(Node(
-            package="tf2_ros",
-            executable="static_transform_publisher",
-            name="tactile_tf_anchor",
-            namespace=hand_name,
-            arguments=["0", "0", "0", "0", "0", "0",
-                       f"{hand_type}_palm_link", "tactile_sensor_link"],
+        actions.append(IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(_bringup_launch_dir(), "tactile.launch.py")
+            ),
+            launch_arguments={
+                "namespace": hand_name,
+                "serial_number": tactile_serial,
+                "image_rate":
+                    LaunchConfiguration("image_rate").perform(context),
+                "sample_rate_hz":
+                    LaunchConfiguration("sample_rate_hz").perform(context),
+                "streaming_at_startup":
+                    LaunchConfiguration("streaming_at_startup").perform(context),
+                "parent_frame": f"{hand_type}_palm_link",
+            }.items(),
         ))
 
     # Visualization selection.
@@ -276,7 +269,7 @@ def setup_viz_and_urdf(context):
         except OSError as e:
             _logger.error(f"Failed to compose RViz config: {e}")
             rviz_config = base_rviz  # fall back to base joint-only config
-        nodes.append(Node(
+        actions.append(Node(
             package="rviz2",
             executable="rviz2",
             name="rviz2",
@@ -286,7 +279,7 @@ def setup_viz_and_urdf(context):
         ))
         _logger.info("Launching RViz")
     elif use_foxglove:
-        nodes.append(Node(
+        actions.append(Node(
             package="foxglove_bridge",
             executable="foxglove_bridge",
             name="foxglove_bridge",
@@ -295,7 +288,7 @@ def setup_viz_and_urdf(context):
         ))
         _logger.info("Launching Foxglove Bridge (ws://localhost:8765)")
 
-    return nodes
+    return actions
 
 
 def generate_launch_description():
