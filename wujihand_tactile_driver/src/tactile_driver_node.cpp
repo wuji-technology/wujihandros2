@@ -13,12 +13,13 @@
 // limitations under the License.
 
 #include "wujihand_tactile_driver/tactile_driver_node.hpp"
-#include "wujihand_tactile_driver/colormap.hpp"
 
 #include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <cstring>
+
+#include "wujihand_tactile_driver/colormap.hpp"
 
 namespace wujihand_tactile_driver {
 
@@ -27,6 +28,13 @@ namespace {
 constexpr uint8_t NAN_R = 64;
 constexpr uint8_t NAN_G = 64;
 constexpr uint8_t NAN_B = 64;
+
+// Bounded image-publish queue. 4 frames at the default 30 Hz image rate
+// = ~133 ms of latency budget before drop-oldest kicks in, which
+// matches the perceptual threshold at which a heatmap viewer noticeably
+// lags. Bigger queues hide the lag and make USB tear-downs more likely;
+// smaller queues drop too aggressively under transient RViz hiccups.
+constexpr size_t IMAGE_QUEUE_MAX = 4;
 }  // namespace
 
 TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
@@ -44,8 +52,8 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
   frame_id_ = this->get_parameter("frame_id").as_string();
 
   if (initial_rate < 1 || initial_rate > 120) {
-    RCLCPP_WARN(this->get_logger(),
-                "sample_rate_hz=%d out of 1..120, clamping to 120", initial_rate);
+    RCLCPP_WARN(this->get_logger(), "sample_rate_hz=%d out of 1..120, clamping to 120",
+                initial_rate);
     initial_rate = 120;
   }
   if (image_rate_ <= 0.0) {
@@ -55,8 +63,7 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
 
   // Image-publish skip ratio against the *streaming* rate.
   image_skip_.store(
-      std::max(1, static_cast<int>(std::round(
-                      static_cast<double>(initial_rate) / image_rate_))),
+      std::max(1, static_cast<int>(std::round(static_cast<double>(initial_rate) / image_rate_))),
       std::memory_order_relaxed);
 
   // -- Publishers --
@@ -78,20 +85,21 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
 
   auto info = board_->get_device_info();
   auto build = board_->get_fw_build();
-  RCLCPP_INFO(this->get_logger(),
-              "Tactile: SN=%s hw=%u.%u.%u.%u fw=%u.%u.%u(pre=%u) build=%s",
-              info.serial.c_str(),
-              info.hw_revision[0], info.hw_revision[1],
-              info.hw_revision[2], info.hw_revision[3],
-              info.fw_version[0], info.fw_version[1],
-              info.fw_version[2], info.fw_version[3],
-              build.git_short_sha.c_str());
+  RCLCPP_INFO(this->get_logger(), "Tactile: SN=%s hw=%u.%u.%u.%u fw=%u.%u.%u(pre=%u) build=%s",
+              info.serial.c_str(), info.hw_revision[0], info.hw_revision[1], info.hw_revision[2],
+              info.hw_revision[3], info.fw_version[0], info.fw_version[1], info.fw_version[2],
+              info.fw_version[3], build.git_short_sha.c_str());
 
   board_->set_sample_rate_hz(static_cast<uint16_t>(initial_rate));
   board_->set_streaming(streaming_at_startup);
 
   board_->set_disconnect_callback([this]() {
-    RCLCPP_ERROR(this->get_logger(), "Tactile USB disconnected");
+    // Flip BEFORE logging so a diag tick concurrent with this callback
+    // observes the new state. SDK contract guarantees this fires once.
+    connected_.store(false, std::memory_order_release);
+    RCLCPP_ERROR(this->get_logger(),
+                 "Tactile USB disconnected. /tactile/diagnostics will continue "
+                 "publishing with connected=false; restart the node to reconnect.");
   });
 
   // -- Callback groups --
@@ -127,8 +135,8 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
         try {
           board_->set_sample_rate_hz(req->sample_rate_hz);
           image_skip_.store(
-              std::max(1, static_cast<int>(std::round(
-                              static_cast<double>(req->sample_rate_hz) / image_rate_))),
+              std::max(1, static_cast<int>(
+                              std::round(static_cast<double>(req->sample_rate_hz) / image_rate_))),
               std::memory_order_relaxed);
           resp->success = true;
         } catch (const std::exception& e) {
@@ -155,91 +163,210 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
   // 10 Hz diagnostics timer (its own callback group so the 2 s SDK
   // timeout doesn't starve the services above).
   diag_timer_ = this->create_wall_timer(
-      std::chrono::milliseconds(100),
-      [this]() { publish_diagnostics(); },
-      cb_group_diag_);
+      std::chrono::milliseconds(100), [this]() { publish_diagnostics(); }, cb_group_diag_);
+
+  // -- Image-publish worker --
+  // Spawn BEFORE start_streaming so the queue has a consumer ready by
+  // the time the SDK starts firing on_frame. Tearing down in reverse
+  // order (~Node → stop image worker → stop_streaming → ~publishers)
+  // ensures image_pub_ outlives the worker.
+  image_worker_ = std::thread([this]() { this->image_worker_loop(); });
 
   // -- Streaming consumer --
   board_->start_streaming(
       [this](const wujihandcpp::tactile::Frame& frame) { this->on_frame(frame); });
 
-  RCLCPP_INFO(this->get_logger(),
-              "Tactile streaming started at %d Hz (image @ ~%.1f Hz)",
+  RCLCPP_INFO(this->get_logger(), "Tactile streaming started at %d Hz (image @ ~%.1f Hz)",
               initial_rate, image_rate_);
 }
 
 TactileDriverNode::~TactileDriverNode() {
   if (board_) {
-    // stop_streaming joins the SDK's streaming consumer thread; after
-    // it returns no on_frame() callbacks can fire so publishers are
-    // safe to destroy.
-    board_->stop_streaming();
+    // Use disconnect() (not just stop_streaming()) so BOTH the SDK
+    // streaming consumer thread AND the demuxer reader thread are
+    // joined before any node-owned member destruction begins. The
+    // demuxer reader thread is the one that fires the user-set
+    // disconnect callback on a USB drop, and that callback writes to
+    // `connected_` — a node member that gets destroyed after the
+    // implicit dtor body finishes. If the cable were yanked between
+    // a stop_streaming() that only kills the consumer and the
+    // implicit ~unique_ptr<Board> that finally tears down the reader,
+    // the in-flight callback would write through a destructed
+    // `connected_` (use-after-free).
+    //
+    // disconnect() is idempotent w.r.t. ~Board's own disconnect()
+    // call later, and explicit teardown (vs. USB-drop detection)
+    // does NOT fire the disconnect callback — so there's no chance
+    // of touching node members from this path either.
+    board_->disconnect();
+  }
+  // Image worker is now safe to drain + join: no SDK thread is alive,
+  // so no more frames will ever arrive in image_queue_. Joining BEFORE
+  // image_pub_ goes out of scope guarantees no in-flight publish()
+  // touches a destructed publisher.
+  image_worker_stop_.store(true, std::memory_order_release);
+  image_queue_cv_.notify_all();
+  if (image_worker_.joinable()) {
+    image_worker_.join();
   }
 }
 
 void TactileDriverNode::on_frame(const wujihandcpp::tactile::Frame& frame) {
-  auto now = this->get_clock()->now();
+  // Belt-and-suspenders disconnect guard: SDK guarantees no callback
+  // fires after disconnect, but a stray late-arrival between the SDK
+  // setting connected=false and the streaming_loop seeing it would
+  // otherwise cause us to publish a stale frame. Cheap atomic load,
+  // single comparison.
+  if (!connected_.load(std::memory_order_acquire)) {
+    return;
+  }
+  // Wrap the entire body so a publisher / allocator / clock failure cannot
+  // escape into the SDK's streaming_loop. The SDK catches escaped
+  // exceptions and silently exits the consumer thread (see
+  // wujihandcpp::tactile::Board::Impl::streaming_loop), turning this
+  // node into a zombie that keeps publishing diagnostics but never
+  // delivers another raw or image frame. Surface the failure on a
+  // throttled WARN instead so operators can see why frames stopped.
+  try {
+    auto now = this->get_clock()->now();
 
-  // --- Raw TactileFrame (every frame) ---
-  auto raw_msg = wujihand_tactile_msgs::msg::TactileFrame();
-  raw_msg.header.stamp = now;
-  raw_msg.header.frame_id = frame_id_;
-  raw_msg.hand = static_cast<uint8_t>(frame.hand);
-  raw_msg.sequence = frame.sequence;
-  raw_msg.device_timestamp_ms = frame.timestamp_ms;
-  static_assert(sizeof(raw_msg.pressure[0]) == sizeof(float),
-                "TactileFrame.msg pressure[] must be float32");
-  std::memcpy(raw_msg.pressure.data(), &frame.pressure[0][0], 768 * sizeof(float));
-  raw_pub_->publish(raw_msg);
+    // --- Raw TactileFrame (every frame) ---
+    auto raw_msg = wujihand_tactile_msgs::msg::TactileFrame();
+    raw_msg.header.stamp = now;
+    raw_msg.header.frame_id = frame_id_;
+    raw_msg.hand = static_cast<uint8_t>(frame.hand);
+    raw_msg.sequence = frame.sequence;
+    raw_msg.device_timestamp_ms = frame.timestamp_ms;
+    static_assert(sizeof(raw_msg.pressure[0]) == sizeof(float),
+                  "TactileFrame.msg pressure[] must be float32");
+    std::memcpy(raw_msg.pressure.data(), &frame.pressure[0][0], 768 * sizeof(float));
+    raw_pub_->publish(raw_msg);
 
-  // --- Image (downsampled to ~image_rate Hz) ---
-  // on_frame runs single-threaded on the SDK streaming consumer; counter
-  // does not need to be atomic.
-  const uint32_t count = frame_counter_++;
-  const int skip = image_skip_.load(std::memory_order_relaxed);
-  if (count % static_cast<uint32_t>(skip) != 0) return;
+    // --- Image (downsampled to ~image_rate Hz) ---
+    // on_frame runs single-threaded on the SDK streaming consumer; counter
+    // does not need to be atomic.
+    const uint32_t count = frame_counter_++;
+    const int skip = image_skip_.load(std::memory_order_relaxed);
+    if (count % static_cast<uint32_t>(skip) != 0)
+      return;
 
-  auto img_msg = sensor_msgs::msg::Image();
-  img_msg.header.stamp = now;
-  img_msg.header.frame_id = frame_id_;
-  img_msg.height = 24;
-  img_msg.width = 32;
-  img_msg.encoding = "rgb8";
-  img_msg.is_bigendian = false;
-  img_msg.step = 32 * 3;
-  img_msg.data.resize(24 * 32 * 3);
+    auto img_msg = sensor_msgs::msg::Image();
+    img_msg.header.stamp = now;
+    img_msg.header.frame_id = frame_id_;
+    img_msg.height = 24;
+    img_msg.width = 32;
+    img_msg.encoding = "rgb8";
+    img_msg.is_bigendian = false;
+    img_msg.step = 32 * 3;
+    img_msg.data.resize(24 * 32 * 3);
 
-  for (int r = 0; r < 24; ++r) {
-    for (int c = 0; c < 32; ++c) {
-      float v = frame.pressure[r][c];
-      size_t pixel = (r * 32 + c) * 3;
-      if (std::isnan(v)) {
-        img_msg.data[pixel + 0] = NAN_R;
-        img_msg.data[pixel + 1] = NAN_G;
-        img_msg.data[pixel + 2] = NAN_B;
-        continue;
+    for (int r = 0; r < 24; ++r) {
+      for (int c = 0; c < 32; ++c) {
+        float v = frame.pressure[r][c];
+        size_t pixel = (r * 32 + c) * 3;
+        if (std::isnan(v)) {
+          img_msg.data[pixel + 0] = NAN_R;
+          img_msg.data[pixel + 1] = NAN_G;
+          img_msg.data[pixel + 2] = NAN_B;
+          continue;
+        }
+        int idx = std::clamp(static_cast<int>(v * 255.0f), 0, 255);
+        img_msg.data[pixel + 0] = JET_LUT[idx][0];
+        img_msg.data[pixel + 1] = JET_LUT[idx][1];
+        img_msg.data[pixel + 2] = JET_LUT[idx][2];
       }
-      int idx = std::clamp(static_cast<int>(v * 255.0f), 0, 255);
-      img_msg.data[pixel + 0] = JET_LUT[idx][0];
-      img_msg.data[pixel + 1] = JET_LUT[idx][1];
-      img_msg.data[pixel + 2] = JET_LUT[idx][2];
+    }
+
+    // Hand the message off to the worker thread instead of publishing
+    // synchronously here. Reliable image_pub_ + slow RViz subscriber
+    // would otherwise backpressure into this SDK reader thread and
+    // ultimately into the kernel CDC buffer, producing real frame
+    // drops on the bus. Drop-oldest under queue pressure trades visual
+    // smoothness in RViz for keeping the wire happy.
+    {
+      std::lock_guard<std::mutex> qlock(image_queue_mu_);
+      if (image_queue_.size() >= IMAGE_QUEUE_MAX) {
+        image_queue_.pop_front();
+        // Throttled WARN — under a rare RViz stall this fires once in
+        // a while, which is informative; under sustained backpressure
+        // it caps log volume.
+        RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 5000,
+                             "tactile image queue full, dropping oldest "
+                             "frame (slow subscriber?)");
+      }
+      image_queue_.push_back(std::move(img_msg));
+    }
+    image_queue_cv_.notify_one();
+  } catch (const std::exception& e) {
+    RCLCPP_ERROR_THROTTLE(this->get_logger(), *this->get_clock(), 5000,
+                          "tactile on_frame: publish failed: %s", e.what());
+  } catch (...) {
+    RCLCPP_ERROR_THROTTLE(this->get_logger(), *this->get_clock(), 5000,
+                          "tactile on_frame: publish failed (non-std exception)");
+  }
+}
+
+void TactileDriverNode::image_worker_loop() {
+  while (true) {
+    sensor_msgs::msg::Image msg;
+    {
+      std::unique_lock<std::mutex> qlock(image_queue_mu_);
+      image_queue_cv_.wait(qlock, [this]() {
+        return !image_queue_.empty() || image_worker_stop_.load(std::memory_order_acquire);
+      });
+      if (image_queue_.empty()) {
+        // Stop signal raced with empty queue → exit.
+        return;
+      }
+      msg = std::move(image_queue_.front());
+      image_queue_.pop_front();
+    }
+    // publish() outside the lock so on_frame's notify_one() doesn't
+    // contend with a slow subscriber. publish() may block here under
+    // Reliable QoS, but that's now isolated to this worker thread —
+    // the SDK reader thread is unaffected.
+    try {
+      image_pub_->publish(std::move(msg));
+    } catch (const std::exception& e) {
+      RCLCPP_ERROR_THROTTLE(this->get_logger(), *this->get_clock(), 5000,
+                            "tactile image publish failed: %s", e.what());
     }
   }
-  image_pub_->publish(img_msg);
 }
 
 void TactileDriverNode::publish_diagnostics() {
-  if (!board_) return;
+  if (!board_)
+    return;
 
-  // Diagnostics is best-effort. After 3 consecutive command failures
-  // (device stuck/unplugged), throttle to ~1 Hz so we are not issuing a
+  // Disconnected path: keep publishing the topic so external supervisors
+  // can see connected=false, but skip the SDK call entirely (it would
+  // raise NotConnectedError on every tick, spinning the failure counter
+  // and the 5s WARN throttle while contributing zero useful information).
+  // Preserve the last-known firmware counters rather than zeroing them
+  // — a downstream delta tracker that watches `frame_count` would
+  // otherwise see "0" as a fresh boot and either fire a false reset
+  // alert or mask a real one.
+  if (!connected_.load(std::memory_order_acquire)) {
+    wujihand_tactile_msgs::msg::TactileDiagnostics msg =
+        have_last_diag_ ? last_diag_msg_  // copy: keep counters frozen at last good read
+                        : wujihand_tactile_msgs::msg::TactileDiagnostics{};
+    msg.header.stamp = this->get_clock()->now();
+    msg.header.frame_id = frame_id_;
+    msg.connected = false;
+    diag_pub_->publish(msg);
+    return;
+  }
+
+  // Connected path: best-effort polling. After 3 consecutive command
+  // failures (device stuck), throttle to ~1 Hz so we are not issuing a
   // 2 s blocking SDK call every 100 ms. The diag timer is in its own
   // MutuallyExclusive callback group, so this whole function is
   // single-threaded and the counters need not be atomic.
   constexpr int FAILURE_THRESHOLD = 3;
   constexpr int BACKOFF_PERIOD = 10;  // proceed once every 10 ticks (~1 Hz)
   if (diag_consecutive_failures_ >= FAILURE_THRESHOLD) {
-    if (diag_backoff_tick_++ % BACKOFF_PERIOD != 0) return;
+    if (diag_backoff_tick_++ % BACKOFF_PERIOD != 0)
+      return;
   }
 
   try {
@@ -251,23 +378,29 @@ void TactileDriverNode::publish_diagnostics() {
     // still waits for the diag command. Accepted tradeoff — services
     // are rare and the diag command is one round trip.
     wujihandcpp::tactile::Diagnostics d;
-    if (!board_->try_get_diagnostics(d)) return;
+    if (!board_->try_get_diagnostics(d))
+      return;
 
     wujihand_tactile_msgs::msg::TactileDiagnostics msg;
     msg.header.stamp = this->get_clock()->now();
     msg.header.frame_id = frame_id_;
+    msg.connected = true;
     msg.uptime_ms = d.uptime_ms;
     msg.frame_count = d.frame_count;
     msg.crc_err_count = d.crc_err_count;
     msg.dropout_count = d.dropout_count;
     msg.usb_reset_count = d.usb_reset_count;
     diag_pub_->publish(msg);
+    // Cache for the disconnect path so we can keep emitting frozen
+    // counters instead of zeros after USB drops.
+    last_diag_msg_ = msg;
+    have_last_diag_ = true;
     diag_consecutive_failures_ = 0;
     diag_backoff_tick_ = 0;
   } catch (const std::exception& e) {
     ++diag_consecutive_failures_;
-    RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 5000,
-                         "get_diagnostics failed: %s", e.what());
+    RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 5000, "get_diagnostics failed: %s",
+                         e.what());
   }
 }
 

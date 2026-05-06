@@ -26,6 +26,12 @@
   <!-- rcl_interfaces.srv.GetParameters used by common.detect_handedness(). -->
   <exec_depend>rcl_interfaces</exec_depend>
   <exec_depend>foxglove_bridge</exec_depend>
+
+  <!-- Operator convenience: not invoked by any launch file in this package,
+       but recording a bag from this hand's topics is a common workflow.
+       Pulled in by `rosdep install` so `ros2 bag record /hand_0/...` works
+       out-of-the-box on a freshly installed deb. Remove if the operator
+       prefers an explicit rosbag2 install. -->
   <exec_depend>ros2bag</exec_depend>
   <exec_depend>rosbag2_storage_mcap</exec_depend>
 

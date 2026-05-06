@@ -16,9 +16,12 @@
 #define WUJIHAND_TACTILE_DRIVER__TACTILE_DRIVER_NODE_HPP_
 
 #include <atomic>
+#include <condition_variable>
+#include <deque>
 #include <memory>
+#include <mutex>
 #include <string>
-
+#include <thread>
 #include <wujihandcpp/device/tactile_board.hpp>
 
 #include "rclcpp/rclcpp.hpp"
@@ -86,6 +89,48 @@ class TactileDriverNode : public rclcpp::Node {
   // increment the phase.
   int diag_consecutive_failures_{0};
   int diag_backoff_tick_{0};
+
+  // Most recent firmware-side counter snapshot. Cached so that after
+  // USB disconnect we can keep emitting /tactile/diagnostics with the
+  // last-known counter values rather than zeroing them — a downstream
+  // delta-tracker (e.g. a monitoring rule that flags "frame_count not
+  // increasing") would otherwise see frame_count=0 and either trip a
+  // false alert ("device just rebooted") or mask a real one. Touched
+  // only by publish_diagnostics, which is single-threaded under its
+  // own MutuallyExclusive callback group.
+  wujihand_tactile_msgs::msg::TactileDiagnostics last_diag_msg_;
+  bool have_last_diag_{false};
+
+  // Host-side connection health. Flipped to false by the once-only SDK
+  // disconnect callback. publish_diagnostics keeps emitting after that
+  // (with `connected=false`, counters zeroed) so launch supervisors can
+  // see the zombie state. on_frame is also gated by this flag for
+  // belt-and-suspenders: the SDK's streaming_loop already exits on
+  // disconnect, but a stray late-arrival callback would still find the
+  // publishers in scope and we'd rather not publish a stale frame.
+  // Atomic because the disconnect callback fires on the SDK reader
+  // thread, while the diag timer + service callbacks read on rclcpp
+  // executor threads.
+  std::atomic<bool> connected_{true};
+
+  // ---- Image-publish worker (decouples SDK reader thread from the
+  //      Reliable image_pub_ that backpressures under RViz lag). ----
+  //
+  // CLAUDE.md pitfall #1 forces image_pub_ to Reliable QoS so RViz2
+  // Humble's Image display actually subscribes. Reliable means
+  // publish() blocks if the subscriber falls behind; running publish
+  // synchronously on the SDK reader thread propagated that
+  // backpressure all the way up to the kernel CDC buffer, dropping
+  // tactile frames the moment RViz hiccupped. This worker pulls from
+  // a bounded drop-oldest queue and runs publish() on its own
+  // thread, so on_frame returns in microseconds regardless of how
+  // slow the subscriber is.
+  void image_worker_loop();
+  std::thread image_worker_;
+  std::mutex image_queue_mu_;
+  std::condition_variable image_queue_cv_;
+  std::deque<sensor_msgs::msg::Image> image_queue_;
+  std::atomic<bool> image_worker_stop_{false};
 };
 
 }  // namespace wujihand_tactile_driver

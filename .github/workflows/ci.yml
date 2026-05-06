@@ -112,12 +112,17 @@ jobs:
                   CC: gcc-13
                   CXX: g++-13
               run: |
+                  # `colcon test` exits 0 when no test packages exist, so
+                  # this step is a no-op until tests are added — but the
+                  # gate is in place so the moment a real failing test
+                  # lands the workflow reports it. Earlier this step had
+                  # `continue-on-error: true`, which would silently mask
+                  # any future regression.
                   source /opt/ros/${{ matrix.ros_distro }}/setup.bash
                   cd wujihandros2
                   source install/setup.bash
                   colcon test
-                  colcon test-result --verbose
-              continue-on-error: true
+                  colcon test-result --verbose --all
 
     build-deb:
         runs-on: ubuntu-latest
@@ -221,4 +226,16 @@ jobs:
 
             - name: Check C++ formatting
               run: |
-                  find . -name "*.cpp" -o -name "*.hpp" | head -20 | xargs clang-format --dry-run --Werror || echo "Format check completed"
+                  # Run clang-format against the project's own C++ sources only.
+                  # Restrict by package directory so the find never descends
+                  # into git submodules under external/ (which carry their
+                  # own style and would fail this check). The previous form
+                  #   find . ... | head -20 | xargs ... || echo "..."
+                  # both truncated to the first 20 hits and swallowed every
+                  # non-zero exit, which made this step always green.
+                  set -e
+                  set -o pipefail
+                  find wujihand_driver wujihand_tactile_driver \
+                      wujihand_tactile_msgs wujihand_msgs wujihand_bringup \
+                      \( -name "*.cpp" -o -name "*.hpp" \) -print0 \
+                      | xargs -0 -r clang-format --dry-run --Werror

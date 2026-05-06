@@ -127,7 +127,30 @@ def setup_drivers(context):
 
     if not hand_serials:
         _logger.error("No WujiHand device found! Check USB connection.")
-        return []
+        # Set tactile_active=false so the deferred setup_viz_and_urdf
+        # doesn't NameError when reading it (LaunchConfiguration that
+        # was never SetLaunchConfiguration'd resolves to empty string,
+        # which `.lower() == "true"` correctly returns False — but
+        # being explicit avoids relying on that nuance).
+        return [SetLaunchConfiguration("tactile_active", "false")]
+
+    # Multi-device topology guard. /sys USB enumeration order is the
+    # filesystem traversal order; it is NOT stable across reboots, USB
+    # re-enumeration, or hub reseating. Picking [0] without warning silently
+    # binds this launch to whichever board the kernel happened to bring up
+    # first. For a deterministic launch, the operator must pin
+    # `hand_serial:=` / `tactile_serial:=`.
+    if not hand_override and len(hands) > 1:
+        _logger.warning(
+            f"Found {len(hands)} hand boards on USB ({hands}); picking the "
+            f"first one nondeterministically. Pass hand_serial:=<SN> to pin."
+        )
+    if not tactile_override and len(tactiles) > 1:
+        _logger.warning(
+            f"Found {len(tactiles)} tactile boards on USB ({tactiles}); "
+            f"picking the first one nondeterministically. Pass "
+            f"tactile_serial:=<SN> to pin."
+        )
 
     _logger.info(
         f"Launching with hand SN={hand_serials[0]}, "
@@ -220,6 +243,28 @@ def setup_viz_and_urdf(context):
     # the actual joint-URDF palm link. Deferred to here (rather than
     # setup_drivers at t=0) so handedness is known and parent_frame is
     # bound correctly — no duplicate static-TF publisher needed.
+    #
+    # frame_id is hand-namespaced so two wujihand_full launches with
+    # *different* hand_names (e.g. hand_0 + hand_1) don't both publish
+    # the bare frame name `tactile_sensor_link` and produce a TF tree
+    # where one frame has two parents. Standalone tactile.launch.py use
+    # cases with a single board still get the historical default.
+    #
+    # Caveat: this only namespaces the *tactile leaf*. The URDF parent
+    # `<handedness>_palm_link` is not namespaced — two same-handedness
+    # hands launched together would still collide on the parent frame.
+    # That's a wuji_hand_description-level concern outside this launch.
+    #
+    # hand_name may carry leading/trailing slashes (operator typo or
+    # explicit absolute namespace like `/hand_0`); strip them out of
+    # the frame_id so we never produce TF frames with embedded `/` —
+    # matches the same sanitation `_compose_rviz_config` applies for
+    # `hand_namespace`.
+    sanitized_hand = hand_name.strip("/")
+    tactile_frame_id = (
+        f"{sanitized_hand}_tactile_sensor_link" if sanitized_hand
+        else "tactile_sensor_link"
+    )
     if tactile_active:
         actions.append(IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
@@ -235,6 +280,7 @@ def setup_viz_and_urdf(context):
                 "streaming_at_startup":
                     LaunchConfiguration("streaming_at_startup").perform(context),
                 "parent_frame": f"{hand_type}_palm_link",
+                "frame_id": tactile_frame_id,
             }.items(),
         ))
 

@@ -78,14 +78,25 @@ source install/setup.bash
 ### Running
 
 ```bash
-# Launch driver
+# Joint driver only
 ros2 launch wujihand_bringup wujihand.launch.py
-
-# Launch with RViz visualization
 ros2 launch wujihand_bringup wujihand.launch.py rviz:=true
+
+# Joint + tactile + visualization (auto-discover both boards by USB PID)
+ros2 launch wujihand_bringup wujihand_full.launch.py
+
+# Tactile driver only
+ros2 launch wujihand_bringup tactile.launch.py
+ros2 launch wujihand_bringup tactile.launch.py serial_number:=<SN>
+
+# Disable tactile in the full launch
+ros2 launch wujihand_bringup wujihand_full.launch.py tactile:=false
 
 # Verify operation
 ros2 topic echo /hand_0/joint_states --once
+ros2 topic echo /hand_0/tactile/diagnostics --once
+ros2 topic hz /hand_0/tactile/raw                      # default 120 Hz
+ros2 topic hz /hand_0/tactile/image                    # default 30 Hz
 ```
 
 ## Contact

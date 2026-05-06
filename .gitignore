@@ -26,3 +26,8 @@ env.sh
 
 # Local config files (environment-specific)
 *.local.*
+
+# Hardware-in-the-loop test scripts (require live tactile board on USB).
+# Local-only — pulled out of versioned set per the project's HIL policy.
+hil_*.py
+local_hil/
