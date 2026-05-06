@@ -93,10 +93,17 @@ def _compose_rviz_config(base_rviz_path, overlay_text_path,
         suffix=".rviz",
         delete=False,
     )
-    tmp.write(rviz_text)
-    tmp.close()
-    atexit.register(lambda p=tmp.name: os.path.exists(p) and os.unlink(p))
-    return tmp.name
+    tmp_path = tmp.name
+    # Register cleanup BEFORE write — even if the write throws (disk full,
+    # encoding error), atexit will reap the empty file. The previous order
+    # leaked the tempfile on a write failure because atexit was registered
+    # after the write returned.
+    atexit.register(lambda p=tmp_path: os.path.exists(p) and os.unlink(p))
+    try:
+        tmp.write(rviz_text)
+    finally:
+        tmp.close()
+    return tmp_path
 
 
 def _bringup_launch_dir():
@@ -122,6 +129,35 @@ def setup_drivers(context):
     hand_override = LaunchConfiguration("hand_serial").perform(context)
     tactile_override = LaunchConfiguration("tactile_serial").perform(context)
     hands, tactiles = discover_usb_devices()
+
+    # Validate overrides against discovery: an override that doesn't match a
+    # currently-attached device is almost always a typo. Without this,
+    # `hand_serial:=BOGUS` would pass the no-device gate below (hand_serials
+    # is non-empty), the joint driver would fail at runtime, but we'd still
+    # spawn URDF + tactile + RViz against a dead driver after a 15 s
+    # detect_handedness timeout — a much worse failure mode than just
+    # exiting cleanly with the typo'd SN named in the error.
+    if hand_override and hand_override not in hands:
+        _logger.error(
+            f"hand_serial:={hand_override} does not match any WujiHand on USB "
+            f"(discovered: {hands or 'none'}). Check the SN or unset the "
+            f"override to auto-discover."
+        )
+        return [
+            SetLaunchConfiguration("hand_active", "false"),
+            SetLaunchConfiguration("tactile_active", "false"),
+            SetLaunchConfiguration("tactile_serial_resolved", ""),
+        ]
+    if tactile_override and tactile_override not in tactiles:
+        _logger.warning(
+            f"tactile_serial:={tactile_override} does not match any tactile "
+            f"board on USB (discovered: {tactiles or 'none'}). Tactile will "
+            f"be skipped."
+        )
+        # Soft-skip tactile, don't kill the whole launch — joint driver may
+        # still be the operator's primary target.
+        tactile_override = ""
+
     hand_serials = [hand_override] if hand_override else hands
     tactile_serials = [tactile_override] if tactile_override else tactiles
 
@@ -389,6 +425,17 @@ def generate_launch_description():
                               description="Hand serial number (empty=auto-discover)"),
         DeclareLaunchArgument("tactile_serial", default_value="",
                               description="Tactile serial number (empty=auto-discover)"),
+        # Internal-use launch configurations: set by setup_drivers and read
+        # by setup_viz_and_urdf. Declared with empty/false defaults so a
+        # bug or early-exit in setup_drivers can't leave them unset and
+        # produce an opaque SubstitutionFailure 3.5 s later when the
+        # deferred function tries to .perform() them.
+        DeclareLaunchArgument("hand_active", default_value="false",
+                              description="(internal) populated by setup_drivers"),
+        DeclareLaunchArgument("tactile_active", default_value="false",
+                              description="(internal) populated by setup_drivers"),
+        DeclareLaunchArgument("tactile_serial_resolved", default_value="",
+                              description="(internal) populated by setup_drivers"),
         DeclareLaunchArgument("publish_rate", default_value="1000.0"),
         DeclareLaunchArgument("filter_cutoff_freq", default_value="10.0"),
         DeclareLaunchArgument("diagnostics_rate", default_value="10.0"),
