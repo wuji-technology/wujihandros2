@@ -127,14 +127,16 @@ def setup_drivers(context):
 
     if not hand_serials:
         _logger.error("No WujiHand device found! Check USB connection.")
-        # Set BOTH launch configurations the deferred setup_viz_and_urdf
-        # reads, otherwise its `LaunchConfiguration("tactile_serial_resolved")
-        # .perform(context)` raises a substitution failure (unset config) —
-        # turning the common "hardware disconnected" case into an opaque
-        # launch exception instead of the intended graceful error path.
-        # tactile_active=false short-circuits the rest of setup_viz_and_urdf
-        # before any TF / driver / RViz machinery runs.
+        # Set ALL launch configurations the deferred setup_viz_and_urdf
+        # reads. `tactile_serial_resolved=""` avoids the substitution
+        # failure on the missing config; `hand_active=false` is the new
+        # signal setup_viz_and_urdf checks to short-circuit BEFORE
+        # waiting on detect_handedness (which would block 15 s, then
+        # fall back to "right" and spawn an RSP + RViz against a
+        # nonexistent driver — a worse failure mode than just exiting
+        # the launch). tactile_active=false belt-and-suspenders.
         return [
+            SetLaunchConfiguration("hand_active", "false"),
             SetLaunchConfiguration("tactile_active", "false"),
             SetLaunchConfiguration("tactile_serial_resolved", ""),
         ]
@@ -173,6 +175,7 @@ def setup_drivers(context):
         )
 
     return [
+        SetLaunchConfiguration("hand_active", "true"),
         SetLaunchConfiguration("tactile_active", tactile_active),
         SetLaunchConfiguration("tactile_serial_resolved", tactile_serial),
         # Joint driver via the standalone wujihand.launch.py. Suppress its
@@ -214,10 +217,28 @@ def setup_viz_and_urdf(context):
     """
     hand_name = LaunchConfiguration("hand_name").perform(context)
     viz = LaunchConfiguration("viz").perform(context)
+    hand_active = (
+        LaunchConfiguration("hand_active").perform(context).lower() == "true"
+    )
     tactile_active = (
         LaunchConfiguration("tactile_active").perform(context).lower() == "true"
     )
     tactile_serial = LaunchConfiguration("tactile_serial_resolved").perform(context)
+
+    # Short-circuit when setup_drivers reported no hand on the bus. Without
+    # this, detect_handedness below blocks 15 s waiting for the joint
+    # driver's handedness parameter, falls back to "right", and we end up
+    # spawning robot_state_publisher + RViz attached to no driver. That's
+    # worse than just exiting cleanly: the user sees a half-running
+    # launch, broken TF, and no clear error. setup_drivers already logged
+    # the actionable "no WujiHand device found" at error level.
+    if not hand_active:
+        _logger.error(
+            "Skipping URDF + tactile + viz spawn because no hand board was "
+            "discovered. Plug in the WujiHand or pass hand_serial:=<SN> and "
+            "re-launch."
+        )
+        return []
 
     actions = []
 

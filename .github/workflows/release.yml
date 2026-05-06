@@ -71,6 +71,13 @@ jobs:
               shell: bash
               run: |
                   apt-get update
+                  # gcc-13 not in default apt on Ubuntu 22.04 (Humble base image).
+                  # Add the Ubuntu toolchain test PPA on Jammy; no-op on Noble.
+                  apt-get install -y software-properties-common
+                  if grep -q '22.04' /etc/os-release 2>/dev/null; then
+                    add-apt-repository -y ppa:ubuntu-toolchain-r/test
+                    apt-get update
+                  fi
                   apt-get install -y \
                       build-essential cmake ninja-build pkg-config \
                       gcc-13 g++-13 \

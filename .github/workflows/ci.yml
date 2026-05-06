@@ -81,7 +81,16 @@ jobs:
               run: |
                   apt-get update
                   # GCC 13 for C++20 <format>; libusb-1.0 for the SDK transport.
-                  # Ubuntu 22.04 default GCC is 11 which lacks <format>; 24.04 is 13.
+                  # Humble runs in ros:humble-ros-base (Ubuntu 22.04 Jammy), whose
+                  # default apt repos cap at gcc-12. Add the Ubuntu Toolchain Test
+                  # PPA so gcc-13 / g++-13 install on Jammy too. Kilted runs on
+                  # Ubuntu 24.04 Noble where gcc-13 is the default — the PPA add
+                  # is a no-op there but harmless.
+                  apt-get install -y software-properties-common
+                  if grep -q '22.04' /etc/os-release 2>/dev/null; then
+                    add-apt-repository -y ppa:ubuntu-toolchain-r/test
+                    apt-get update
+                  fi
                   apt-get install -y \
                       build-essential cmake ninja-build pkg-config \
                       gcc-13 g++-13 \
