@@ -191,6 +191,15 @@ jobs:
               shell: bash
               run: |
                   apt-get update
+                  # Same Jammy PPA dance as the build job — Humble runs in
+                  # ros:humble-ros-base on Ubuntu 22.04 where default apt
+                  # caps at gcc-12. Without this, push-to-main triggers
+                  # the deb job and fails at apt-get install gcc-13.
+                  apt-get install -y software-properties-common
+                  if grep -q '22.04' /etc/os-release 2>/dev/null; then
+                    add-apt-repository -y ppa:ubuntu-toolchain-r/test
+                    apt-get update
+                  fi
                   apt-get install -y \
                       build-essential cmake ninja-build pkg-config \
                       gcc-13 g++-13 \

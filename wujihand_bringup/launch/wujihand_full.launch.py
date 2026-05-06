@@ -167,8 +167,19 @@ def setup_drivers(context):
     # Stash the discovered tactile serial (if any) so setup_viz_and_urdf
     # can include tactile.launch.py with the correct parent_frame once
     # handedness is known. tactile_active also drives the RViz overlay.
-    tactile_serial = tactile_serials[0] if (tactile_enabled and tactile_serials) else ""
-    tactile_active = "true" if tactile_serial else "false"
+    #
+    # tactile_active follows device PRESENCE, not the serial string —
+    # `discover_usb_devices()` records the serial as "" when /sys lacks
+    # a `serial` attribute, which can happen on early-rev boards or under
+    # unprivileged container reads. Using `bool(tactile_serial)` here
+    # silently disabled tactile in that scenario; the standalone
+    # tactile.launch.py auto-discovers fine with an empty serial, so
+    # mirror that behavior. Empty serial just means "the driver will
+    # auto-pick the first PID 0x5700 device on the bus" — same UX as
+    # standalone.
+    has_tactile = tactile_enabled and bool(tactile_serials)
+    tactile_serial = tactile_serials[0] if has_tactile else ""
+    tactile_active = "true" if has_tactile else "false"
     if tactile_enabled and not tactile_serials:
         _logger.warning(
             "Tactile enabled but no tactile board found. Skipping."
