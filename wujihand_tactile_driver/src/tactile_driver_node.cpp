@@ -173,8 +173,28 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
   image_worker_ = std::thread([this]() { this->image_worker_loop(); });
 
   // -- Streaming consumer --
-  board_->start_streaming(
-      [this](const wujihandcpp::tactile::Frame& frame) { this->on_frame(frame); });
+  // Constructor-time exception safety: ~Node is NOT called when the
+  // constructor itself throws, so a joinable image_worker_ at the
+  // throw point would terminate via std::thread's destructor
+  // contract. Catch any failure from start_streaming (which can throw
+  // NotConnectedError if USB drops between connect() and here), tear
+  // the worker down cleanly, and rethrow so the launch surfaces the
+  // real cause.
+  try {
+    board_->start_streaming(
+        [this](const wujihandcpp::tactile::Frame& frame) { this->on_frame(frame); });
+  } catch (...) {
+    image_worker_stop_.store(true, std::memory_order_release);
+    image_queue_cv_.notify_all();
+    if (image_worker_.joinable()) {
+      image_worker_.join();
+    }
+    // disconnect joins the SDK reader thread + drops the demuxer so
+    // the user-set disconnect callback (which writes to connected_)
+    // can no longer fire before the node-owned members destruct.
+    board_->disconnect();
+    throw;
+  }
 
   RCLCPP_INFO(this->get_logger(), "Tactile streaming started at %d Hz (image @ ~%.1f Hz)",
               initial_rate, image_rate_);

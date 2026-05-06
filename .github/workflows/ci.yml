@@ -37,26 +37,41 @@ jobs:
               id: sdk-ref
               shell: bash
               run: |
-                  # PR builds need the matching SDK PR branch (the round-8
-                  # namespace rename hasn't landed on SDK main yet). Push,
-                  # tag, and dispatch builds default to released SDK on
-                  # main. Drop the pull_request branch once the SDK PR
-                  # merges.
+                  # PR builds need the matching SDK PR (the round-8 namespace
+                  # rename + cdc transport stack hasn't landed on SDK main
+                  # yet). Push, tag, and dispatch builds default to released
+                  # SDK on main. Drop the pull_request branch once the SDK
+                  # PR merges.
+                  #
+                  # The matching SDK work lives on the contributor fork
+                  # (Shen-Jiewen/wujihandpy:feat/tactile-ros2), NOT on the
+                  # upstream repo — the upstream wuji-technology/wujihandpy
+                  # only has refs/pull/63/head until merge. Earlier this
+                  # job pinned to wuji-technology + feat/tactile-ros2 and
+                  # silently failed at checkout (branch did not exist).
+                  # GitHub exposes the PR head SHA as the special ref
+                  # `refs/pull/<N>/head` on the upstream repo, so we use
+                  # that — stable for the lifetime of the PR, no fork
+                  # access needed, no manual cherry-pick required.
                   INPUT="${{ github.event.inputs.wujihandpy_ref }}"
                   if [ -n "$INPUT" ]; then
                     REF="$INPUT"
+                    REPO="wuji-technology/wujihandpy"
                   elif [ "${{ github.event_name }}" = "pull_request" ]; then
-                    REF="feat/tactile-ros2"
+                    REF="refs/pull/63/head"
+                    REPO="wuji-technology/wujihandpy"
                   else
                     REF="main"
+                    REPO="wuji-technology/wujihandpy"
                   fi
                   echo "ref=${REF}" >> "$GITHUB_OUTPUT"
-                  echo "Using wujihandpy ref: ${REF}"
+                  echo "repo=${REPO}" >> "$GITHUB_OUTPUT"
+                  echo "Using wujihandpy ${REPO}@${REF}"
 
             - name: Checkout wujihandpy SDK
               uses: actions/checkout@v4
               with:
-                  repository: wuji-technology/wujihandpy
+                  repository: ${{ steps.sdk-ref.outputs.repo }}
                   ref: ${{ steps.sdk-ref.outputs.ref }}
                   path: wujihandpy
                   submodules: false
