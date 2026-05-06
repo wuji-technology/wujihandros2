@@ -345,11 +345,19 @@ void TactileDriverNode::image_worker_loop() {
     // contend with a slow subscriber. publish() may block here under
     // Reliable QoS, but that's now isolated to this worker thread —
     // the SDK reader thread is unaffected.
+    //
+    // catch (...) mirrors on_frame's wrapper so a non-std exception
+    // escaping rclcpp's publish path can't unwind past the thread
+    // function and std::terminate the process — same defense the
+    // round-2 review widened on_frame for.
     try {
       image_pub_->publish(std::move(msg));
     } catch (const std::exception& e) {
       RCLCPP_ERROR_THROTTLE(this->get_logger(), *this->get_clock(), 5000,
                             "tactile image publish failed: %s", e.what());
+    } catch (...) {
+      RCLCPP_ERROR_THROTTLE(this->get_logger(), *this->get_clock(), 5000,
+                            "tactile image publish failed (non-std exception)");
     }
   }
 }
