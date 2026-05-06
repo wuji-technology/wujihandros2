@@ -80,6 +80,22 @@ def generate_launch_description():
         description="Whether to launch Foxglove Bridge for web visualization",
     )
 
+    # When wujihand_full.launch.py composes this launch, it spawns its own
+    # robot_state_publisher (after handedness detection) so it can pick the
+    # correct URDF for the composite tactile-aware viz. Letting both fire
+    # produces two RSP nodes with the same name + namespace → duplicate
+    # parameter services + duplicate TF publishers for the same frames.
+    # Standalone use keeps the default true so `ros2 launch
+    # wujihand_bringup wujihand.launch.py rviz:=true` still gets a TF tree
+    # without any extra args.
+    spawn_rsp_arg = DeclareLaunchArgument(
+        "spawn_robot_state_publisher",
+        default_value="true",
+        description="If true, spawn robot_state_publisher after the driver is up. "
+                    "Set to false when this launch is composed by another launch "
+                    "that owns the URDF / RSP itself.",
+    )
+
     # Force serial_number to string type (workaround for ROS2 Kilted type inference)
     serial_number_str = ParameterValue(
         LaunchConfiguration("serial_number"), value_type=str
@@ -102,10 +118,13 @@ def generate_launch_description():
         emulate_tty=True,
     )
 
-    # Auto-detect handedness and spawn robot_state_publisher after driver starts
+    # Auto-detect handedness and spawn robot_state_publisher after driver starts.
+    # Conditional so wujihand_full.launch.py can suppress this when it's
+    # composing — the parent launch owns the URDF in that case.
     auto_detect_action = TimerAction(
         period=2.0,  # Wait 2 seconds for driver to fully initialize
         actions=[OpaqueFunction(function=spawn_robot_state_publisher)],
+        condition=IfCondition(LaunchConfiguration("spawn_robot_state_publisher")),
     )
 
     # Conditionally spawn RViz after handedness detection completes
@@ -135,6 +154,7 @@ def generate_launch_description():
             diagnostics_rate_arg,
             rviz_arg,
             foxglove_arg,
+            spawn_rsp_arg,
             wujihand_driver_node,
             auto_detect_action,
             rviz_action,

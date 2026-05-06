@@ -127,12 +127,17 @@ def setup_drivers(context):
 
     if not hand_serials:
         _logger.error("No WujiHand device found! Check USB connection.")
-        # Set tactile_active=false so the deferred setup_viz_and_urdf
-        # doesn't NameError when reading it (LaunchConfiguration that
-        # was never SetLaunchConfiguration'd resolves to empty string,
-        # which `.lower() == "true"` correctly returns False — but
-        # being explicit avoids relying on that nuance).
-        return [SetLaunchConfiguration("tactile_active", "false")]
+        # Set BOTH launch configurations the deferred setup_viz_and_urdf
+        # reads, otherwise its `LaunchConfiguration("tactile_serial_resolved")
+        # .perform(context)` raises a substitution failure (unset config) —
+        # turning the common "hardware disconnected" case into an opaque
+        # launch exception instead of the intended graceful error path.
+        # tactile_active=false short-circuits the rest of setup_viz_and_urdf
+        # before any TF / driver / RViz machinery runs.
+        return [
+            SetLaunchConfiguration("tactile_active", "false"),
+            SetLaunchConfiguration("tactile_serial_resolved", ""),
+        ]
 
     # Multi-device topology guard. /sys USB enumeration order is the
     # filesystem traversal order; it is NOT stable across reboots, USB
@@ -170,9 +175,13 @@ def setup_drivers(context):
     return [
         SetLaunchConfiguration("tactile_active", tactile_active),
         SetLaunchConfiguration("tactile_serial_resolved", tactile_serial),
-        # Joint driver via the standalone wujihand.launch.py. Suppress
-        # its own RViz/Foxglove because wujihand_full owns the composite
-        # tactile-aware viz at the end.
+        # Joint driver via the standalone wujihand.launch.py. Suppress its
+        # own RViz/Foxglove + RSP because wujihand_full owns the composite
+        # tactile-aware viz AND the URDF/RSP (we need to pick the URDF
+        # variant per handedness, which the standalone launch doesn't
+        # know about). Without spawn_robot_state_publisher:=false this
+        # launches two RSPs in the same namespace, producing duplicate
+        # parameter services + duplicate TF for the same frames.
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(_bringup_launch_dir(), "wujihand.launch.py")
@@ -188,6 +197,7 @@ def setup_drivers(context):
                     LaunchConfiguration("diagnostics_rate").perform(context),
                 "rviz": "false",
                 "foxglove": "false",
+                "spawn_robot_state_publisher": "false",
             }.items(),
         ),
     ]
