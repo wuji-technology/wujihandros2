@@ -154,9 +154,11 @@ bool WujiHandDriverNode::connect_hardware() {
     // Update ROS parameters with hardware info so other nodes can query them
     this->set_parameter(rclcpp::Parameter("handedness", handedness_));
     this->set_parameter(rclcpp::Parameter("firmware_version", firmware_version_));
-    this->set_parameter(rclcpp::Parameter("joint_upper_limits",
+    this->set_parameter(rclcpp::Parameter(
+        "joint_upper_limits",
         std::vector<double>(joint_upper_limits_.begin(), joint_upper_limits_.end())));
-    this->set_parameter(rclcpp::Parameter("joint_lower_limits",
+    this->set_parameter(rclcpp::Parameter(
+        "joint_lower_limits",
         std::vector<double>(joint_lower_limits_.begin(), joint_lower_limits_.end())));
 
     hardware_connected_ = true;

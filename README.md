@@ -16,13 +16,20 @@ ROS2 driver package for Wuji Hand dexterous hand. Provides 1000Hz joint state pu
 ```text
 ├── wujihand_bringup/
 │   ├── launch/
+│   ├── rviz/
 │   └── scripts/
 ├── external/
 │   └── wuji-hand-description/    # git submodule
-├── wujihand_driver/
+├── wujihand_driver/                # joint controller driver
 │   ├── include/
 │   └── src/
-├── wujihand_msgs/
+├── wujihand_msgs/                  # joint controller messages
+│   ├── msg/
+│   └── srv/
+├── wujihand_tactile_driver/        # tactile sensor driver
+│   ├── include/
+│   └── src/
+├── wujihand_tactile_msgs/          # tactile sensor messages
 │   ├── msg/
 │   └── srv/
 ├── docs/
@@ -33,10 +40,12 @@ ROS2 driver package for Wuji Hand dexterous hand. Provides 1000Hz joint state pu
 
 | Directory | Description |
 |-----------|-------------|
-| `wujihand_bringup/` | Launch files and demo scripts for starting the driver |
-| `external/wuji-hand-description/` | URDF models, mesh files, and RViz configuration (submodule) |
-| `wujihand_driver/` | Core ROS2 driver node for hardware communication |
-| `wujihand_msgs/` | Custom ROS2 message and service definitions |
+| `wujihand_bringup/` | Launch files, RViz config, and demo scripts |
+| `external/wuji-hand-description/` | URDF models, mesh files, and base RViz configuration (submodule) |
+| `wujihand_driver/` | Joint controller ROS 2 driver node |
+| `wujihand_msgs/` | Joint controller messages and services |
+| `wujihand_tactile_driver/` | Tactile sensor ROS 2 driver node |
+| `wujihand_tactile_msgs/` | Tactile sensor messages and services |
 | `docs/` | API reference and documentation |
 
 ## Quick Start
@@ -49,21 +58,45 @@ cd wujihandros2
 # If already cloned without --recurse-submodules, run:
 # git submodule update --init --recursive
 source /opt/ros/humble/setup.bash  # or kilted
-colcon build
+
+# Both wujihand_driver and wujihand_tactile_driver link against the
+# wujihandcpp SDK via find_package(wujihandcpp CONFIG REQUIRED). Build
+# and install it once into a prefix, then point colcon at that prefix:
+git clone https://github.com/wuji-technology/wujihandpy.git ../wujihandpy
+cmake -S ../wujihandpy/wujihandcpp -B ../wujihandpy/wujihandcpp/build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_STATIC_WUJIHANDCPP=ON \
+    -DWUJIHANDCPP_INSTALL=ON \
+    -DCMAKE_INSTALL_PREFIX=$PWD/../wujihandpy/install
+cmake --build ../wujihandpy/wujihandcpp/build -j"$(nproc)"
+cmake --install ../wujihandpy/wujihandcpp/build
+
+colcon build --cmake-args -DCMAKE_PREFIX_PATH=$PWD/../wujihandpy/install
 source install/setup.bash
 ```
 
 ### Running
 
 ```bash
-# Launch driver
+# Joint driver only
 ros2 launch wujihand_bringup wujihand.launch.py
-
-# Launch with RViz visualization
 ros2 launch wujihand_bringup wujihand.launch.py rviz:=true
+
+# Joint + tactile + visualization (auto-discover both boards by USB PID)
+ros2 launch wujihand_bringup wujihand_full.launch.py
+
+# Tactile driver only
+ros2 launch wujihand_bringup tactile.launch.py
+ros2 launch wujihand_bringup tactile.launch.py serial_number:=<SN>
+
+# Disable tactile in the full launch
+ros2 launch wujihand_bringup wujihand_full.launch.py tactile:=false
 
 # Verify operation
 ros2 topic echo /hand_0/joint_states --once
+ros2 topic echo /hand_0/tactile/diagnostics --once
+ros2 topic hz /hand_0/tactile/raw                      # default 120 Hz
+ros2 topic hz /hand_0/tactile/image                    # default 30 Hz
 ```
 
 ## Contact

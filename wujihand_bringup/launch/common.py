@@ -2,11 +2,11 @@
 
 import os
 import time
+from pathlib import Path
 
 import rclpy
 from ament_index_python.packages import get_package_share_directory
 from launch import logging
-from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -14,6 +14,52 @@ from rclpy.node import Node as RclpyNode
 
 # Get launch logger
 _logger = logging.get_logger(__name__)
+
+
+# USB VID:PID of the two boards we know how to talk to.
+WUJIHAND_VID_PID = "0483:2000"   # Sboard (joint controller)
+TACTILE_VID_PID = "0483:5700"    # G-Board (tactile sensor)
+
+
+def discover_usb_devices():
+    """Scan /sys/bus/usb/devices for WujiHand boards.
+
+    Returns:
+        (hand_serials, tactile_serials)  — two lists of USB serial-number
+        strings, one per matching board found. Empty lists when nothing
+        matches or /sys is unreadable.
+    """
+    hands = []
+    tactiles = []
+    try:
+        for entry in os.listdir("/sys/bus/usb/devices"):
+            dev = f"/sys/bus/usb/devices/{entry}"
+            if not os.path.isfile(f"{dev}/idVendor"):
+                continue
+            try:
+                vid = Path(f"{dev}/idVendor").read_text().strip()
+                pid = Path(f"{dev}/idProduct").read_text().strip()
+                serial = (
+                    Path(f"{dev}/serial").read_text().strip()
+                    if os.path.isfile(f"{dev}/serial") else ""
+                )
+                product = (
+                    Path(f"{dev}/product").read_text().strip()
+                    if os.path.isfile(f"{dev}/product") else ""
+                )
+            except (OSError, PermissionError):
+                continue
+
+            vid_pid = f"{vid}:{pid}"
+            if vid_pid == WUJIHAND_VID_PID:
+                hands.append(serial)
+                _logger.info(f"Found hand: {product} (SN: {serial})")
+            elif vid_pid == TACTILE_VID_PID:
+                tactiles.append(serial)
+                _logger.info(f"Found tactile: {product} (SN: {serial})")
+    except OSError as e:
+        _logger.warning(f"USB scan failed: {e}")
+    return hands, tactiles
 
 
 def detect_handedness(hand_name, timeout_sec=15):
@@ -133,36 +179,3 @@ def spawn_robot_state_publisher(context):
     ]
 
 
-def get_common_launch_arguments():
-    """Return common launch argument declarations.
-
-    Returns:
-        List of DeclareLaunchArgument actions
-    """
-    return [
-        DeclareLaunchArgument(
-            "hand_name",
-            default_value="hand_0",
-            description="Hand name used as namespace and URDF prefix",
-        ),
-        DeclareLaunchArgument(
-            "serial_number",
-            default_value="",
-            description="Serial number of the WujiHand device",
-        ),
-        DeclareLaunchArgument(
-            "publish_rate",
-            default_value="1000.0",
-            description="Joint state publish rate in Hz",
-        ),
-        DeclareLaunchArgument(
-            "filter_cutoff_freq",
-            default_value="10.0",
-            description="Low-pass filter cutoff frequency in Hz",
-        ),
-        DeclareLaunchArgument(
-            "diagnostics_rate",
-            default_value="10.0",
-            description="Diagnostics publish rate in Hz",
-        ),
-    ]

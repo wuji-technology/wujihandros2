@@ -13,12 +13,25 @@
   <exec_depend>rclpy</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>wujihand_driver</exec_depend>
+  <exec_depend>wujihand_tactile_driver</exec_depend>
   <exec_depend>wuji_hand_description</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>rviz2</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
+  <!-- static_transform_publisher used by tactile.launch.py. -->
+  <exec_depend>tf2_ros</exec_depend>
+  <!-- get_package_share_directory used by common.py and the launch files. -->
+  <exec_depend>ament_index_python</exec_depend>
+  <!-- rcl_interfaces.srv.GetParameters used by common.detect_handedness(). -->
+  <exec_depend>rcl_interfaces</exec_depend>
   <exec_depend>foxglove_bridge</exec_depend>
+
+  <!-- Operator convenience: not invoked by any launch file in this package,
+       but recording a bag from this hand's topics is a common workflow.
+       Pulled in by `rosdep install` so `ros2 bag record /hand_0/...` works
+       out-of-the-box on a freshly installed deb. Remove if the operator
+       prefers an explicit rosbag2 install. -->
   <exec_depend>ros2bag</exec_depend>
   <exec_depend>rosbag2_storage_mcap</exec_depend>
 
