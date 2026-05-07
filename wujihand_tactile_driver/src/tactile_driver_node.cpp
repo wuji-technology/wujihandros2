@@ -60,6 +60,11 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
   this->declare_parameter("sample_rate_hz", 120);
   this->declare_parameter("streaming_at_startup", true);
   this->declare_parameter("frame_id", "tactile_sensor_link");
+  // Sibling joint-controller node name to cross-check handedness against.
+  // Empty (default) skips the check — appropriate for standalone tactile
+  // launches without a paired joint driver. wujihand_full passes
+  // "wujihand_driver" (resolved relative to the same namespace).
+  this->declare_parameter("joint_driver_node", std::string(""));
 
   const std::string serial_number = this->get_parameter("serial_number").as_string();
   image_rate_ = this->get_parameter("image_rate").as_double();
@@ -115,6 +120,50 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
               info.serial.c_str(), info.hw_revision[0], info.hw_revision[1], info.hw_revision[2],
               info.hw_revision[3], info.fw_version[0], info.fw_version[1], info.fw_version[2],
               info.fw_version[3], build.git_short_sha.c_str());
+
+  // Cross-check handedness against the paired joint-controller driver.
+  // Without this guard, a left-hand controller plugged together with a
+  // right-hand glove (or vice versa) silently publishes mismatched
+  // joint_states + tactile/raw under the same TF tree.
+  const std::string glove_hand =
+      (glove_->get_handedness() == wujihandcpp::tactile::Handedness::LEFT)
+          ? "left" : "right";
+  const std::string peer = this->get_parameter("joint_driver_node").as_string();
+  if (peer.empty()) {
+    RCLCPP_INFO(this->get_logger(),
+                "Glove handedness=%s; joint_driver_node not set, pairing check skipped",
+                glove_hand.c_str());
+  } else {
+    auto params_client = std::make_shared<rclcpp::SyncParametersClient>(this, peer);
+    if (!params_client->wait_for_service(std::chrono::seconds(5))) {
+      RCLCPP_WARN(this->get_logger(),
+                  "Glove handedness=%s; peer node '%s' not found within 5s, "
+                  "pairing not verified",
+                  glove_hand.c_str(), peer.c_str());
+    } else {
+      auto values = params_client->get_parameters({"handedness"});
+      const std::string peer_hand =
+          values.empty() ? std::string{} : values[0].as_string();
+      if (peer_hand.empty()) {
+        RCLCPP_WARN(this->get_logger(),
+                    "Glove handedness=%s; peer '%s' has not advertised "
+                    "'handedness' yet, pairing not verified",
+                    glove_hand.c_str(), peer.c_str());
+      } else if (peer_hand != glove_hand) {
+        RCLCPP_FATAL(this->get_logger(),
+                     "Handedness mismatch: joint=%s, glove=%s. Refusing to start "
+                     "to prevent silently publishing mis-paired data. Verify the "
+                     "physical wiring or pin matching serial numbers.",
+                     peer_hand.c_str(), glove_hand.c_str());
+        throw std::runtime_error(
+            "Handedness mismatch between joint controller and tactile glove");
+      } else {
+        RCLCPP_INFO(this->get_logger(),
+                    "Handedness pairing OK: joint and glove both '%s'",
+                    glove_hand.c_str());
+      }
+    }
+  }
 
   glove_->set_sample_rate_hz(static_cast<uint16_t>(initial_rate));
   glove_->set_streaming(streaming_at_startup);

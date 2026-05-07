@@ -4,10 +4,11 @@ Composable: wujihand_full.launch.py IncludeLaunchDescription's this file
 with `parent_frame` and `namespace` overridden to slot the tactile sensor
 under a hand-namespaced TF tree.
 
-Auto-discovery (empty serial_number) picks the first device with PID 0x5700
-on the bus. If two tactile boards are connected at the same time, the
-chosen one is non-deterministic across reboots/USB re-enumeration. Pin
-serial_number explicitly when running in a multi-tactile rig.
+Auto-discovery (empty serial_number) succeeds only when exactly one
+device with PID 0x5700 is on the bus. If two or more tactile boards are
+connected, the SDK refuses to pick one and the driver throws on connect
+listing the found serials — pin serial_number explicitly when running
+in a multi-tactile rig.
 """
 
 import os
@@ -26,8 +27,9 @@ from common import discover_usb_devices  # noqa: E402
 def _warn_if_ambiguous_serial(context):
     """Warn when >1 tactile board is on USB without an explicit serial pin.
 
-    Auto-discover picks the first /sys hit, which is not stable across
-    reboots; pinning gives a deterministic launch.
+    The SDK refuses to pick when multiple gloves match; the driver will
+    throw on connect. Surface this as a launch-time WARN so the operator
+    sees the issue before the node crashes.
     """
     if LaunchConfiguration("serial_number").perform(context):
         return []
@@ -35,9 +37,9 @@ def _warn_if_ambiguous_serial(context):
     if len(tactiles) <= 1:
         return []
     return [LogInfo(msg=(
-        f"[tactile.launch.py] WARN: {len(tactiles)} tactile boards on USB; "
-        "auto-discover will pick the first one non-deterministically. "
-        "Pass serial_number:=<SN> to pin."
+        f"[tactile.launch.py] WARN: {len(tactiles)} tactile boards on USB and "
+        "no serial_number set — the driver will refuse to start. "
+        "Pass serial_number:=<SN> to pin one."
     ))]
 
 
@@ -83,6 +85,15 @@ def generate_launch_description():
             description="TF frame ID published by the tactile driver.",
         ),
         DeclareLaunchArgument(
+            "joint_driver_node",
+            default_value="",
+            description="Sibling joint-controller node name to cross-check "
+                        "handedness against. Empty (default) skips the check; "
+                        "wujihand_full sets this to 'wujihand_driver' so a "
+                        "left-controller + right-glove (or vice versa) "
+                        "mis-pairing is rejected at startup.",
+        ),
+        DeclareLaunchArgument(
             "parent_frame",
             default_value="palm_link",
             description="TF parent frame to which the tactile sensor frame is "
@@ -107,6 +118,7 @@ def generate_launch_description():
                 "streaming_at_startup": ParameterValue(
                     LaunchConfiguration("streaming_at_startup"), value_type=bool),
                 "frame_id": LaunchConfiguration("frame_id"),
+                "joint_driver_node": LaunchConfiguration("joint_driver_node"),
             }],
             output="screen",
             emulate_tty=True,

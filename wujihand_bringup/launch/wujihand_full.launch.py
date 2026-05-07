@@ -288,6 +288,9 @@ def setup_viz_and_urdf(context):
                     LaunchConfiguration("streaming_at_startup").perform(context),
                 "parent_frame": f"{hand_type}_palm_link",
                 "frame_id": tactile_frame_id,
+                # Pair the tactile driver to the joint driver in the same
+                # namespace so a handedness mismatch is rejected at startup.
+                "joint_driver_node": "wujihand_driver",
             }.items(),
         ))
 
