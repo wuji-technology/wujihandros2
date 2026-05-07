@@ -93,7 +93,18 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
   // -- Connect --
   const char* sn = serial_number.empty() ? nullptr : serial_number.c_str();
   glove_ = std::make_unique<wujihandcpp::tactile::Glove>(sn);
-  if (!glove_->connect()) {
+  bool connected;
+  try {
+    connected = glove_->connect();
+  } catch (const std::exception& e) {
+    // SDK throws when multiple gloves are on the bus and no serial_number
+    // was provided; surface the SDK message (which lists found serials)
+    // so the operator knows which to pin via the `serial_number` arg.
+    RCLCPP_FATAL(this->get_logger(),
+                 "Failed to connect to tactile glove: %s", e.what());
+    throw;
+  }
+  if (!connected) {
     RCLCPP_FATAL(this->get_logger(), "Failed to connect to tactile glove");
     throw std::runtime_error("Tactile glove connection failed");
   }
