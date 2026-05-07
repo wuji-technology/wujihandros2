@@ -37,22 +37,8 @@ jobs:
               id: sdk-ref
               shell: bash
               run: |
-                  # PR builds need the matching SDK PR (the round-8 namespace
-                  # rename + cdc transport stack hasn't landed on SDK main
-                  # yet). Push, tag, and dispatch builds default to released
-                  # SDK on main. Drop the pull_request branch once the SDK
-                  # PR merges.
-                  #
-                  # The matching SDK work lives on the contributor fork
-                  # (Shen-Jiewen/wujihandpy:feat/tactile-ros2), NOT on the
-                  # upstream repo — the upstream wuji-technology/wujihandpy
-                  # only has refs/pull/63/head until merge. Earlier this
-                  # job pinned to wuji-technology + feat/tactile-ros2 and
-                  # silently failed at checkout (branch did not exist).
-                  # GitHub exposes the PR head SHA as the special ref
-                  # `refs/pull/<N>/head` on the upstream repo, so we use
-                  # that — stable for the lifetime of the PR, no fork
-                  # access needed, no manual cherry-pick required.
+                  # PR builds use the matching SDK PR ref until SDK main has
+                  # tactile ROS2 support. Push/tag/dispatch use SDK main.
                   INPUT="${{ github.event.inputs.wujihandpy_ref }}"
                   if [ -n "$INPUT" ]; then
                     REF="$INPUT"

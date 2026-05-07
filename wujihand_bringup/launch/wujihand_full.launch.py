@@ -287,27 +287,8 @@ def setup_viz_and_urdf(context):
         output="screen",
     ))
 
-    # Tactile driver via the standalone tactile.launch.py, parented to
-    # the actual joint-URDF palm link. Deferred to here (rather than
-    # setup_drivers at t=0) so handedness is known and parent_frame is
-    # bound correctly — no duplicate static-TF publisher needed.
-    #
-    # frame_id is hand-namespaced so two wujihand_full launches with
-    # *different* hand_names (e.g. hand_0 + hand_1) don't both publish
-    # the bare frame name `tactile_sensor_link` and produce a TF tree
-    # where one frame has two parents. Standalone tactile.launch.py use
-    # cases with a single board still get the historical default.
-    #
-    # Caveat: this only namespaces the *tactile leaf*. The URDF parent
-    # `<handedness>_palm_link` is not namespaced — two same-handedness
-    # hands launched together would still collide on the parent frame.
-    # That's a wuji_hand_description-level concern outside this launch.
-    #
-    # hand_name may carry leading/trailing slashes (operator typo or
-    # explicit absolute namespace like `/hand_0`); strip them out of
-    # the frame_id so we never produce TF frames with embedded `/` —
-    # matches the same sanitation `_compose_rviz_config` applies for
-    # `hand_namespace`.
+    # Parent tactile under the handedness-specific palm link, namespace its
+    # leaf frame for multi-launch use, and strip slashes for a valid TF frame.
     sanitized_hand = hand_name.strip("/")
     tactile_frame_id = (
         f"{sanitized_hand}_tactile_sensor_link" if sanitized_hand
