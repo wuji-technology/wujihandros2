@@ -92,23 +92,23 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
 
   // -- Connect --
   const char* sn = serial_number.empty() ? nullptr : serial_number.c_str();
-  board_ = std::make_unique<wujihandcpp::tactile::Board>(sn);
-  if (!board_->connect()) {
-    RCLCPP_FATAL(this->get_logger(), "Failed to connect to tactile board");
-    throw std::runtime_error("Tactile board connection failed");
+  glove_ = std::make_unique<wujihandcpp::tactile::Glove>(sn);
+  if (!glove_->connect()) {
+    RCLCPP_FATAL(this->get_logger(), "Failed to connect to tactile glove");
+    throw std::runtime_error("Tactile glove connection failed");
   }
 
-  auto info = board_->get_device_info();
-  auto build = board_->get_fw_build();
+  auto info = glove_->get_device_info();
+  auto build = glove_->get_fw_build();
   RCLCPP_INFO(this->get_logger(), "Tactile: SN=%s hw=%u.%u.%u.%u fw=%u.%u.%u(pre=%u) build=%s",
               info.serial.c_str(), info.hw_revision[0], info.hw_revision[1], info.hw_revision[2],
               info.hw_revision[3], info.fw_version[0], info.fw_version[1], info.fw_version[2],
               info.fw_version[3], build.git_short_sha.c_str());
 
-  board_->set_sample_rate_hz(static_cast<uint16_t>(initial_rate));
-  board_->set_streaming(streaming_at_startup);
+  glove_->set_sample_rate_hz(static_cast<uint16_t>(initial_rate));
+  glove_->set_streaming(streaming_at_startup);
 
-  board_->set_disconnect_callback([this]() {
+  glove_->set_disconnect_callback([this]() {
     // Flip BEFORE logging so a diag tick concurrent with this callback
     // observes the new state. SDK contract guarantees this fires once.
     connected_.store(false, std::memory_order_release);
@@ -133,7 +133,7 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
       "tactile/set_streaming",
       [this](const std::shared_ptr<wujihand_tactile_msgs::srv::SetTactileStreaming::Request> req,
              std::shared_ptr<wujihand_tactile_msgs::srv::SetTactileStreaming::Response> resp) {
-        service_reply(*resp, [&] { board_->set_streaming(req->enable); });
+        service_reply(*resp, [&] { glove_->set_streaming(req->enable); });
       },
       rclcpp::ServicesQoS().get_rmw_qos_profile(), cb_group_streaming_);
 
@@ -142,7 +142,7 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
       [this](const std::shared_ptr<wujihand_tactile_msgs::srv::SetTactileSampleRate::Request> req,
              std::shared_ptr<wujihand_tactile_msgs::srv::SetTactileSampleRate::Response> resp) {
         service_reply(*resp, [&] {
-          board_->set_sample_rate_hz(req->sample_rate_hz);
+          glove_->set_sample_rate_hz(req->sample_rate_hz);
           image_skip_.store(image_skip_for(req->sample_rate_hz, image_rate_),
                             std::memory_order_relaxed);
         });
@@ -153,7 +153,7 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
       "tactile/reset_counters",
       [this](const std::shared_ptr<wujihand_tactile_msgs::srv::ResetTactileCounters::Request>,
              std::shared_ptr<wujihand_tactile_msgs::srv::ResetTactileCounters::Response> resp) {
-        service_reply(*resp, [&] { board_->reset_counters(); });
+        service_reply(*resp, [&] { glove_->reset_counters(); });
       },
       rclcpp::ServicesQoS().get_rmw_qos_profile(), cb_group_reset_);
 
@@ -178,7 +178,7 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
   // the worker down cleanly, and rethrow so the launch surfaces the
   // real cause.
   try {
-    board_->start_streaming(
+    glove_->start_streaming(
         [this](const wujihandcpp::tactile::Frame& frame) { this->on_frame(frame); });
   } catch (...) {
     image_worker_stop_.store(true, std::memory_order_release);
@@ -189,7 +189,7 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
     // disconnect joins the SDK reader thread + drops the demuxer so
     // the user-set disconnect callback (which writes to connected_)
     // can no longer fire before the node-owned members destruct.
-    board_->disconnect();
+    glove_->disconnect();
     throw;
   }
 
@@ -202,8 +202,8 @@ TactileDriverNode::~TactileDriverNode() {
   // destruct: disconnect() joins both the SDK streaming consumer and the
   // demuxer reader, so the user-set disconnect callback (which writes to
   // connected_) cannot fire after we leave this body.
-  if (board_) {
-    board_->disconnect();
+  if (glove_) {
+    glove_->disconnect();
   }
   image_worker_stop_.store(true, std::memory_order_release);
   image_queue_cv_.notify_all();
@@ -356,7 +356,7 @@ void TactileDriverNode::publish_diagnostics() {
   try {
     // Yield to in-flight service commands; skipped polls are not failures.
     wujihandcpp::tactile::Diagnostics d;
-    if (!board_->try_get_diagnostics(d))
+    if (!glove_->try_get_diagnostics(d))
       return;
 
     wujihand_tactile_msgs::msg::TactileDiagnostics msg;

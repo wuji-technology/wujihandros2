@@ -22,7 +22,7 @@
 #include <mutex>
 #include <string>
 #include <thread>
-#include <wujihandcpp/device/tactile_board.hpp>
+#include <wujihandcpp/device/tactile_glove.hpp>
 
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
@@ -44,7 +44,7 @@ class TactileDriverNode : public rclcpp::Node {
   void publish_diagnostics();
 
   // Hardware
-  std::unique_ptr<wujihandcpp::tactile::Board> board_;
+  std::unique_ptr<wujihandcpp::tactile::Glove> glove_;
 
   // Publishers
   rclcpp::Publisher<wujihand_tactile_msgs::msg::TactileFrame>::SharedPtr raw_pub_;
