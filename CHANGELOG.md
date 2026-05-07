@@ -52,7 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Disconnect now reported via the SDK's `set_disconnect_callback`
     (was a fragile zero-init-frame heuristic that broke once `0.0`
     became a valid pressure value).
-  - SDK upgraded to its tactile-namespaced API (`wujihandcpp::tactile::Board`
+  - SDK upgraded to its tactile-namespaced API (`wujihandcpp::tactile::Glove`
     etc.); ROS driver consumes via `find_package(wujihandcpp CONFIG)`.
 
 - **Launch composition refactored**.
