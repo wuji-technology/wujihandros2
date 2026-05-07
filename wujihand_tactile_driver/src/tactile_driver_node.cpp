@@ -328,17 +328,11 @@ void TactileDriverNode::image_worker_loop() {
 }
 
 void TactileDriverNode::publish_diagnostics() {
-  // Disconnected path: keep publishing the topic so external supervisors
-  // can see connected=false, but skip the SDK call entirely (it would
-  // raise NotConnectedError on every tick, spinning the failure counter
-  // and the 5s WARN throttle while contributing zero useful information).
-  // Preserve the last-known firmware counters rather than zeroing them
-  // — a downstream delta tracker that watches `frame_count` would
-  // otherwise see "0" as a fresh boot and either fire a false reset
-  // alert or mask a real one.
+  // Disconnected: keep publishing connected=false, skip SDK calls, and preserve
+  // last counters so downstream delta trackers don't see a fake reset.
   if (!connected_.load(std::memory_order_acquire)) {
     wujihand_tactile_msgs::msg::TactileDiagnostics msg =
-        have_last_diag_ ? last_diag_msg_  // copy: keep counters frozen at last good read
+        have_last_diag_ ? last_diag_msg_
                         : wujihand_tactile_msgs::msg::TactileDiagnostics{};
     msg.header.stamp = this->get_clock()->now();
     msg.header.frame_id = frame_id_;
@@ -360,13 +354,7 @@ void TactileDriverNode::publish_diagnostics() {
   }
 
   try {
-    // try_get_diagnostics yields to a service that already holds the
-    // SDK command serializer. Lock contention → false → silently skip
-    // (NOT counted as a failure; the SDK is healthy, we just chose
-    // not to compete). The reverse direction is asymmetric: if diag
-    // wins the lock first, a service arriving milliseconds later
-    // still waits for the diag command. Accepted tradeoff — services
-    // are rare and the diag command is one round trip.
+    // Yield to in-flight service commands; skipped polls are not failures.
     wujihandcpp::tactile::Diagnostics d;
     if (!board_->try_get_diagnostics(d))
       return;

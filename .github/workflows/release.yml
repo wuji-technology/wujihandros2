@@ -19,11 +19,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                include:
-                    - ros_distro: humble
-                      os_version: "22.04"
-                    - ros_distro: kilted
-                      os_version: "24.04"
+                ros_distro: [humble, kilted]
 
         container:
             image: ros:${{ matrix.ros_distro }}-ros-base

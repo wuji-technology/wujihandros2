@@ -18,11 +18,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                include:
-                    - ros_distro: humble
-                      os: ubuntu-22.04
-                    - ros_distro: kilted
-                      os: ubuntu-24.04
+                ros_distro: [humble, kilted]
 
         container:
             image: ros:${{ matrix.ros_distro }}-ros-base
@@ -42,22 +38,18 @@ jobs:
                   INPUT="${{ github.event.inputs.wujihandpy_ref }}"
                   if [ -n "$INPUT" ]; then
                     REF="$INPUT"
-                    REPO="wuji-technology/wujihandpy"
                   elif [ "${{ github.event_name }}" = "pull_request" ]; then
                     REF="refs/pull/63/head"
-                    REPO="wuji-technology/wujihandpy"
                   else
                     REF="main"
-                    REPO="wuji-technology/wujihandpy"
                   fi
                   echo "ref=${REF}" >> "$GITHUB_OUTPUT"
-                  echo "repo=${REPO}" >> "$GITHUB_OUTPUT"
-                  echo "Using wujihandpy ${REPO}@${REF}"
+                  echo "Using wujihandpy ref ${REF}"
 
             - name: Checkout wujihandpy SDK
               uses: actions/checkout@v4
               with:
-                  repository: ${{ steps.sdk-ref.outputs.repo }}
+                  repository: wuji-technology/wujihandpy
                   ref: ${{ steps.sdk-ref.outputs.ref }}
                   path: wujihandpy
                   submodules: false
@@ -140,11 +132,7 @@ jobs:
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         strategy:
             matrix:
-                include:
-                    - ros_distro: humble
-                      os: ubuntu-22.04
-                    - ros_distro: kilted
-                      os: ubuntu-24.04
+                ros_distro: [humble, kilted]
 
         container:
             image: ros:${{ matrix.ros_distro }}-ros-base
@@ -155,21 +143,13 @@ jobs:
               with:
                   path: wujihandros2
 
-            - name: Resolve wujihandpy ref
-              id: sdk-ref
-              shell: bash
-              run: |
-                  # build-deb only runs on push to main/master and ships
-                  # artifacts; default to released SDK on main.
-                  REF="${{ github.event.inputs.wujihandpy_ref }}"
-                  REF="${REF:-main}"
-                  echo "ref=${REF}" >> "$GITHUB_OUTPUT"
-
+            # build-deb only runs on push to main/master, so the SDK ref is
+            # always main here.
             - name: Checkout wujihandpy SDK
               uses: actions/checkout@v4
               with:
                   repository: wuji-technology/wujihandpy
-                  ref: ${{ steps.sdk-ref.outputs.ref }}
+                  ref: main
                   path: wujihandpy
                   submodules: false
 

@@ -49,19 +49,7 @@ _logger = logging.get_logger("wujihand_full")
 
 def _compose_rviz_config(base_rviz_path, overlay_text_path,
                          hand_namespace, include_tactile):
-    """Return an RViz config path with optional tactile overlay injected.
-
-    When `include_tactile` is False (or the overlay can't be inserted),
-    `base_rviz_path` is returned as-is — no tempfile churn for the
-    joint-only case.
-
-    Otherwise the overlay snippet at `overlay_text_path` (a YAML
-    fragment for one Image display, with `{IMAGE_TOPIC}` placeholder)
-    is spliced into the base config's Displays list right before the
-    `\\n  Enabled: true\\n` anchor that closes the list, the result is
-    written to a NamedTemporaryFile, and an atexit cleanup is
-    registered.
-    """
+    """Return base RViz config or a temp config with the tactile overlay."""
     if not include_tactile:
         return base_rviz_path
 
@@ -73,10 +61,7 @@ def _compose_rviz_config(base_rviz_path, overlay_text_path,
     topic = f"/{hand_namespace}/tactile/image" if hand_namespace else "/tactile/image"
     overlay = overlay.replace("{IMAGE_TOPIC}", topic)
 
-    # The base RViz config has exactly one `^  Enabled: true$` line at
-    # this indent (sibling of Displays:). If the anchor isn't found,
-    # fall back to the unmodified base — better than writing a tempfile
-    # we never inject anything into.
+    # Inject before the top-level Enabled anchor that follows Displays.
     marker = "\n  Enabled: true\n"
     idx = rviz_text.find(marker)
     if idx == -1:
@@ -151,14 +136,7 @@ def setup_drivers(context):
 
     if not hand_serials:
         _logger.error("No WujiHand device found! Check USB connection.")
-        # Set ALL launch configurations the deferred setup_viz_and_urdf
-        # reads. `tactile_serial_resolved=""` avoids the substitution
-        # failure on the missing config; `hand_active=false` is the new
-        # signal setup_viz_and_urdf checks to short-circuit BEFORE
-        # waiting on detect_handedness (which would block 15 s, then
-        # fall back to "right" and spawn an RSP + RViz against a
-        # nonexistent driver — a worse failure mode than just exiting
-        # the launch). tactile_active=false belt-and-suspenders.
+        # Populate all deferred launch configs before skipping later setup.
         return [
             SetLaunchConfiguration("hand_active", "false"),
             SetLaunchConfiguration("tactile_active", "false"),

@@ -103,18 +103,8 @@ class TactileDriverNode : public rclcpp::Node {
   // and services read from rclcpp executor threads.
   std::atomic<bool> connected_{true};
 
-  // ---- Image-publish worker (decouples SDK reader thread from the
-  //      Reliable image_pub_ that backpressures under RViz lag). ----
-  //
-  // CLAUDE.md pitfall #1 forces image_pub_ to Reliable QoS so RViz2
-  // Humble's Image display actually subscribes. Reliable means
-  // publish() blocks if the subscriber falls behind; running publish
-  // synchronously on the SDK reader thread propagated that
-  // backpressure all the way up to the kernel CDC buffer, dropping
-  // tactile frames the moment RViz hiccupped. This worker pulls from
-  // a bounded drop-oldest queue and runs publish() on its own
-  // thread, so on_frame returns in microseconds regardless of how
-  // slow the subscriber is.
+  // Image-publish worker decouples the SDK reader thread from Reliable
+  // image_pub_ backpressure under RViz lag.
   void image_worker_loop();
   std::thread image_worker_;
   std::mutex image_queue_mu_;
