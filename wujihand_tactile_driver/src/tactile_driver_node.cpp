@@ -43,6 +43,14 @@ void service_reply(Response& resp, Fn&& fn) {
         resp.message = e.what();
     }
 }
+
+// Frames-to-skip ratio so the SDK's `sample_rate_hz` stream is downsampled
+// to publish at ~`image_rate` Hz. Always >= 1 to avoid division by zero
+// in on_frame's `count % skip` test.
+int image_skip_for(int sample_rate_hz, double image_rate) {
+    return std::max(1, static_cast<int>(
+        std::round(static_cast<double>(sample_rate_hz) / image_rate)));
+}
 }  // namespace
 
 TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
@@ -70,9 +78,8 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
   }
 
   // Image-publish skip ratio against the *streaming* rate.
-  image_skip_.store(
-      std::max(1, static_cast<int>(std::round(static_cast<double>(initial_rate) / image_rate_))),
-      std::memory_order_relaxed);
+  image_skip_.store(image_skip_for(initial_rate, image_rate_),
+                    std::memory_order_relaxed);
 
   // -- Publishers --
   raw_pub_ = this->create_publisher<wujihand_tactile_msgs::msg::TactileFrame>(
@@ -136,10 +143,8 @@ TactileDriverNode::TactileDriverNode() : Node("tactile_driver_node") {
              std::shared_ptr<wujihand_tactile_msgs::srv::SetTactileSampleRate::Response> resp) {
         service_reply(*resp, [&] {
           board_->set_sample_rate_hz(req->sample_rate_hz);
-          image_skip_.store(
-              std::max(1, static_cast<int>(
-                              std::round(static_cast<double>(req->sample_rate_hz) / image_rate_))),
-              std::memory_order_relaxed);
+          image_skip_.store(image_skip_for(req->sample_rate_hz, image_rate_),
+                            std::memory_order_relaxed);
         });
       },
       rclcpp::ServicesQoS().get_rmw_qos_profile(), cb_group_rate_);
@@ -307,15 +312,9 @@ void TactileDriverNode::image_worker_loop() {
       msg = std::move(image_queue_.front());
       image_queue_.pop_front();
     }
-    // publish() outside the lock so on_frame's notify_one() doesn't
-    // contend with a slow subscriber. publish() may block here under
-    // Reliable QoS, but that's now isolated to this worker thread —
-    // the SDK reader thread is unaffected.
-    //
-    // catch (...) mirrors on_frame's wrapper so a non-std exception
-    // escaping rclcpp's publish path can't unwind past the thread
-    // function and std::terminate the process — same defense the
-    // round-2 review widened on_frame for.
+    // publish() outside the lock; Reliable QoS may block here but only
+    // this worker thread is affected. Catch everything so a stray rclcpp
+    // exception cannot unwind the thread and std::terminate the process.
     try {
       image_pub_->publish(std::move(msg));
     } catch (const std::exception& e) {

@@ -87,19 +87,15 @@ def _compose_rviz_config(base_rviz_path, overlay_text_path,
         return base_rviz_path
     rviz_text = rviz_text[:idx + 1] + overlay + rviz_text[idx + 1:]
 
-    tmp = tempfile.NamedTemporaryFile(
+    with tempfile.NamedTemporaryFile(
         mode="w",
         prefix=f"wujihand_{hand_namespace.replace('/', '_') or 'hand'}_",
         suffix=".rviz",
         delete=False,
-    )
-    tmp_path = tmp.name
-    # Register cleanup immediately after creating the tempfile.
-    atexit.register(lambda p=tmp_path: os.path.exists(p) and os.unlink(p))
-    try:
+    ) as tmp:
+        tmp_path = tmp.name
+        atexit.register(lambda p=tmp_path: os.path.exists(p) and os.unlink(p))
         tmp.write(rviz_text)
-    finally:
-        tmp.close()
     return tmp_path
 
 
@@ -127,13 +123,8 @@ def setup_drivers(context):
     tactile_override = LaunchConfiguration("tactile_serial").perform(context)
     hands, tactiles = discover_usb_devices()
 
-    # Validate overrides against discovery: an override that doesn't match a
-    # currently-attached device is almost always a typo. Without this,
-    # `hand_serial:=BOGUS` would pass the no-device gate below (hand_serials
-    # is non-empty), the joint driver would fail at runtime, but we'd still
-    # spawn URDF + tactile + RViz against a dead driver after a 15 s
-    # detect_handedness timeout — a much worse failure mode than just
-    # exiting cleanly with the typo'd SN named in the error.
+    # Fail fast on typoed serial overrides; otherwise the deferred URDF +
+    # tactile + RViz bringup waits 15 s on a driver that cannot start.
     if hand_override and hand_override not in hands:
         _logger.error(
             f"hand_serial:={hand_override} does not match any WujiHand on USB "
@@ -257,13 +248,7 @@ def setup_viz_and_urdf(context):
     )
     tactile_serial = LaunchConfiguration("tactile_serial_resolved").perform(context)
 
-    # Short-circuit when setup_drivers reported no hand on the bus. Without
-    # this, detect_handedness below blocks 15 s waiting for the joint
-    # driver's handedness parameter, falls back to "right", and we end up
-    # spawning robot_state_publisher + RViz attached to no driver. That's
-    # worse than just exiting cleanly: the user sees a half-running
-    # launch, broken TF, and no clear error. setup_drivers already logged
-    # the actionable "no WujiHand device found" at error level.
+    # Skip deferred bringup when setup_drivers found no hand.
     if not hand_active:
         _logger.error(
             "Skipping URDF + tactile + viz spawn because no hand board was "
