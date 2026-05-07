@@ -94,10 +94,7 @@ def _compose_rviz_config(base_rviz_path, overlay_text_path,
         delete=False,
     )
     tmp_path = tmp.name
-    # Register cleanup BEFORE write — even if the write throws (disk full,
-    # encoding error), atexit will reap the empty file. The previous order
-    # leaked the tempfile on a write failure because atexit was registered
-    # after the write returned.
+    # Register cleanup immediately after creating the tempfile.
     atexit.register(lambda p=tmp_path: os.path.exists(p) and os.unlink(p))
     try:
         tmp.write(rviz_text)
@@ -200,19 +197,7 @@ def setup_drivers(context):
         f"tactile={'SN=' + tactile_serials[0] if tactile_serials else 'none'}"
     )
 
-    # Stash the discovered tactile serial (if any) so setup_viz_and_urdf
-    # can include tactile.launch.py with the correct parent_frame once
-    # handedness is known. tactile_active also drives the RViz overlay.
-    #
-    # tactile_active follows device PRESENCE, not the serial string —
-    # `discover_usb_devices()` records the serial as "" when /sys lacks
-    # a `serial` attribute, which can happen on early-rev boards or under
-    # unprivileged container reads. Using `bool(tactile_serial)` here
-    # silently disabled tactile in that scenario; the standalone
-    # tactile.launch.py auto-discovers fine with an empty serial, so
-    # mirror that behavior. Empty serial just means "the driver will
-    # auto-pick the first PID 0x5700 device on the bus" — same UX as
-    # standalone.
+    # Empty serial means "driver auto-picks"; tactile_active tracks device presence.
     has_tactile = tactile_enabled and bool(tactile_serials)
     tactile_serial = tactile_serials[0] if has_tactile else ""
     tactile_active = "true" if has_tactile else "false"

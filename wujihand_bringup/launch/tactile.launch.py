@@ -20,41 +20,25 @@ from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 
 sys.path.insert(0, os.path.dirname(__file__))
-from common import TACTILE_VID_PID  # noqa: E402
+from common import discover_usb_devices  # noqa: E402
 
 
 def _warn_if_ambiguous_serial(context):
-    """Warn (don't fail) when multiple tactile boards are present and the
-    user didn't pin serial_number. The driver's auto-discover picks the
-    first match, but `/sys` enumeration order is not stable across
-    reboots — operators should pin to get a deterministic launch.
+    """Warn when >1 tactile board is on USB without an explicit serial pin.
+
+    Auto-discover picks the first /sys hit, which is not stable across
+    reboots; pinning gives a deterministic launch.
     """
     if LaunchConfiguration("serial_number").perform(context):
-        return []  # explicit pin: nothing to warn about
-    try:
-        from pathlib import Path
-        count = 0
-        for entry in os.listdir("/sys/bus/usb/devices"):
-            dev = f"/sys/bus/usb/devices/{entry}"
-            if not os.path.isfile(f"{dev}/idVendor"):
-                continue
-            try:
-                vid = Path(f"{dev}/idVendor").read_text().strip()
-                pid = Path(f"{dev}/idProduct").read_text().strip()
-            except (OSError, PermissionError):
-                continue
-            if f"{vid}:{pid}" == TACTILE_VID_PID:
-                count += 1
-        if count > 1:
-            return [LogInfo(
-                msg=f"[tactile.launch.py] WARN: {count} tactile boards "
-                    f"on USB; auto-discover will pick the first one "
-                    f"non-deterministically. Pass serial_number:=<SN> "
-                    f"to pin."
-            )]
-    except OSError:
-        pass  # /sys unreadable — nothing we can warn about
-    return []
+        return []
+    _, tactiles = discover_usb_devices()
+    if len(tactiles) <= 1:
+        return []
+    return [LogInfo(msg=(
+        f"[tactile.launch.py] WARN: {len(tactiles)} tactile boards on USB; "
+        "auto-discover will pick the first one non-deterministically. "
+        "Pass serial_number:=<SN> to pin."
+    ))]
 
 
 def generate_launch_description():
