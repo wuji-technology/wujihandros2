@@ -1,0 +1,12 @@
+# Public path prefixes — consumed by the docs-followup reusable workflow.
+# Each non-comment, non-blank line is an anchored path prefix (matched against
+# `git diff --name-only` of the merged PR). A change touching any of these is
+# treated as user-visible and triggers docs follow-up analysis.
+
+# ROS2 对外接口：消息定义、launch、驱动
+wujihand_msgs/
+wujihand_bringup/
+wujihand_driver/
+
+# 对外文档源
+docs/external/
