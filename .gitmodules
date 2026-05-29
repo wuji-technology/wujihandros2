@@ -1,4 +1,3 @@
-[submodule "external/wuji-hand-description"]
-	path = external/wuji-hand-description
-	url = https://github.com/wuji-technology/wuji-hand-description.git
-	branch = main
+[submodule "external/wuji-description"]
+	path = external/wuji-description
+	url = https://github.com/wuji-technology/wuji-description.git
