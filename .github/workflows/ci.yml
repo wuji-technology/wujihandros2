@@ -7,6 +7,9 @@ on:
         branches: [master, main]
     workflow_dispatch:
 
+permissions:
+    contents: read
+
 jobs:
     source-build:
         name: Build ROS workspace (${{ matrix.ros_distro }}, ${{ matrix.os }})
@@ -25,7 +28,9 @@ jobs:
 
         steps:
             - name: Checkout source
-              uses: actions/checkout@v4
+              uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+              with:
+                  persist-credentials: false
 
             - name: Install ROS build dependencies
               run: |
@@ -88,7 +93,9 @@ jobs:
 
         steps:
             - name: Checkout source
-              uses: actions/checkout@v4
+              uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+              with:
+                  persist-credentials: false
 
             - name: Install Debian packaging dependencies
               run: |
@@ -126,7 +133,7 @@ jobs:
                   ./build_deb.sh ${{ matrix.ros_distro }}
 
             - name: Upload Debian package artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
               with:
                   name: ros-${{ matrix.ros_distro }}-wujihand-deb
                   path: ros-${{ matrix.ros_distro }}-wujihand_*.deb
@@ -137,7 +144,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout source
-              uses: actions/checkout@v4
+              uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+              with:
+                  persist-credentials: false
 
             - name: Install clang-format
               run: sudo apt-get update && sudo apt-get install -y clang-format

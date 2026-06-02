@@ -13,8 +13,9 @@ on:
 jobs:
   disabled-docs-followup:
     name: Disabled post-merge docs follow-up
-    if: ${{ vars.DOCS_FOLLOWUP_ENABLED == 'true' }}
+    if: ${{ vars.DOCS_FOLLOWUP_ENABLED == 'true' && github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: Explain disabled docs follow-up
         run: |
