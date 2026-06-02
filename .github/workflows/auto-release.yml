@@ -14,11 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-        with:
-          persist-credentials: false
+        uses: actions/checkout@v4
 
       - name: Run shared changelog release action
-        uses: wuji-technology/.github/actions/auto-release@048e1cde71208eed2536884ab5fd085e9392f3f6 # v1
+        uses: wuji-technology/.github/actions/auto-release@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

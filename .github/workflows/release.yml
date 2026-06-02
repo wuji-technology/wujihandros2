@@ -10,9 +10,6 @@ on:
                 description: "Version to release (e.g., 0.1.0 or 0.2.0-rc0)"
                 required: true
 
-permissions:
-    contents: read
-
 jobs:
     build-release-debs:
         name: Build Debian release packages (${{ matrix.ros_distro }}, ubuntu-${{ matrix.os_version }})
@@ -30,9 +27,8 @@ jobs:
 
         steps:
             - name: Checkout source
-              uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+              uses: actions/checkout@v4
               with:
-                persist-credentials: false
                 fetch-depth: 0
                 submodules: recursive
 
@@ -89,7 +85,7 @@ jobs:
                   ./build_deb.sh "${ROS_DISTRO}" "${PACKAGE_VERSION}"
 
             - name: Upload Debian release package artifact
-              uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+              uses: actions/upload-artifact@v4
               with:
                   name: ros-${{ matrix.ros_distro }}-wujihand-deb
                   path: ros-${{ matrix.ros_distro }}-wujihand_*.deb
@@ -99,12 +95,10 @@ jobs:
         needs: build-release-debs
         runs-on: ubuntu-latest
         if: startsWith(github.ref, 'refs/tags/')
-        permissions:
-            contents: write
 
         steps:
             - name: Download Debian package artifacts
-              uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+              uses: actions/download-artifact@v4
               with:
                   path: artifacts
 
@@ -112,7 +106,7 @@ jobs:
               run: find artifacts -name "*.deb" -type f
 
             - name: Publish GitHub release
-              uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
+              uses: softprops/action-gh-release@v2
               with:
                   files: artifacts/**/*.deb
                   generate_release_notes: true

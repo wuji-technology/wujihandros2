@@ -14,7 +14,6 @@ jobs:
     name: Disabled docs follow-up callback
     if: ${{ vars.DOCS_FOLLOWUP_ENABLED == 'true' }}
     runs-on: ubuntu-latest
-    permissions: {}
     steps:
       - name: Explain disabled docs follow-up callback
         run: |
