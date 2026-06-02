@@ -17,7 +17,7 @@ from common import spawn_robot_state_publisher, detect_handedness
 def spawn_rviz(context):
     """Spawn RViz node with proper namespace and handedness-specific config."""
     hand_name = LaunchConfiguration("hand_name").perform(context)
-    wuji_hand_description_dir = get_package_share_directory("wuji_hand_description")
+    wuji_description_dir = get_package_share_directory("wuji_description")
 
     # Detect handedness from driver node
     hand_type = detect_handedness(hand_name)
@@ -25,7 +25,7 @@ def spawn_rviz(context):
         # Fallback to left.rviz if detection fails
         hand_type = "left"
 
-    rviz_config = os.path.join(wuji_hand_description_dir, "rviz", f"{hand_type}.rviz")
+    rviz_config = os.path.join(wuji_description_dir, "rviz", f"{hand_type}.rviz")
 
     return [
         Node(

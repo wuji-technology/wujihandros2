@@ -15,6 +15,7 @@ compile_commands.json
 # Python
 __pycache__/
 *.pyc
+.venv
 
 # Environment setup script (local only)
 env.sh

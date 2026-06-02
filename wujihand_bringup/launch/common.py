@@ -86,7 +86,7 @@ def spawn_robot_state_publisher(context):
         List containing robot_state_publisher Node, or empty list on failure
     """
     hand_name = LaunchConfiguration("hand_name").perform(context)
-    wuji_hand_description_dir = get_package_share_directory("wuji_hand_description")
+    wuji_description_dir = get_package_share_directory("wuji_description")
 
     # Detect handedness from driver node
     hand_type = detect_handedness(hand_name)
@@ -100,7 +100,7 @@ def spawn_robot_state_publisher(context):
 
     # Read the pre-generated ROS URDF file
     urdf_file = os.path.join(
-        wuji_hand_description_dir, "urdf", f"{hand_type}-ros.urdf"
+        wuji_description_dir, "urdf", f"{hand_type}-ros.urdf"
     )
     try:
         with open(urdf_file, "r") as f:
