@@ -1,13 +1,9 @@
 name: Post-Merge Docs Follow-up
 
-# Thin caller for the centralized docs-followup pipeline in wuji-docs-center.
-# All logic lives in the reusable workflow; this repo only provides the trigger,
-# the public-surface list (.github/docs-sync-public-packages.txt), and org
-# secrets via `secrets: inherit`.
-#
-# Prerequisites (one-time, org-wide, already in place): wuji-docs-center exposes
-# its Actions to the org (Settings -> Actions -> Access); the reusable workflow
-# checks out wuji-docs-center via an App token internally.
+# This repository is public, so it cannot call reusable workflows from the
+# private wuji-docs-center repository. Keep this workflow as an explicit no-op
+# until the docs follow-up automation is exposed through a public reusable
+# workflow or moved into this repository.
 
 on:
   pull_request:
@@ -16,5 +12,8 @@ on:
 
 jobs:
   docs-followup:
-    uses: wuji-technology/wuji-docs-center/.github/workflows/post-merge-docs-followup.yml@main
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip private reusable workflow
+        run: |
+          echo "Docs follow-up is disabled for public caller repositories."

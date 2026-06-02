@@ -72,7 +72,7 @@ jobs:
     build-deb:
         runs-on: ubuntu-latest
         needs: build
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'))
         strategy:
             matrix:
                 include:
@@ -141,4 +141,51 @@ jobs:
 
             - name: Check C++ formatting
               run: |
-                  find . -name "*.cpp" -o -name "*.hpp" | head -20 | xargs clang-format --dry-run --Werror || echo "Format check completed"
+                  find . \( -name "*.cpp" -o -name "*.hpp" \) -print0 | xargs -0 -r clang-format --dry-run --Werror
+
+    ci-gate:
+        runs-on: ubuntu-latest
+        needs: [build, build-deb, lint]
+        if: always()
+        steps:
+            - name: Verify required CI jobs
+              shell: bash
+              run: |
+                  set -euo pipefail
+
+                  build_result="${{ needs.build.result }}"
+                  build_deb_result="${{ needs['build-deb'].result }}"
+                  lint_result="${{ needs.lint.result }}"
+
+                  echo "build: ${build_result}"
+                  echo "build-deb: ${build_deb_result}"
+                  echo "lint: ${lint_result}"
+
+                  failed=0
+
+                  if [[ "${build_result}" != "success" ]]; then
+                      echo "build did not pass"
+                      failed=1
+                  fi
+
+                  if [[ "${lint_result}" != "success" ]]; then
+                      echo "lint did not pass"
+                      failed=1
+                  fi
+
+                  require_deb=false
+                  if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.ref }}" == "refs/heads/main" || "${{ github.ref }}" == "refs/heads/master" ]]; then
+                      require_deb=true
+                  fi
+
+                  if [[ "${require_deb}" == "true" ]]; then
+                      if [[ "${build_deb_result}" != "success" ]]; then
+                          echo "build-deb did not pass"
+                          failed=1
+                      fi
+                  elif [[ "${build_deb_result}" != "success" && "${build_deb_result}" != "skipped" ]]; then
+                      echo "build-deb finished with an unexpected result"
+                      failed=1
+                  fi
+
+                  exit "${failed}"
