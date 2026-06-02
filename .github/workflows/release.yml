@@ -1,4 +1,4 @@
-name: Release
+name: Build and Publish Debian Release
 
 on:
     push:
@@ -11,7 +11,8 @@ on:
                 required: true
 
 jobs:
-    build-debs:
+    build-release-debs:
+        name: Build Debian release packages (${{ matrix.ros_distro }}, ubuntu-${{ matrix.os_version }})
         runs-on: ubuntu-latest
         strategy:
             matrix:
@@ -25,17 +26,19 @@ jobs:
             image: ros:${{ matrix.ros_distro }}-ros-base
 
         steps:
-            - name: Checkout
+            - name: Checkout source
               uses: actions/checkout@v4
               with:
                 fetch-depth: 0
                 submodules: recursive
 
-            - name: Extract version
+            - name: Resolve release version
               id: version
+              env:
+                  INPUT_VERSION: ${{ github.event.inputs.version }}
               run: |
-                  if [ -n "${{ github.event.inputs.version }}" ]; then
-                    VERSION="${{ github.event.inputs.version }}"
+                  if [ -n "${INPUT_VERSION}" ]; then
+                    VERSION="${INPUT_VERSION}"
                   else
                     # Remove 'v' prefix from tag name
                     VERSION="${GITHUB_REF_NAME#v}"
@@ -43,7 +46,7 @@ jobs:
                   echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
                   echo "Building version: ${VERSION}"
 
-            - name: Install dependencies
+            - name: Install Debian packaging dependencies
               run: |
                   apt-get update
                   apt-get install -y wget dpkg-dev
@@ -70,36 +73,40 @@ jobs:
                     ros-${{ matrix.ros_distro }}-std-msgs \
                     ros-${{ matrix.ros_distro }}-robot-state-publisher
 
-            - name: Build deb package
+            - name: Build Debian release package
+              env:
+                  ROS_DISTRO: ${{ matrix.ros_distro }}
+                  PACKAGE_VERSION: ${{ steps.version.outputs.version }}
               run: |
                   # Fix git dubious ownership error in CI
                   git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
                   chmod +x build_deb.sh
-                  ./build_deb.sh ${{ matrix.ros_distro }} ${{ steps.version.outputs.version }}
+                  ./build_deb.sh "${ROS_DISTRO}" "${PACKAGE_VERSION}"
 
-            - name: Upload artifact
+            - name: Upload Debian release package artifact
               uses: actions/upload-artifact@v4
               with:
                   name: ros-${{ matrix.ros_distro }}-wujihand-deb
                   path: ros-${{ matrix.ros_distro }}-wujihand_*.deb
 
-    release:
-        needs: build-debs
+    publish-github-release:
+        name: Publish GitHub release
+        needs: build-release-debs
         runs-on: ubuntu-latest
         if: startsWith(github.ref, 'refs/tags/')
 
         steps:
-            - name: Download all artifacts
+            - name: Download Debian package artifacts
               uses: actions/download-artifact@v4
               with:
                   path: artifacts
 
-            - name: List artifacts
+            - name: List Debian package artifacts
               run: find artifacts -name "*.deb" -type f
 
-            - name: Create Release
-              uses: softprops/action-gh-release@v1
+            - name: Publish GitHub release
+              uses: softprops/action-gh-release@v2
               with:
                   files: artifacts/**/*.deb
                   generate_release_notes: true

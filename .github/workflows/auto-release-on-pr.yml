@@ -1,4 +1,4 @@
-name: Auto Release on PR Merge
+name: Create Release Tag from Merged PR
 
 on:
   pull_request:
@@ -6,8 +6,8 @@ on:
     branches: [master]
 
 jobs:
-  create-tag:
-    name: Create release tag
+  create-release-tag:
+    name: Create release tag from merged release PR
     if: >-
       github.event.pull_request.merged == true &&
       contains(github.event.pull_request.labels.*.name, 'auto-release') &&

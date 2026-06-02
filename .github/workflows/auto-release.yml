@@ -1,4 +1,4 @@
-name: Auto Release
+name: Publish Changelog Release Notes
 
 on:
   push:
@@ -9,11 +9,14 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  publish-changelog-release-notes:
+    name: Publish changelog release notes
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Auto Release
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Run shared changelog release action
         uses: wuji-technology/.github/actions/auto-release@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

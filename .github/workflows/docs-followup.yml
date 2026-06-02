@@ -1,4 +1,4 @@
-name: Post-Merge Docs Follow-up
+name: Post-Merge Docs Follow-up (disabled)
 
 # This repository is public, so it cannot call reusable workflows from the
 # private wuji-docs-center repository. Keep this workflow as an explicit no-op
@@ -11,10 +11,11 @@ on:
     branches: [main]
 
 jobs:
-  docs-followup:
+  disabled-docs-followup:
+    name: Disabled post-merge docs follow-up
     if: ${{ vars.DOCS_FOLLOWUP_ENABLED == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Skip private reusable workflow
+      - name: Explain disabled docs follow-up
         run: |
           echo "Docs follow-up is disabled for public caller repositories."

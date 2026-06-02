@@ -1,4 +1,4 @@
-name: Notify Docs Center
+name: Dispatch Docs Publish Update
 
 on:
   push:
@@ -7,10 +7,11 @@ on:
       - 'docs/external/**'
 
 jobs:
-  notify:
+  dispatch-docs-publish:
+    name: Dispatch docs publish update
     runs-on: ubuntu-latest
     steps:
-      - name: Generate GitHub App Token
+      - name: Generate docs-center GitHub App token
         id: app-token
         uses: actions/create-github-app-token@v2
         with:
@@ -18,7 +19,8 @@ jobs:
           private-key: ${{ secrets.AUTOMATION_APP_PRIVATE_KEY }}
           owner: wuji-technology
 
-      - uses: peter-evans/repository-dispatch@v4
+      - name: Dispatch docs publish event
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ steps.app-token.outputs.token }}
           repository: wuji-technology/wuji-docs-center

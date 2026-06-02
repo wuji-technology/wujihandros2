@@ -1,4 +1,4 @@
-name: CI
+name: Validate Build and Packaging
 
 on:
     push:
@@ -8,7 +8,8 @@ on:
     workflow_dispatch:
 
 jobs:
-    build:
+    source-build:
+        name: Build ROS workspace (${{ matrix.ros_distro }}, ${{ matrix.os }})
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
@@ -23,10 +24,10 @@ jobs:
             image: ros:${{ matrix.ros_distro }}-ros-base
 
         steps:
-            - name: Checkout
+            - name: Checkout source
               uses: actions/checkout@v4
 
-            - name: Install dependencies
+            - name: Install ROS build dependencies
               run: |
                   apt-get update
                   apt-get install -y wget
@@ -54,13 +55,13 @@ jobs:
                     ros-${{ matrix.ros_distro }}-robot-state-publisher \
                     ros-${{ matrix.ros_distro }}-xacro
 
-            - name: Build
+            - name: Build ROS workspace
               run: |
                   source /opt/ros/${{ matrix.ros_distro }}/setup.bash
                   colcon build --symlink-install
               shell: bash
 
-            - name: Test
+            - name: Run ROS tests (non-blocking)
               run: |
                   source /opt/ros/${{ matrix.ros_distro }}/setup.bash
                   source install/setup.bash
@@ -69,9 +70,10 @@ jobs:
               shell: bash
               continue-on-error: true
 
-    build-deb:
+    debian-package:
+        name: Build Debian package (${{ matrix.ros_distro }}, ${{ matrix.os }})
         runs-on: ubuntu-latest
-        needs: build
+        needs: source-build
         if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'))
         strategy:
             matrix:
@@ -85,10 +87,10 @@ jobs:
             image: ros:${{ matrix.ros_distro }}-ros-base
 
         steps:
-            - name: Checkout
+            - name: Checkout source
               uses: actions/checkout@v4
 
-            - name: Install dependencies
+            - name: Install Debian packaging dependencies
               run: |
                   apt-get update
                   apt-get install -y wget dpkg-dev
@@ -115,7 +117,7 @@ jobs:
                     ros-${{ matrix.ros_distro }}-std-msgs \
                     ros-${{ matrix.ros_distro }}-robot-state-publisher
 
-            - name: Build deb package
+            - name: Build Debian package
               run: |
                   # Fix git dubious ownership error in CI
                   git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -123,17 +125,18 @@ jobs:
                   chmod +x build_deb.sh
                   ./build_deb.sh ${{ matrix.ros_distro }}
 
-            - name: Upload deb artifact
+            - name: Upload Debian package artifact
               uses: actions/upload-artifact@v4
               with:
                   name: ros-${{ matrix.ros_distro }}-wujihand-deb
                   path: ros-${{ matrix.ros_distro }}-wujihand_*.deb
                   retention-days: 30
 
-    lint:
+    format-check:
+        name: Check C++ formatting
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout
+            - name: Checkout source
               uses: actions/checkout@v4
 
             - name: Install clang-format
@@ -143,45 +146,45 @@ jobs:
               run: |
                   find . \( -name "*.cpp" -o -name "*.hpp" \) -print0 | xargs -0 -r clang-format --dry-run --Werror
 
-    ci-gate:
+    required-validation:
+        name: Required validation checks
         runs-on: ubuntu-latest
-        needs: [build, build-deb, lint]
+        needs: [source-build, debian-package, format-check]
         if: always()
         env:
-            REQUIRE_DEB: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')) }}
+            REQUIRE_DEBIAN_PACKAGE: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')) }}
+            SOURCE_BUILD_RESULT: ${{ needs['source-build'].result }}
+            DEBIAN_PACKAGE_RESULT: ${{ needs['debian-package'].result }}
+            FORMAT_CHECK_RESULT: ${{ needs['format-check'].result }}
         steps:
-            - name: Verify required CI jobs
+            - name: Verify required validation jobs
               shell: bash
               run: |
                   set -euo pipefail
 
-                  build_result="${{ needs.build.result }}"
-                  build_deb_result="${{ needs['build-deb'].result }}"
-                  lint_result="${{ needs.lint.result }}"
-
-                  echo "build: ${build_result}"
-                  echo "build-deb: ${build_deb_result}"
-                  echo "lint: ${lint_result}"
+                  echo "source build: ${SOURCE_BUILD_RESULT}"
+                  echo "Debian package: ${DEBIAN_PACKAGE_RESULT}"
+                  echo "format check: ${FORMAT_CHECK_RESULT}"
 
                   failed=0
 
-                  if [[ "${build_result}" != "success" ]]; then
-                      echo "build did not pass"
+                  if [[ "${SOURCE_BUILD_RESULT}" != "success" ]]; then
+                      echo "source build did not pass"
                       failed=1
                   fi
 
-                  if [[ "${lint_result}" != "success" ]]; then
-                      echo "lint did not pass"
+                  if [[ "${FORMAT_CHECK_RESULT}" != "success" ]]; then
+                      echo "format check did not pass"
                       failed=1
                   fi
 
-                  if [[ "${REQUIRE_DEB}" == "true" ]]; then
-                      if [[ "${build_deb_result}" != "success" ]]; then
-                          echo "build-deb did not pass"
+                  if [[ "${REQUIRE_DEBIAN_PACKAGE}" == "true" ]]; then
+                      if [[ "${DEBIAN_PACKAGE_RESULT}" != "success" ]]; then
+                          echo "Debian package build did not pass"
                           failed=1
                       fi
-                  elif [[ "${build_deb_result}" != "success" && "${build_deb_result}" != "skipped" ]]; then
-                      echo "build-deb finished with an unexpected result"
+                  elif [[ "${DEBIAN_PACKAGE_RESULT}" != "success" && "${DEBIAN_PACKAGE_RESULT}" != "skipped" ]]; then
+                      echo "Debian package build finished with an unexpected result"
                       failed=1
                   fi
 

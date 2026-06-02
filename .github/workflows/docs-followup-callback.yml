@@ -1,4 +1,4 @@
-name: Docs Follow-up Callback
+name: Docs Follow-up Callback (disabled)
 
 # This repository is public, so it cannot call reusable workflows from the
 # private wuji-docs-center repository. Keep this workflow as an explicit no-op
@@ -10,10 +10,11 @@ on:
     types: [created]
 
 jobs:
-  docs-followup-callback:
+  disabled-docs-followup-callback:
+    name: Disabled docs follow-up callback
     if: ${{ vars.DOCS_FOLLOWUP_ENABLED == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Skip private reusable workflow
+      - name: Explain disabled docs follow-up callback
         run: |
           echo "Docs follow-up callback is disabled for public caller repositories."
