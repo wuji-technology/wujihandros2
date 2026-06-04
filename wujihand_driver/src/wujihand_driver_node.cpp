@@ -28,12 +28,14 @@ const std::array<std::string, WujiHandDriverNode::NUM_JOINTS> WujiHandDriverNode
 WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_connected_(false) {
   // Declare parameters
   this->declare_parameter("serial_number", "");
+  this->declare_parameter("hand_side", "");
   this->declare_parameter("publish_rate", 1000.0);
   this->declare_parameter("filter_cutoff_freq", 10.0);
   this->declare_parameter("diagnostics_rate", 10.0);
 
   // Get parameters
   serial_number_ = this->get_parameter("serial_number").as_string();
+  hand_side_ = this->get_parameter("hand_side").as_string();
   publish_rate_ = this->get_parameter("publish_rate").as_double();
   filter_cutoff_freq_ = this->get_parameter("filter_cutoff_freq").as_double();
   diagnostics_rate_ = this->get_parameter("diagnostics_rate").as_double();
@@ -103,8 +105,21 @@ WujiHandDriverNode::~WujiHandDriverNode() {
 
 bool WujiHandDriverNode::connect_hardware() {
   try {
-    const char* serial = serial_number_.empty() ? nullptr : serial_number_.c_str();
-    hand_ = std::make_unique<wujihandcpp::device::Hand>(serial);
+    // Connection precedence: serial_number > hand_side > unique device on bus.
+    using Side = wujihandcpp::device::Hand::Side;
+    if (!serial_number_.empty()) {
+      hand_ = std::make_unique<wujihandcpp::device::Hand>(serial_number_.c_str());
+    } else if (hand_side_ == "left") {
+      hand_ = std::make_unique<wujihandcpp::device::Hand>(Side::Left);
+    } else if (hand_side_ == "right") {
+      hand_ = std::make_unique<wujihandcpp::device::Hand>(Side::Right);
+    } else if (hand_side_.empty()) {
+      hand_ = std::make_unique<wujihandcpp::device::Hand>(nullptr);
+    } else {
+      RCLCPP_ERROR(this->get_logger(),
+                   "Invalid hand_side '%s' (expected '', 'left' or 'right')", hand_side_.c_str());
+      return false;
+    }
 
     // Create realtime controller with filter
     wujihandcpp::filter::LowPass filter(filter_cutoff_freq_);
