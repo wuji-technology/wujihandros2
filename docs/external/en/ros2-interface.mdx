@@ -122,6 +122,19 @@ ros2 topic pub /hand_0/joint_commands sensor_msgs/msg/JointState \
   "{name: ['right_finger2_joint2', 'right_finger2_joint3'], position: [1.0, 1.0]}" --once
 ```
 
+### Smooth Homing
+
+`home.launch.py` smoothly interpolates from the current pose back to zero, avoiding an abrupt snap:
+
+```bash
+# Home a single hand
+ros2 launch wujihand_bringup home.launch.py
+
+# Home both hands together over 1.5s
+ros2 launch wujihand_bringup home.launch.py \
+    hand_names:=left_hand,right_hand duration:=1.5
+```
+
 ### Read Joint States
 
 ```bash

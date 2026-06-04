@@ -122,6 +122,19 @@ ros2 topic pub /hand_0/joint_commands sensor_msgs/msg/JointState \
   "{name: ['right_finger2_joint2', 'right_finger2_joint3'], position: [1.0, 1.0]}" --once
 ```
 
+### 平滑回零
+
+`home.launch.py` 从当前位置平滑插值回零，避免猛然弹回：
+
+```bash
+# 单手回零
+ros2 launch wujihand_bringup home.launch.py
+
+# 双手一起回零，1.5s 完成
+ros2 launch wujihand_bringup home.launch.py \
+    hand_names:=left_hand,right_hand duration:=1.5
+```
+
 ### 读取关节状态
 
 ```bash

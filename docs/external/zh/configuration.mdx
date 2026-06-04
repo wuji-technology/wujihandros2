@@ -8,6 +8,7 @@ title: 启动与配置
 |:-----|:-----|
 | `ros2 launch wujihand_bringup wujihand.launch.py` | 仅启动驱动 |
 | `ros2 launch wujihand_bringup wujihand.launch.py rviz:=true` | 启动驱动并通过 RViz 可视化 |
+| `ros2 launch wujihand_bringup wujihand_dual.launch.py` | 一键启动并自动连接左右两只手 |
 
 ## 可配置参数
 
@@ -19,6 +20,7 @@ title: 启动与配置
 |:-----|:-------|:-----|
 | `hand_name` | `hand_0` | 命名空间，用于区分多手。 <br/> 示例：`ros2 launch wujihand_bringup wujihand.launch.py hand_name:=my_hand` |
 | `serial_number` | `""` | 设备序列号（空则自动检测） |
+| `hand_side` | `""` | 无序列号时按左右手连接：`""`（唯一设备）、`left`、`right` |
 | `publish_rate` | `1000.0` | 关节状态发布频率 (Hz) |
 | `filter_cutoff_freq` | `10.0` | 低通滤波截止频率 (Hz) |
 | `diagnostics_rate` | `10.0` | 诊断信息发布频率 (Hz) |
@@ -45,6 +47,21 @@ ros2 launch wujihand_bringup wujihand.launch.py \
 # 终端 2：启动右手
 ros2 launch wujihand_bringup wujihand.launch.py \
     hand_name:=right_hand serial_number:=DEF456
+```
+
+### 一键启动双手
+
+无需手动指定序列号，一条命令自动连接左右手（左手 namespace `left_hand`，右手 `right_hand`）：
+
+```bash
+ros2 launch wujihand_bringup wujihand_dual.launch.py
+```
+
+如需指定序列号或开启可视化：
+
+```bash
+ros2 launch wujihand_bringup wujihand_dual.launch.py \
+    left_serial_number:=ABC123 right_serial_number:=DEF456 rviz:=true
 ```
 
 ### 运行多手演示

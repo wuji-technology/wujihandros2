@@ -8,6 +8,7 @@ title: Configuration
 |:--------|:------------|
 | `ros2 launch wujihand_bringup wujihand.launch.py` | Launch driver only |
 | `ros2 launch wujihand_bringup wujihand.launch.py rviz:=true` | Launch driver with RViz visualization |
+| `ros2 launch wujihand_bringup wujihand_dual.launch.py` | Launch and auto-connect both hands |
 
 ## Configurable Parameters
 
@@ -19,6 +20,7 @@ Handedness (left/right) is automatically detected from hardware. No manual speci
 |:----------|:--------|:------------|
 | `hand_name` | `hand_0` | Namespace for distinguishing multiple hands. <br/> Example: `ros2 launch wujihand_bringup wujihand.launch.py hand_name:=my_hand` |
 | `serial_number` | `""` | Device serial number (auto-detect if empty) |
+| `hand_side` | `""` | Connect by handedness when no serial_number: `""` (unique device), `left`, `right` |
 | `publish_rate` | `1000.0` | Joint state publishing rate (Hz) |
 | `filter_cutoff_freq` | `10.0` | Low-pass filter cutoff frequency (Hz) |
 | `diagnostics_rate` | `10.0` | Diagnostics publishing rate (Hz) |
@@ -45,6 +47,21 @@ ros2 launch wujihand_bringup wujihand.launch.py \
 # Terminal 2: Launch right hand
 ros2 launch wujihand_bringup wujihand.launch.py \
     hand_name:=right_hand serial_number:=DEF456
+```
+
+### Launch Both Hands with One Command
+
+Auto-connect both hands without specifying serial numbers (left namespace `left_hand`, right `right_hand`):
+
+```bash
+ros2 launch wujihand_bringup wujihand_dual.launch.py
+```
+
+To specify serial numbers or enable visualization:
+
+```bash
+ros2 launch wujihand_bringup wujihand_dual.launch.py \
+    left_serial_number:=ABC123 right_serial_number:=DEF456 rviz:=true
 ```
 
 ### Run Multi-hand Demos
