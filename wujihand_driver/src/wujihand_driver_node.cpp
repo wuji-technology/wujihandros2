@@ -65,10 +65,10 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
   const std::string prefix = name_by_handedness_ ? ("/hand_" + handedness_ + "/") : std::string();
 
   // Create publishers (use SensorDataQoS for compatibility with robot_state_publisher)
-  joint_state_pub_ = this->create_publisher<sensor_msgs::msg::JointState>(
-      prefix + "joint_states", rclcpp::SensorDataQoS());
-  diagnostics_pub_ = this->create_publisher<wujihand_msgs::msg::HandDiagnostics>(
-      prefix + "hand_diagnostics", 10);
+  joint_state_pub_ = this->create_publisher<sensor_msgs::msg::JointState>(prefix + "joint_states",
+                                                                          rclcpp::SensorDataQoS());
+  diagnostics_pub_ =
+      this->create_publisher<wujihand_msgs::msg::HandDiagnostics>(prefix + "hand_diagnostics", 10);
 
   // Create subscriber for joint commands (using SensorDataQoS for high-frequency data)
   cmd_sub_ = this->create_subscription<sensor_msgs::msg::JointState>(
@@ -125,8 +125,8 @@ bool WujiHandDriverNode::connect_hardware() {
     } else if (hand_side_.empty()) {
       hand_ = std::make_unique<wujihandcpp::device::Hand>(nullptr);
     } else {
-      RCLCPP_ERROR(this->get_logger(),
-                   "Invalid hand_side '%s' (expected '', 'left' or 'right')", hand_side_.c_str());
+      RCLCPP_ERROR(this->get_logger(), "Invalid hand_side '%s' (expected '', 'left' or 'right')",
+                   hand_side_.c_str());
       return false;
     }
 
@@ -178,9 +178,11 @@ bool WujiHandDriverNode::connect_hardware() {
     // Update ROS parameters with hardware info so other nodes can query them
     this->set_parameter(rclcpp::Parameter("handedness", handedness_));
     this->set_parameter(rclcpp::Parameter("firmware_version", firmware_version_));
-    this->set_parameter(rclcpp::Parameter("joint_upper_limits",
+    this->set_parameter(rclcpp::Parameter(
+        "joint_upper_limits",
         std::vector<double>(joint_upper_limits_.begin(), joint_upper_limits_.end())));
-    this->set_parameter(rclcpp::Parameter("joint_lower_limits",
+    this->set_parameter(rclcpp::Parameter(
+        "joint_lower_limits",
         std::vector<double>(joint_lower_limits_.begin(), joint_lower_limits_.end())));
 
     hardware_connected_ = true;

@@ -23,7 +23,6 @@
 
 #include <cstdio>
 #include <exception>
-
 #include <wujihandcpp/transport/usb_enumerate.hpp>
 
 int main() {
@@ -32,7 +31,8 @@ int main() {
   constexpr int32_t kUsbPid = 0x2000;
 
   try {
-    const auto serial_numbers = wujihandcpp::transport::list_matching_serial_numbers(kUsbVid, kUsbPid);
+    const auto serial_numbers =
+        wujihandcpp::transport::list_matching_serial_numbers(kUsbVid, kUsbPid);
     for (const auto& sn : serial_numbers) {
       std::printf("%s\n", sn.c_str());
     }
