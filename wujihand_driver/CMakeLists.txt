@@ -69,8 +69,19 @@ target_link_libraries(wujihand_driver_node
   Threads::Threads
 )
 
+# Serial-number discovery tool (no ROS deps): prints connected WujiHand serial
+# numbers, used by the dual-hand launch to start one driver per device.
+add_executable(wujihand_list src/list_serial_numbers.cpp)
+target_include_directories(wujihand_list PRIVATE ${WUJIHANDCPP_INCLUDE_DIR})
+target_link_libraries(wujihand_list
+  ${WUJIHANDCPP_LIBRARY}
+  ${WUJIHANDCPP_SPDLOG_LIBRARY}
+  usb-1.0
+  Threads::Threads
+)
+
 # Install
-install(TARGETS wujihand_driver_node
+install(TARGETS wujihand_driver_node wujihand_list
   DESTINATION lib/${PROJECT_NAME}
 )
 
