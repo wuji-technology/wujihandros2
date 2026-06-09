@@ -1,7 +1,10 @@
 from launch import LaunchDescription
+from launch import logging
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+
+_logger = logging.get_logger("home")
 
 
 def parse_hand_names(raw):
@@ -12,8 +15,12 @@ def parse_hand_names(raw):
 def spawn_home_nodes(context):
     """Spawn one home.py node per hand name in hand_names."""
     raw = LaunchConfiguration("hand_names").perform(context)
-    duration = float(LaunchConfiguration("duration").perform(context))
-    rate = float(LaunchConfiguration("rate").perform(context))
+    try:
+        duration = float(LaunchConfiguration("duration").perform(context))
+        rate = float(LaunchConfiguration("rate").perform(context))
+    except ValueError as exc:
+        _logger.error(f"duration and rate must be numbers: {exc}")
+        return []
 
     nodes = []
     for name in parse_hand_names(raw):

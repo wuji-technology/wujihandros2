@@ -36,6 +36,17 @@ class HomeNode(Node):
         self.rate = self.get_parameter("rate").get_parameter_value().double_value
         timeout = self.get_parameter("timeout").get_parameter_value().double_value
 
+        # Validate numeric ranges (rate drives 1.0 / rate timers; guard div-by-zero).
+        if self.rate <= 0.0:
+            self.get_logger().warn(f"rate must be > 0; got {self.rate}, using 100.0")
+            self.rate = 100.0
+        if self.duration < 0.0:
+            self.get_logger().warn(f"duration must be >= 0; got {self.duration}, using 0.0")
+            self.duration = 0.0
+        if timeout <= 0.0:
+            self.get_logger().warn(f"timeout must be > 0; got {timeout}, using 5.0")
+            timeout = 5.0
+
         self.start = None
         self.start_time = None
         self.done_future = Future()
