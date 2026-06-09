@@ -51,17 +51,20 @@ ros2 launch wujihand_bringup wujihand.launch.py \
 
 ### 一键启动双手
 
-无需手动指定序列号，一条命令自动连接左右手（左手 namespace `left_hand`，右手 `right_hand`）：
+一条命令自动发现并连接所有已插入的手，无需手动指定序列号。每只手按硬件检测到的左右手，话题发布在 `/hand_left/*` 与 `/hand_right/*`：
 
 ```bash
 ros2 launch wujihand_bringup wujihand_dual.launch.py
 ```
 
-如需指定序列号或开启可视化：
+可选可视化：
 
 ```bash
-ros2 launch wujihand_bringup wujihand_dual.launch.py \
-    left_serial_number:=ABC123 right_serial_number:=DEF456 rviz:=true
+# 每只手一个 RViz 窗口
+ros2 launch wujihand_bringup wujihand_dual.launch.py rviz:=true
+
+# 单个 Foxglove Bridge
+ros2 launch wujihand_bringup wujihand_dual.launch.py foxglove:=true
 ```
 
 ### 运行多手演示

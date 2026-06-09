@@ -51,17 +51,20 @@ ros2 launch wujihand_bringup wujihand.launch.py \
 
 ### Launch Both Hands with One Command
 
-Auto-connect both hands without specifying serial numbers (left namespace `left_hand`, right `right_hand`):
+One command auto-discovers and connects every plugged-in hand — no serial numbers needed. Each hand is named by its detected handedness, publishing topics under `/hand_left/*` and `/hand_right/*`:
 
 ```bash
 ros2 launch wujihand_bringup wujihand_dual.launch.py
 ```
 
-To specify serial numbers or enable visualization:
+Optional visualization:
 
 ```bash
-ros2 launch wujihand_bringup wujihand_dual.launch.py \
-    left_serial_number:=ABC123 right_serial_number:=DEF456 rviz:=true
+# One RViz window per hand
+ros2 launch wujihand_bringup wujihand_dual.launch.py rviz:=true
+
+# A single Foxglove Bridge
+ros2 launch wujihand_bringup wujihand_dual.launch.py foxglove:=true
 ```
 
 ### Run Multi-hand Demos
