@@ -70,7 +70,8 @@ class WujiHandDriverNode : public rclcpp::Node {
 
   // Parameters
   std::string serial_number_;
-  std::string hand_side_;  // "" (unique device), "left" or "right"
+  std::string hand_side_;          // "" (unique device), "left" or "right"
+  bool name_by_handedness_{false}; // root topics at /hand_<handedness> when true
   double publish_rate_;
   double filter_cutoff_freq_;
   double diagnostics_rate_;

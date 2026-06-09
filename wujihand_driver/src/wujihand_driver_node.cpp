@@ -29,6 +29,7 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
   // Declare parameters
   this->declare_parameter("serial_number", "");
   this->declare_parameter("hand_side", "");
+  this->declare_parameter("name_by_handedness", false);
   this->declare_parameter("publish_rate", 1000.0);
   this->declare_parameter("filter_cutoff_freq", 10.0);
   this->declare_parameter("diagnostics_rate", 10.0);
@@ -36,6 +37,7 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
   // Get parameters
   serial_number_ = this->get_parameter("serial_number").as_string();
   hand_side_ = this->get_parameter("hand_side").as_string();
+  name_by_handedness_ = this->get_parameter("name_by_handedness").as_bool();
   publish_rate_ = this->get_parameter("publish_rate").as_double();
   filter_cutoff_freq_ = this->get_parameter("filter_cutoff_freq").as_double();
   diagnostics_rate_ = this->get_parameter("diagnostics_rate").as_double();
@@ -55,25 +57,32 @@ WujiHandDriverNode::WujiHandDriverNode() : Node("wujihand_driver"), hardware_con
     throw std::runtime_error("Hardware connection failed");
   }
 
+  // Interface name prefix. When name_by_handedness is set (multi-hand bringup,
+  // where the node namespace is a generic hand_0/hand_1), root all topics and
+  // services at the absolute /hand_<handedness>/ so the device's physical side
+  // names the interface. connect_hardware() ran above, so handedness_ is known.
+  // Otherwise use relative names under the node namespace (single-hand default).
+  const std::string prefix = name_by_handedness_ ? ("/hand_" + handedness_ + "/") : std::string();
+
   // Create publishers (use SensorDataQoS for compatibility with robot_state_publisher)
-  joint_state_pub_ =
-      this->create_publisher<sensor_msgs::msg::JointState>("joint_states", rclcpp::SensorDataQoS());
-  diagnostics_pub_ =
-      this->create_publisher<wujihand_msgs::msg::HandDiagnostics>("hand_diagnostics", 10);
+  joint_state_pub_ = this->create_publisher<sensor_msgs::msg::JointState>(
+      prefix + "joint_states", rclcpp::SensorDataQoS());
+  diagnostics_pub_ = this->create_publisher<wujihand_msgs::msg::HandDiagnostics>(
+      prefix + "hand_diagnostics", 10);
 
   // Create subscriber for joint commands (using SensorDataQoS for high-frequency data)
   cmd_sub_ = this->create_subscription<sensor_msgs::msg::JointState>(
-      "joint_commands", rclcpp::SensorDataQoS(),
+      prefix + "joint_commands", rclcpp::SensorDataQoS(),
       std::bind(&WujiHandDriverNode::command_callback, this, std::placeholders::_1));
 
   // Create services
   set_enabled_srv_ = this->create_service<wujihand_msgs::srv::SetEnabled>(
-      "set_enabled", std::bind(&WujiHandDriverNode::set_enabled_callback, this,
-                               std::placeholders::_1, std::placeholders::_2));
+      prefix + "set_enabled", std::bind(&WujiHandDriverNode::set_enabled_callback, this,
+                                        std::placeholders::_1, std::placeholders::_2));
 
   reset_error_srv_ = this->create_service<wujihand_msgs::srv::ResetError>(
-      "reset_error", std::bind(&WujiHandDriverNode::reset_error_callback, this,
-                               std::placeholders::_1, std::placeholders::_2));
+      prefix + "reset_error", std::bind(&WujiHandDriverNode::reset_error_callback, this,
+                                        std::placeholders::_1, std::placeholders::_2));
 
   // Initialize pre-allocated JointState message with handedness prefix
   joint_state_msg_.name.reserve(NUM_JOINTS);
