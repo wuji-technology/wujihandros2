@@ -2,6 +2,10 @@
 title: ROS2 Interface
 ---
 
+<Callout type="info">
+The topic and service paths in the examples below use the default namespace `/hand_0/`. When launched with `wujihand_dual.launch.py`, topics and services live under `/hand_left/` and `/hand_right/` — replace `/hand_0/` accordingly.
+</Callout>
+
 ## Interface Reference
 
 ### HandDiagnostics Message
@@ -32,7 +36,7 @@ float32[20] effort_limits       # Effort limit settings (A)
 <Callout type="info">
 **About the Effort Field**
 
-Effort represents the actuator output in current space, filtered before output. It is not the actual measured current value; consider it as relative drive intensity.
+Effort represents the actuator output in current space, filtered before output. It is not the actual measured current value. Consider it as relative drive intensity.
 
 Typical use cases:
 - **Collision detection**: A sudden increase in effort indicates joint obstruction

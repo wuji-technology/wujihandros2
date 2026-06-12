@@ -21,6 +21,7 @@ title: 启动与配置
 | `hand_name` | `hand_0` | 命名空间，用于区分多手。 <br/> 示例：`ros2 launch wujihand_bringup wujihand.launch.py hand_name:=my_hand` |
 | `serial_number` | `""` | 设备序列号（空则自动检测） |
 | `hand_side` | `""` | 无序列号时按左右手连接：`""`（唯一设备）、`left`、`right` |
+| `name_by_handedness` | `false` | 开启后话题与服务根命名空间使用硬件检测到的左右手（`/hand_left/`、`/hand_right/`），覆盖 `hand_name`。双手启动会自动开启 |
 | `publish_rate` | `1000.0` | 关节状态发布频率 (Hz) |
 | `filter_cutoff_freq` | `10.0` | 低通滤波截止频率 (Hz) |
 | `diagnostics_rate` | `10.0` | 诊断信息发布频率 (Hz) |
@@ -29,6 +30,14 @@ title: 启动与配置
 ## 多手配置
 
 当需要同时控制多只灵巧手时，可通过序列号和命名空间区分。
+
+### 查询已连接设备的序列号
+
+列出当前 USB 上所有 WujiHand 设备的序列号，填入下方启动命令的 `serial_number`：
+
+```bash
+ros2 run wujihand_driver wujihand_list
+```
 
 如果打开新终端，需要重新加载 ROS2 环境
 ```bash
