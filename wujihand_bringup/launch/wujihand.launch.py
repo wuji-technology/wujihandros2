@@ -52,6 +52,12 @@ def generate_launch_description():
         description="Serial number of the WujiHand device",
     )
 
+    hand_side_arg = DeclareLaunchArgument(
+        "hand_side",
+        default_value="",
+        description="Connect by handedness when no serial_number: '' (unique device), 'left', 'right'",
+    )
+
     publish_rate_arg = DeclareLaunchArgument(
         "publish_rate", default_value="1000.0", description="State publish rate in Hz"
     )
@@ -84,6 +90,9 @@ def generate_launch_description():
     serial_number_str = ParameterValue(
         LaunchConfiguration("serial_number"), value_type=str
     )
+    hand_side_str = ParameterValue(
+        LaunchConfiguration("hand_side"), value_type=str
+    )
 
     wujihand_driver_node = Node(
         package="wujihand_driver",
@@ -93,6 +102,7 @@ def generate_launch_description():
         parameters=[
             {
                 "serial_number": serial_number_str,
+                "hand_side": hand_side_str,
                 "publish_rate": LaunchConfiguration("publish_rate"),
                 "filter_cutoff_freq": LaunchConfiguration("filter_cutoff_freq"),
                 "diagnostics_rate": LaunchConfiguration("diagnostics_rate"),
@@ -130,6 +140,7 @@ def generate_launch_description():
         [
             hand_name_arg,
             serial_number_arg,
+            hand_side_arg,
             publish_rate_arg,
             filter_cutoff_freq_arg,
             diagnostics_rate_arg,

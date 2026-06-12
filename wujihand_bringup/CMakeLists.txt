@@ -10,6 +10,7 @@ install(DIRECTORY launch
 
 install(PROGRAMS
   scripts/wave_demo.py
+  scripts/home.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -2,6 +2,10 @@
 title: ROS2 接口
 ---
 
+<Callout type="info">
+以下示例的话题与服务路径均使用默认命名空间 `/hand_0/`。使用 `wujihand_dual.launch.py` 启动时，话题与服务在 `/hand_left/` 和 `/hand_right/` 下，请按需替换 `/hand_0/`。
+</Callout>
+
 ## 接口清单
 
 ### HandDiagnostics 消息
@@ -120,6 +124,19 @@ ros2 topic pub /hand_0/joint_commands sensor_msgs/msg/JointState \
 # 仅控制食指的两个关节
 ros2 topic pub /hand_0/joint_commands sensor_msgs/msg/JointState \
   "{name: ['right_finger2_joint2', 'right_finger2_joint3'], position: [1.0, 1.0]}" --once
+```
+
+### 平滑回零
+
+`home.launch.py` 从当前位置平滑插值回零，避免猛然弹回：
+
+```bash
+# 单手回零
+ros2 launch wujihand_bringup home.launch.py
+
+# 双手一起回零，1.5s 完成（名字与 wujihand_dual.launch.py 发布的话题一致）
+ros2 launch wujihand_bringup home.launch.py \
+    hand_names:=hand_left,hand_right duration:=1.5
 ```
 
 ### 读取关节状态

@@ -8,6 +8,7 @@ title: Configuration
 |:--------|:------------|
 | `ros2 launch wujihand_bringup wujihand.launch.py` | Launch driver only |
 | `ros2 launch wujihand_bringup wujihand.launch.py rviz:=true` | Launch driver with RViz visualization |
+| `ros2 launch wujihand_bringup wujihand_dual.launch.py` | Launch and auto-connect both hands |
 
 ## Configurable Parameters
 
@@ -19,6 +20,8 @@ Handedness (left/right) is automatically detected from hardware. No manual speci
 |:----------|:--------|:------------|
 | `hand_name` | `hand_0` | Namespace for distinguishing multiple hands. <br/> Example: `ros2 launch wujihand_bringup wujihand.launch.py hand_name:=my_hand` |
 | `serial_number` | `""` | Device serial number (auto-detect if empty) |
+| `hand_side` | `""` | Connect by handedness when no serial_number: `""` (unique device), `left`, `right` |
+| `name_by_handedness` | `false` | When true, roots topics and services under `/hand_<handedness>/`, overriding `hand_name`. Dual-hand launch enables this automatically |
 | `publish_rate` | `1000.0` | Joint state publishing rate (Hz) |
 | `filter_cutoff_freq` | `10.0` | Low-pass filter cutoff frequency (Hz) |
 | `diagnostics_rate` | `10.0` | Diagnostics publishing rate (Hz) |
@@ -27,6 +30,14 @@ Handedness (left/right) is automatically detected from hardware. No manual speci
 ## Multi-hand Configuration
 
 When controlling multiple dexterous hands simultaneously, use serial numbers and namespaces to distinguish them.
+
+### List Connected Device Serial Numbers
+
+List the serial numbers of all WujiHand devices currently on the USB bus, then plug them into the `serial_number` parameter in the launch commands below:
+
+```bash
+ros2 run wujihand_driver wujihand_list
+```
 
 If opening a new terminal, you need to source the ROS2 environment again
 ```bash
@@ -45,6 +56,24 @@ ros2 launch wujihand_bringup wujihand.launch.py \
 # Terminal 2: Launch right hand
 ros2 launch wujihand_bringup wujihand.launch.py \
     hand_name:=right_hand serial_number:=DEF456
+```
+
+### Launch Both Hands with One Command
+
+One command auto-discovers and connects every plugged-in hand — no serial numbers needed. Each hand is named by its detected handedness, publishing topics under `/hand_left/*` and `/hand_right/*`:
+
+```bash
+ros2 launch wujihand_bringup wujihand_dual.launch.py
+```
+
+Optional visualization:
+
+```bash
+# One RViz window per hand
+ros2 launch wujihand_bringup wujihand_dual.launch.py rviz:=true
+
+# A single Foxglove Bridge
+ros2 launch wujihand_bringup wujihand_dual.launch.py foxglove:=true
 ```
 
 ### Run Multi-hand Demos
