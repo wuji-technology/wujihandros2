@@ -3,7 +3,7 @@ name: Auto Release on PR Merge
 on:
   pull_request:
     types: [closed]
-    branches: [master]
+    branches: [main]
 
 jobs:
   create-tag:
