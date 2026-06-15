@@ -7,13 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-06-15
+
 ### Added
 
-- One-command dual-hand bringup (`wujihand_dual.launch.py`): auto-discovers connected hands by USB serial number and starts one driver per hand; each hand's topics are published under `/hand_left` and `/hand_right` by detected handedness
-- Smooth homing (`home.launch.py` / `home.py`): interpolates every joint to zero over a configurable `duration` then exits; `hand_names` homes one or more hands at once
-- `wujihand_list` tool to print the serial numbers of connected WujiHand devices
-- `hand_side` parameter for `wujihand.launch.py` to connect a hand by handedness (`left`/`right`) when no `serial_number` is given
-- `name_by_handedness` driver parameter to root a hand's topics and services at `/hand_<handedness>/`
+- Added one-command dual-hand bringup that auto-discovers connected hands by USB serial number, starts one driver per hand, and publishes each hand's topics under `/hand_left` and `/hand_right` according to detected handedness
+- Added smooth homing that interpolates every joint to zero over a configurable duration and then exits, with the `hand_names` parameter to home one or more hands at once
+- Added a `wujihand_list` tool to print the serial numbers of connected Wuji Hand devices
+- Added a `hand_side` parameter to connect a hand by handedness (`left` / `right`) when no `serial_number` is given
+- Added a `name_by_handedness` driver parameter to root a hand's topics and services at `/hand_<handedness>/`
 
 ## [1.0.1] - 2026-01-21
 
@@ -73,7 +75,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Common utility module (spawn_robot_state_publisher)
 - CI build status badge in README
 
-[Unreleased]: https://github.com/wuji-technology/wujihandros2/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/wuji-technology/wujihandros2/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/wuji-technology/wujihandros2/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/wuji-technology/wujihandros2/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/wuji-technology/wujihandros2/releases/tag/v1.0.0
 [0.1.0]: https://github.com/wuji-technology/wujihandros2/releases/tag/v0.1.0
