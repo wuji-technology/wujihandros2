@@ -14,30 +14,20 @@ ROS2 driver package for Wuji Hand dexterous hand. Provides 1000Hz joint state pu
 ## Repository Structure
 
 ```text
-├── wujihand_bringup/
+├── wujihand_bringup/            // Launch files and demo scripts for starting the driver
 │   ├── launch/
 │   └── scripts/
 ├── external/
-│   └── wuji-description/    # git submodule
-├── wujihand_driver/
+│   └── wuji-description/        // URDF models, mesh files, and RViz configuration (submodule)
+├── wujihand_driver/             // Core ROS2 driver node for hardware communication
 │   ├── include/
 │   └── src/
-├── wujihand_msgs/
+├── wujihand_msgs/               // Custom ROS2 message and service definitions
 │   ├── msg/
 │   └── srv/
-├── docs/
+├── docs/                        // API reference and documentation
 └── README.md
 ```
-
-### Directory Description
-
-| Directory | Description |
-|-----------|-------------|
-| `wujihand_bringup/` | Launch files and demo scripts for starting the driver |
-| `external/wuji-description/` | URDF models, mesh files, and RViz configuration (submodule) |
-| `wujihand_driver/` | Core ROS2 driver node for hardware communication |
-| `wujihand_msgs/` | Custom ROS2 message and service definitions |
-| `docs/` | API reference and documentation |
 
 ## Quick Start
 
